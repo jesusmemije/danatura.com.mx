@@ -1,0 +1,231 @@
+li{
+    list-style-type: none;
+}
+
+#lightSlider {
+    height: 550px !important;
+  }
+
+  .nuevo-circle{
+        
+          
+    display: flex;
+    justify-content: center;
+    border-radius: 100%;
+    width: calc(5vw);
+    height: calc(5vw);
+    
+    background: #FFE4BB;
+
+    font-family:"AmasisMTStd-Bold";
+    font-size: calc(1.2vw);
+
+    position: relative;
+    top:calc(5vw);
+    left: calc(-1.2vw);
+    padding-top: calc(1.5vw);
+
+      }
+
+
+  .mybadge{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top:5px;
+    font-family:"AmasisMTStd-Bold";
+    font-size: 15px;
+   width: auto;
+    /*height: fit-content;*/
+    border-radius: 2em;
+    background: #FFE4B8;
+    color: #73482C;
+    margin-left: .5%;
+    cursor: pointer;
+
+    text-align: center;
+  }
+  .active{
+    background: #F79860;
+    color: white;
+   
+  }
+  .center-badge{
+    display: flex;
+    justify-content: center;
+    padding-top: 4%;
+  }
+  .spc{
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .comprar{
+    border-radius: 0px !important;
+    background: #F79860;
+    border:0px !important;
+  }
+
+
+  .agotado{
+    border-radius: 0px !important;
+    border:0px !important;
+  }
+
+  .cargar{
+    border-radius: 0px !important;
+    background: #b3c6a0;
+    border:0px !important;
+    font-weight: bold;
+    
+  }
+
+
+  .checked {
+  color: #F79860;
+}
+
+#progressbar {
+  background-color: #ffe5b8;
+ 
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
+}
+
+#progressbar>div {
+  background-color: #F79860;
+  width: 40%;
+  /* Adjust with JavaScript */
+  height: 20px;
+
+}
+
+svg{
+  display: none;
+}
+
+.corazon{
+  cursor: pointer;
+  color:#aaa;
+
+  position: relative;
+  top: calc(-10vh);
+  left: 85%;
+}
+.corazon:hover {
+color:#666;
+}
+
+.press {
+
+color:#fb985f !important;
+}
+
+.img-thumbnail{
+  border:0px !important;
+}
+
+@media (min-width: 1600px) {
+  .corazon{
+   
+    font-size: 30px !important;
+  }
+}
+
+
+@media (min-width: 1025px) {
+  .corazon{
+    cursor: pointer;
+    color:#aaa;
+  
+    position: relative !important;
+    top: calc(5vw) !important;
+    left: 86%;
+    /*font-size: 30px !important;*/
+  }
+}
+
+@media (max-width: 1024px) {
+  .corazon{
+    cursor: pointer;
+    color:#aaa;
+  
+    position: relative;
+    top:1px !important;
+    left: 86%;
+    font-size: 30px !important;
+  }
+}
+
+ 
+
+
+@media (max-width: 767px) {
+    .divbar {
+      width: 60%;
+      margin-left: 22% !important;
+    }
+
+.corazon{
+  cursor: pointer;
+  color:#aaa;
+
+  position: relative;
+ 
+  left: 86%;
+  font-size: 30px !important;
+}
+
+  
+.nuevo-circle{
+        
+ 
+
+  display: flex;
+  justify-content: center;
+  border-radius: 100%;
+  width: calc(14vw);
+  height: calc(14vw);
+  
+  background: #FFE4BB;
+
+  font-family:"AmasisMTStd-Bold";
+  font-size: calc(3.5vw);
+
+  position: relative;
+  top:calc(5vw);
+  left: calc(-1.2vw);
+  padding-top: calc(4vw);
+
+
+}
+
+  }
+  @media (max-width: 380px) {
+    .corazon{
+      cursor: pointer;
+      color:#aaa;
+    
+      position: relative;
+      top:60px !important;
+      left: 86%;
+      font-size: 30px !important;
+    }
+
+
+  
+  }
+
+  @media (max-width: 768px) {
+    .corazon{
+      cursor: pointer;
+      color:#aaa;
+    
+      position: relative;
+      top:1px !important;
+      left: 86%;
+      font-size: 30px !important;
+    }
+
+    
+  }
+

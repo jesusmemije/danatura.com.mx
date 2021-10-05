@@ -1,0 +1,326 @@
+/* ========================== General ========================== */
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #2C4143;
+}
+
+/* ========================== Header ========================== */
+
+.header-top {
+  font-size: 12px;
+  background-image: url("/assets/img/header/menu-superior.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.header-img {
+  background-color: #F7F7F7;
+}
+
+.header-menu {
+  background-image: url("/assets/img/header/menu-principal.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.header-menu a {
+  color: #fff;
+}
+
+.header-menu a:focus,
+.header-menu a:hover {
+  color: #9EC2D5;
+  text-decoration: none;
+}
+
+#header-phone {
+  background-image: url('/assets/img/header/background-movil.jpg');
+  background-repeat: no-repeat;
+  background-size: cover; height: 56px;
+}
+
+#header-phone a {
+  color: #fff;
+}
+
+.logo-costjalisco {
+  width: 100%;
+}
+
+.divider {
+  height: 1.5em;
+  border-left: 1px solid #777;
+  margin-top: 10px;
+}
+
+.nav-login {
+  margin-right: 2rem;
+  margin-left: 2rem;
+  font-size: 12px;
+}
+
+.nav-link {
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+/* Dropdow menu */
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-divider {
+  position: relative;
+  margin: -4px .8rem;
+  border-top: 1px solid #777;
+  z-index: 1;
+}
+
+.dropdown-menu {
+  margin-top: 0;
+  padding: .4rem 0;
+  color: #fff;
+  background-color: #2C4143;
+  border: none;
+  border-radius: 0;
+  padding-top: .8rem;
+  padding-bottom: 1.8rem;
+}
+
+.dropdown-item {
+  color: #fff;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+  color: #9EC2D5;
+  background-color: #2C4143;
+}
+
+/* ========================== Content ========================== */
+a {
+  color: #2C4143;
+}
+
+a:focus,
+a:hover {
+  color: #2C4143;
+  text-decoration: none;
+}
+
+.title-barra-roja {
+  background-image: url("/assets/img/background-rojo.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.subtitle-barra-gris {
+  background-image: url("/assets/img/background-gris.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.background-title {
+  font-size: 32px;
+  color: #fff;
+  background-repeat: no-repeat;
+  background-image: url("/assets/img/project/background-title.png");
+  background-size: 102%;
+}
+
+.bg-gris {
+  background: unset;
+  padding-top: 0;
+}
+
+.text-red {
+  color: #D60000;
+}
+
+.text-red:hover {
+  color: #FF0000;
+}
+
+.line-red-center {
+  margin-top: 30px;
+  border-bottom: 1px solid #D60000;
+}
+
+.line-red-vertical {
+  border-right: 1px solid #D60000;
+}
+
+.title-sector {
+  font-size: 30px;
+  font-weight: 700;
+  margin-left: 30px;
+}
+
+/* ========================== Footer ========================== */
+
+.social ul {
+  list-style: none;
+}
+
+.social ul li a {
+  width: 25px;
+  height: 15px;
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  -webkit-transition: all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+  border-radius: 50%;
+  padding-bottom: 25px;
+  margin: 5px;
+  /* Establecemos una transición a todas las propiedades */
+}
+
+/* Establecemos los colores de cada red social, aprovechando su class */
+.social ul li .icon-facebook {
+  background: #3b5998;
+}
+
+.social ul li .icon-youtube {
+  background: #c4302b;
+}
+
+.social ul li .icon-twitter {
+  background: #00abf0;
+}
+
+.social ul li a:hover {
+  background: #000;
+  /* Cambiamos el fondo cuando el usuario pase el mouse */
+}
+
+.social {
+  margin-top:55%;
+}
+
+.btn-go-top {
+  position: relative;
+  float: left;
+  width: 72px;
+  height: 72px;
+  left: 95%;
+  top: 20px;
+  z-index: 3000;
+}
+
+footer a {
+  color: #fff;
+}
+
+footer a:focus,
+footer a:hover {
+  color: #9EC2D5;
+  text-decoration: none;
+}
+
+/* Desktop mini */
+@media only screen and (max-width: 992px) {
+
+  .hidden-desktop-mini {
+    display: none!important;
+  }
+
+  .divider {
+    display: none;
+  }
+
+}
+
+/* Tablet */
+@media only screen and (max-width: 768px) {
+
+  .social {
+    margin-top: unset;
+  }
+
+  .logo-costjalisco{
+    width: 80%;
+  }
+
+  .hidden-tablet {
+    display: none!important;
+  }
+
+}
+
+/* Phone */
+@media only screen and (max-width: 576px) {
+
+  .hidden-phone {
+    display: none !important;
+  }
+
+  .navbar-collapse {
+    background-color: #2D4044 !important;
+    z-index: 100;
+    position: inherit;
+  }
+
+  .navbar-toggler {
+    height: 56px;
+    padding: 0;
+  }
+
+  .nav-link {
+    padding: .8rem 1rem;
+  }
+
+  .dropdown-menu {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .nav-login {
+    margin-right: 0;
+    margin-left: 0;
+    font-size: 14px;
+  }
+
+  .background-title {
+    font-size: unset;
+    background-image: url("/assets/img/bg-gris-phone.jpg");
+    background-size: 98%;
+  }
+
+  .bg-gris {
+    background: #D8D8CD;
+    padding-top: 18px;
+  }
+
+  .title-barra-roja {
+    background-image: url("/assets/img/bg-rojo-phone.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .subtitle-barra-gris {
+    background-image: url("/assets/img/bg-gris-phone.jpg");
+  }
+
+  .title-sector {
+    font-size: 24px;
+  }
+
+  .line-red-center {
+    margin-top: 0;
+    border-bottom: none;
+  }
+
+  .line-red-vertical {
+    border-right: none;
+  }
+
+}
+
+@media only screen and (min-width: 576px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}

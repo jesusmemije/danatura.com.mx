@@ -1,0 +1,724 @@
+
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
+  .carousel-div {
+    height: 1100px;
+  }
+
+  .carousel-item {
+    height: 100%;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+  #lightSlider {
+    
+    height: calc(50vw) !important;
+  }
+
+  .comprar{
+    width:auto;
+    border-radius: 0px !important;
+    background: #F79860 !important;
+    border:0px !important;
+    font-size: 2em !important;
+
+  }  
+
+  .seccion3 {
+    height: calc(109vw * 0.8);
+    background-color: #FFE4BB;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+
+  .seccion3img {
+    height: 340px !important;
+    width: 100% !important;
+  }
+
+  .circle-insta {
+    text-align: center;
+    padding-top: 12px;
+    background-color: #F79860;
+    border-radius: 50%;
+    color: #fff;
+    width: 65px;
+    height: 65px;
+  }
+
+  .img-thumbnail{
+    border:0px !important;
+    width: 90%  !important;
+    padding-left:2% !important;
+  }
+
+#txt-banner4{
+color:white;
+font-family:"COSMOPOLITAN SCRIPT MEDIUM";
+font-size: 8em;
+position: relative;
+top:-110px;
+left:25%;
+letter-spacing:4px;
+
+}
+#secondText{
+font-family:"COSMOPOLITAN SCRIPT MEDIUM";
+ font-size: 7em;
+ color:white;
+}
+
+.txt-banner{
+  font-size:6em; color:white; font-family:AmasisMTStd-Bold;
+}
+.txt-banner2{
+  position:relative; top:calc(-4vw); font-size:6em; color:white; font-family:AmasisMTStd;
+}
+.txt-nutritivo{
+  position:relative; top:calc(-7vw); font-size:6em; color:white; font-family:AmasisMTStd-Bold;
+}
+.txt-banner3{
+
+  font-size:8em; color:white; font-family:"COSMOPOLITAN SCRIPT MEDIUM"
+}
+
+.divsec3{
+  margin-bottom: 12%; padding-left:10%; padding-top:5%
+}
+
+.divsec4{
+  font-family:AmasisMTStd-Bold; font-size:3em; color:#73482C
+}
+.divsec5{
+  color:#F79860; font-size:3em; font-family:AmasisMTStd-Bold;
+}
+
+
+.sec-txt{
+  position:relative; top:40px; left:40%; font-size:4em; font-family:AmasisMTStd-Bold; color:#73482C
+
+}
+.sec-txt2{
+  position:relative; left:18%; font-size:4em; font-family:AmasisMTStd-Bold; color:#73482C
+}
+
+#s3i1{
+  margin-top: 10%;
+}
+#s3i2{
+  margin-top: 3%;
+}
+
+.corazon{
+  cursor: pointer;
+  color:#aaa;
+  position: relative;
+  top:-130px;
+  left: 85%;
+}
+.corazon:hover {
+color:#666;
+}
+
+.press {
+animation: size .4s;
+color:#fb985f !important;
+}
+
+.cls2{
+color:#73472b;
+font-weight: 500;
+}
+.nuevo-circle{
+
+display: flex;
+justify-content: center;
+border-radius: 100%;
+width: 80px;
+height: 80px;
+font-family:"AmasisMTStd-Bold";
+background: #FFE4BB;
+
+position: relative;
+top:50px;
+left: -15px;
+padding-top: 8%;
+
+}
+.circle {
+display: flex;
+justify-content: center;
+border-radius: 100%;
+width: 208px;
+height: 208px;
+padding: 1%;
+background: #FFE4BB;
+}
+.checked {
+color: #F79860;
+}
+
+.modal-content{
+border: 0px !important;
+border-radius: 0px !important;
+background: #FFE4B8;
+height: 600px;
+width: 550px;
+}
+.modal-div{
+
+
+width: 500px;
+height: 490px;
+
+border-radius:1em;
+  
+color: white;
+font-family:'AmasisMTStd-Bold';
+background:#F79860;
+}
+
+.span-bienestar{
+  font-size: 4em; color:#fb985f;
+}
+.span-general{
+  color:#73482C; position:absolute; padding-left: 11%;  font-size: 4em; top:8%
+}
+.span-alimentos{
+  color:#73482C; padding-left: 28%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+}
+.span-nutritivos{
+  color:#73482C;  position:absolute; top:calc(10vw + 60px);  padding-left: 40%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+}
+
+.span-naturalmente{
+  font-family:AmasisMTStd-Bold; font-size: 2em; color:#73482C
+}
+
+.div-match{
+  position: relative; top:-148px; width:1000px;
+}
+
+.div-tres{
+
+  background:#FFEFD6; 
+  padding-left:20%; 
+  padding-top:4%; 
+  padding-right:20%; 
+  padding-bottom:4%;
+
+}
+
+.span-delicioso{
+
+  position:relative; top:-40px; left:42%; font-size:4em; font-family:COSMOPOLITAN SCRIPT MEDIUM; color:#73482C
+}
+
+
+@media (min-width: 1593px) {
+  #s3i1{
+    margin-top: calc(6% + 1.3cm) !important;
+  }
+  #s3i2 {
+    margin-top: 6% !important;
+}
+}
+
+
+@media (min-width: 1441px) {
+
+  .seccion3 {
+    height: calc(100vw * 0.8);
+    background-color: #FFE4BB;
+    margin-top: 10%;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+  .seccion3img {
+    height: calc(100vw * 0.25) !important;
+    width: 100% !important;
+  }
+    #s3i1{
+      margin-top: calc(2% + 1.3cm);
+    }
+    #s3i2{
+      margin-top: 4%;
+    }
+    
+}
+
+
+@media (max-width: 1440px) {
+  .seccion3img {
+    height: calc(100vw * 0.25) !important;
+    width: 100% !important;
+  }
+  
+}
+
+
+
+
+@media (max-width: 1024px) {
+  .seccion3img {
+    height: 258px !important;
+    width: 100% !important;
+  }
+  #s3i1{
+    margin-top: 7%;
+  }
+
+  #lightSlider {
+    height: calc(60vw) !important;
+  }
+  .span-nutritivos{
+    color:#73482C;  position:absolute; top:calc(20vw);  padding-left: 40%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+  }
+  
+  
+  
+}
+
+
+@media (max-width: 1015px) {
+  .seccion3 {
+    height: calc(148vw * 0.8);
+    background-color: #FFE4BB;
+    margin-top: 10%;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+}
+
+
+
+@media (max-width: 871px) {
+
+ 
+.nuevo-circle {
+  font-family:"AmasisMTStd-Bold";
+    border-radius: 100%;
+    width: calc(7vw) !important;
+    height: calc(7vw) !important;
+    font-size: 12px !important;
+    position: relative;
+      top:15px  !important;
+      left: 5px !important;
+      padding-top: 8%;
+
+  }
+}
+
+@media (max-width: 801px) {
+  .seccion3 {
+    height: calc(140vw * 0.8);
+    background-color: #FFE4BB;
+    margin-top: 10%;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+}
+
+@media (max-width: 800px) {
+
+
+  .span-bienestar{
+    font-size: 3em; color:#fb985f;
+  }
+  .span-general{
+    color:#73482C; position:absolute; padding-left: 11%;  font-size: 3em; top:8%
+  }
+  
+  .span-alimentos{
+    color:#73482C; padding-left: 18%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+  }
+  .span-nutritivos{
+    color:#73482C;  position:absolute; top:20%;  padding-left: 40%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+  }
+
+  
+  .seccion3 {
+    height: calc(135vw * 0.8);
+    background-color: #FFE4BB;
+    margin-top: 10%;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+
+  #lightSlider {
+    height: calc(60vw) !important;
+  }
+
+  .seccion3img {
+    height: 189px !important;
+    width: 100% !important;
+  }
+  #s3i1{
+    margin-top: 15%;
+  }
+
+  .divsec3{
+    margin-bottom: 12%; padding-left:0%; padding-top:5%
+  }
+
+  .sec-txt{
+    position:relative; top:40px; left:20%; font-size:4em; font-family:AmasisMTStd-Bold; color:#73482C
+  
+  }
+  .sec-txt2{
+    position:relative; left:2%; font-size:4em; font-family:AmasisMTStd-Bold; color:#73482C
+  }
+
+  .div-tres{
+
+ 
+    background:#FFEFD6; 
+    padding-left:6%; 
+    padding-top:4%; 
+    padding-right:5%; 
+    padding-bottom:4%;
+  
+  }
+}
+
+
+
+
+  @media (max-width: 767px) {
+
+    .corazon{
+      cursor: pointer;
+      color:#aaa;
+      font-size: 30px;
+      position: relative;
+      top:-10px;
+      left: 50%;
+    }
+
+    .corazon:hover {
+      color:#666;
+      }
+      
+      .press {
+      animation: size .4s;
+      color:#fb985f !important;
+      }
+
+    .sec-txt{
+      font-size:3em;
+    }
+    .sec-txt2{
+      font-size:3em;
+      padding-top: 2%;
+    }
+
+    .divsec3{
+ padding-left:2% !important;
+ 
+}
+.divsec4{
+  font-size:2em !important; 
+}
+.divsec5{
+  font-size:2em !important; 
+}
+
+    .seccion3 {
+      height: calc(380vw);
+      background-color: #FFE4BB;
+      margin-top: 8%;
+      padding-left: 5%;
+      padding-right: 5%
+    }
+    .txt-banner{
+  font-size:6em; color:white; font-family:AmasisMTStd-Bold;
+}
+.txt-banner2{
+  position:relative; top:-60px; font-size:6em;color:white; font-family:AmasisMTStd-Bold;
+}
+
+.txt-nutritivo{
+  top: calc(-14vw);
+}
+
+.txt-banner3{
+  top: calc(20vw);
+  font-size:6em; color:white; letter-spacing:2px; font-family:"COSMOPOLITAN SCRIPT MEDIUM"
+}
+#txt-banner4{
+color:white;
+font-family:"COSMOPOLITAN SCRIPT MEDIUM";
+font-size: 6em;
+position: relative;
+top:-80px;
+left:25%;
+letter-spacing:4px;
+
+}
+
+.nuevo-circle {
+    font-family:"AmasisMTStd-Bold";
+      border-radius: 100%;
+      width: calc(7vw) !important;
+      height: calc(7vw) !important;
+      font-size: 12px !important;
+      position: relative;
+        top:15px  !important;
+        left: 5px !important;
+        padding-top: 8%;
+
+    }
+
+    #lightSlider {
+      height: calc(76vw) !important;
+    }
+
+    .span-alimentos{
+      color:#73482C; padding-left: 28%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+    }
+    .span-nutritivos{
+      color:#73482C;  position:absolute; top:calc(33vw);  padding-left: 40%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+    }
+
+    .span-naturalmente{
+      width: 0%;
+    }
+    
+  }
+ 
+
+@media(max-width:585px){
+  .txt-banner{
+    font-size:3em; color:white; font-family:AmasisMTStd-Bold;
+  }
+  .txt-banner2{
+    position:relative; top:-26px; font-size:3em;color:white; font-family:AmasisMTStd-Bold;
+  }
+  
+  .txt-nutritivo{
+    font-size:3em;
+    top: calc(-10vw);
+  }
+  
+  .txt-banner3{
+    top: calc(20vw);
+    font-size:4em; color:white; letter-spacing:2px; font-family:"COSMOPOLITAN SCRIPT MEDIUM"
+  }
+  #txt-banner4{
+  color:white;
+  font-family:"COSMOPOLITAN SCRIPT MEDIUM";
+  font-size: 4em;
+  position: relative;
+  top:-80px;
+  left:25%;
+  letter-spacing:4px;
+  
+  }
+
+  .div-match{
+    position: relative; top:calc(-19vw); width:1000px;
+  }
+}
+
+@media(max-width:564px){
+  #lightSlider {
+    height: calc(91vw) !important;
+  }
+
+}
+
+
+@media(max-width:513px){
+  #lightSlider {
+    height: calc(99vw) !important;
+  }
+
+}
+
+@media(max-width:501px){
+  .nuevo-circle {
+    font-size: 12px !important;
+    width: calc(12vw) !important;
+    height: calc(12vw) !important;
+        padding-top: 9%;
+
+    }
+
+
+}
+
+@media(max-width:478px){
+  #lightSlider {
+    height: calc(103vw) !important;
+  }
+
+}
+
+
+
+@media(max-width:450px){
+  #lightSlider {
+    height: calc(110vw) !important;
+  }
+
+}
+
+
+  
+@media (max-width: 400px) {
+  #lightSlider {
+    height: calc(120vw) !important;
+  }
+
+
+  .seccion3 {
+    height: calc(480vw);
+    background-color: #FFE4BB;
+    margin-top: 8%;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+
+  .span-bienestar{
+    font-size: 3em; color:#fb985f;
+  }
+  .span-general{
+    color:#73482C; position:absolute; padding-left: 11%;  font-size: 3em; top:8%
+  }
+  
+  .span-alimentos{
+    color:#73482C; padding-left: 18%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+  }
+  .span-nutritivos{
+    color:#73482C;  position:absolute; top:20%;  padding-left: 40%;  font-size: 4em; font-family:COSMOPOLITAN SCRIPT MEDIUM
+  }
+}
+
+
+@media (max-width: 364px) {
+  #lightSlider {
+    height: calc(128vw) !important;
+  }
+
+}
+
+
+@media (max-width: 353px) {
+  #lightSlider {
+    height: calc(132vw) !important;
+  }
+
+}
+
+
+@media (max-width: 353px) {
+  #lightSlider {
+    height: calc(138vw) !important;
+  }
+
+}
+
+
+@media (max-width: 330px) {
+  #lightSlider {
+    height: calc(166vw) !important;
+  }
+
+
+  .circle {
+   font-size: calc(3vw) !important;
+    }
+  
+
+}
+
+
+@media (max-width: 301px) {
+ 
+
+    .nuevo-circle {
+      font-size: 12px !important;
+      width: calc(18vw) !important;
+      height: calc(18vw) !important;
+      padding-top: 8%;
+  
+      }
+
+}
+
+
+
+
+@media (max-width: 280px) {
+  .seccion3 {
+    height: calc(557vw);
+    background-color: #FFE4BB;
+    margin-top: 8%;
+    padding-left: 5%;
+    padding-right: 5%
+  }
+
+  .span-bienestar{
+    font-size: 2em; color:#fb985f;
+  }
+  .span-general{
+    color:#73482C; position:absolute; padding-left: 11%;  font-size: 2em; top:8%
+  }
+
+  .divsec5{
+    font-size:1em !important; 
+  }
+
+  .txt-banner{
+    font-size:2em; color:white; font-family:AmasisMTStd-Bold;
+  }
+  .txt-banner2{
+    position:relative; top:-26px; font-size:2em;color:white; font-family:AmasisMTStd-Bold;
+  }
+  
+  .txt-nutritivo{
+    font-size:2em;
+    top: calc(-10vw);
+  }
+  
+  .txt-banner3{
+    top: calc(20vw);
+    font-size:3em; color:white; letter-spacing:2px; font-family:"COSMOPOLITAN SCRIPT MEDIUM"
+  }
+  #txt-banner4{
+  color:white;
+  font-family:"COSMOPOLITAN SCRIPT MEDIUM";
+  font-size: 3em;
+  position: relative;
+  top:-80px;
+  left:25%;
+  letter-spacing:4px;
+  
+  }
+
+  .sec-txt{
+    font-size:2em;
+  }
+  .sec-txt2{
+    font-size:2em;
+    padding-top: 7%;
+  }
+
+  .span-delicioso{
+
+    position:relative; top:-40px; left:20%; font-size:4em; font-family:COSMOPOLITAN SCRIPT MEDIUM; color:#73482C
+  }
+
+}

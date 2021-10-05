@@ -1,0 +1,114 @@
+
+li{
+    list-style-type: none;
+}
+
+#lightSlider {
+    height: 550px !important;
+  }
+
+  .nuevo-circle{
+        
+        display: flex;
+        justify-content: center;
+        border-radius: 100%;
+        width: 80px;
+        height: 80px;
+        
+        background: #FFE4BB;
+
+        font-family:"AmasisMTStd-Bold";
+        font-size: 20px;
+
+        position: relative;
+        top:50px;
+        left: -15px;
+        padding-top: 8%;
+
+      }
+
+ 
+  
+  .img-detail img{
+      width: 90%;
+  }
+
+  .img-thumbnail{
+    border:0px !important;
+    width: 90%  !important;
+   
+  }
+  .title{
+    font-family:"AmasisMTStd-Bold";
+    color: #73472b;
+  }
+  .subtitle{
+    color: #73472b;
+    font-weight: 500;
+
+  }
+  .price{
+    color: #73472b;
+    font-weight: 600;
+  }
+  .price-n{
+    margin-top: 50px;
+    color: #73472b;
+    font-size: 1.5em;
+    font-weight: bold;
+   
+  }
+  .add{
+    color: white;
+    background: #F79860;
+    border: 0px !important;
+    border-radius: 0px !important;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+
+@media (max-width: 767px) {
+    .nuevo-circle {
+      border-radius: 100%;
+      width: 30px !important;
+      height: 30px !important;
+      font-size: 8px !important;
+      position: relative;
+        top:15px  !important;
+        left: 5px !important;
+        padding-top: 8%;
+
+    }
+  }
+
+
+  .cls2{
+    color:#73472b;
+    font-weight: 500;
+  }
+  .nuevo-circle{
+  
+    display: flex;
+    justify-content: center;
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    
+    background: #FFE4BB;
+
+    position: relative;
+    top:50px;
+    left: -15px;
+    padding-top: 8%;
+
+  }
+  .circle {
+    display: flex;
+    justify-content: center;
+    border-radius: 100%;
+    width: 250px;
+    height: 250px;
+    padding: 10%;
+    background: #FFE4BB;
+  }
