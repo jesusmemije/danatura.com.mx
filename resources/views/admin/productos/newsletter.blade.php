@@ -21,7 +21,7 @@
                 @section('pagina-actual','Subscriptores del sitio')
                 @section('breadcumb')
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Subscriptores</a></li>
                     <li class="breadcrumb-item active">Listado</li>
                 </ul>

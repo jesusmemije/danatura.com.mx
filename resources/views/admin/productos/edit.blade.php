@@ -40,7 +40,7 @@
             @section('pagina-actual','Actualizando producto')
             @section('breadcumb')
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
                 <li class="breadcrumb-item"><a href="{{route('productos.index')}}">Productos</a></li>
                 <li class="breadcrumb-item active">Actualizando</li>
             </ul>

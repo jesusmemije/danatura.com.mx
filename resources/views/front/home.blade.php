@@ -387,7 +387,7 @@ $("#here").on("keyup", function() {
       cache: false,
     contentType: false,
     processData: false,
-            url: "{{ route('newsletter_front') }}",
+            url: "{{ route('newsletter-front') }}",
             data: fileform,
             type: 'POST',   
            dataType:'json',

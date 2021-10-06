@@ -21,7 +21,7 @@
                 @section('pagina-actual','Newsletter')
                 @section('breadcumb')
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Newsletter</a></li>
                     <li class="breadcrumb-item active">Nuevo</li>
                 </ul>

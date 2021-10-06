@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Models\Productos;
 use App\Models\VentaProductos;
@@ -27,11 +28,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $productos = Productos::all();
-        $pedidos = VentaProductos::all();
-        $usuarios = User::all();
-        $subscriptores = DB::table('newsletter')->get();
-
-        return view('admin.home', ['productos' => $productos, 'pedidos' => $pedidos, 'usuarios' => $usuarios, 'subscriptores' => $subscriptores]);
+        $productos=Productos::all();
+        $pedidos=VentaProductos::all();
+        $usuarios=User::all();
+        $subscriptores=DB::table('newsletter')->get();
+       
+        return view('admin.home',['productos'=> $productos,'pedidos'=> $pedidos,'usuarios'=> $usuarios,'subscriptores'=> $subscriptores]);
     }
 }

@@ -12,7 +12,7 @@
                 @section('pagina-actual','Registro de usuario')
     @section('breadcumb')
     <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{route('dashboard')}}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{{route('usuario.index')}}">Usuarios</a></li>
         <li class="breadcrumb-item active">Nuevo</li>
     </ul>

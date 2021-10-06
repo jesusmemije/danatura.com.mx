@@ -316,7 +316,7 @@
         "_token": "{{ csrf_token() }}",
         "ciudad": nombre
       }, //datos que se envian a traves de ajax
-      url: "{{ route('getciudades') }}", //archivo que recibe la peticion
+      url: "{{ route('get-ciudades') }}", //archivo que recibe la peticion
       type: 'post', //método de envio
       dataType: "json",
       success: function(response) { //una vez que el archivo recibe el request lo procesa y lo devuelve

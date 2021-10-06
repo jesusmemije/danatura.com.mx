@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+/* Class Front */
+use App\Http\Controllers\front\HomeController as HomeControllerFront;
+/* Class Admin */
 use App\Http\Controllers\admin\ProductosController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VentasProductosController;
-
-
 use App\Http\Controllers\admin\BlogController;
-
-use App\Http\Controllers\front\HomeController;
+use App\Http\Controllers\admin\HomeController as HomeControllerAdmin;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,123 +21,66 @@ use App\Http\Controllers\front\HomeController;
 |
 */
 
+// Front Routes
+Route::get('/', [HomeControllerFront::class, 'index'])->name('home');
+Route::get('/productos',[HomeControllerFront::class, 'productos'])->name('productos');
+Route::post('/filtrar-productos',[HomeControllerFront::class, 'filtrar_productos']);
+Route::get('/puntos-venta',[HomeControllerFront::class, 'puntos_venta'])->name('puntos-venta');
+Route::get('/filtrar-puntos',[HomeControllerFront::class, 'filtrar_puntos'])->name('filtrar-puntos');
+Route::get('/mis-favoritos',[HomeControllerFront::class, 'misfavoritos'])->name('mis-favoritos');
+Route::get('/detalle-producto/{producto?}',[HomeControllerFront::class, 'detalle_producto'])->name('detalle-producto');
+Route::get('/carrito',[HomeControllerFront::class, 'carrito'])->name('carrito');
+Route::get('/checkout',[HomeControllerFront::class, 'checkout'])->name('checkout');
+Route::post('/payment',[HomeControllerFront::class, 'payment'])->name('payment');
+Route::post('/datos-envio',[HomeControllerFront::class, 'datos_envio'])->name('datos-envio');
 
-//Front routes
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/get-ciudades',[HomeControllerFront::class, 'get_ciudades'])->name('get-ciudades');
+Route::post('/newsletter',[HomeControllerFront::class, 'newsletter'])->name('newsletter-front');
+Route::post('/dudas',[HomeControllerFront::class, 'dudas'])->name('dudas');
+Route::post('/load-more',[HomeControllerFront::class, 'load_more']);
+Route::post('/procesa',[HomeControllerFront::class, 'procesa']);
 
-
+/* Views */
 Route::view('/quienes-somos','front/quienes-somos')->name('quienes');
-
-
-Route::view('/ejemplog','front/ejemplo_graficos')->name('ejemplog');
-
-
 Route::view('/politicas','front/politicas')->name('politicas');
-
 Route::view('/fqa','front/FQA')->name('FQA');
-
 Route::view('/dudas-comentarios','front/dudas-comentarios')->name('dudas-comentarios');
-
-Route::get('filtrar_puntos',[HomeController::class, 'filtrar_puntos'])->name('filtrar_puntos');
-
-Route::post('getciudades',[HomeController::class, 'getciudades'])->name('getciudades');
-
-
-Route::post('dudas',[HomeController::class, 'dudas'])->name('dudas');
-
-
-Route::get('puntos-venta',[HomeController::class, 'puntos_venta'])->name('puntos-venta');
-
 Route::view('/contacto','front/contacto')->name('contacto');
 
-Route::post('newsletter',[HomeController::class, 'newsletter'])->name('newsletter_front');
+// Auth
+Route::view('/registrarse','front/registrarse')->name('registrarse');
+Route::post('/registro-normal',[HomeControllerFront::class, 'registro_normal'])->name('registro-normal');
+Route::post('/registrar-contacto',[HomeControllerFront::class, 'registrar_contacto'])->name('registrar-contacto');
+Route::get('/logout',[HomeControllerFront::class, 'logout'])->name('milogout');
 
+// Test
+Route::view('/ejemplog','front/ejemplo_graficos')->name('ejemplog');
 
-Route::get('/productos',[HomeController::class, 'productos'])->name('productos');
-Route::post('filtrar_productos',[HomeController::class, 'filtrar_productos']);
-
-
-Route::post('loadmore',[HomeController::class, 'loadmore']);
-
-
-Route::get('/mis-favoritos',[HomeController::class, 'misfavoritos'])->name('mis-favoritos');
-
-
-Route::get('/detalle-producto/{producto?}',[HomeController::class, 'detalle_producto'])->name('detalle-producto');
-
-Route::get('/carrito',[HomeController::class, 'carrito'])->name('carrito');
-
-Route::get('/checkout',[HomeController::class, 'checkout'])->name('checkout')->middleware(['checkrol']);
-
-
-Route::post('/datosenvio',[HomeController::class, 'datosenvio'])->name('datosenvio');
-
-Route::post('/payment',[HomeController::class, 'payment'])->name('payment');
-
-
-
-Route::get('/carrito',[HomeController::class, 'carrito'])->name('carrito');
-
-
-Route::view('registrarse','front/registrarse')->name('registrarse');
-
-Route::post('/registro_normal',[HomeController::class, 'registro_normal'])->name('registro_normal');
-
-Route::post('/registrar_contacto',[HomeController::class, 'registrar_contacto'])->name('registrar_contacto');
-
-
-Route::get('/logout',[HomeController::class, 'logout'])->name('milogout');
-
-
-
-Route::post('procesa',[HomeController::class, 'procesa']);
-//Admin routes
-
-
+// Admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], function(){
-
-
-    Route::get('/', [App\Http\Controllers\HomeController::class,'index'])->name('dashboard');
-
-    Route::resource('productos', ProductosController::class);
-
+    Route::get('/', [HomeControllerAdmin::class,'index'])->name('dashboard');
+    Route::resource('/productos', ProductosController::class);
     Route::get('/categorias',[ProductosController::class, 'categorias'])->name('categorias');
-
-
     Route::get('/newsletter',[ProductosController::class, 'newsletter'])->name('newsletter');
-    
     Route::get('/newsletter_newv',[ProductosController::class, 'newsletter_newv'])->name('newsletter_newv');
-    Route::post('newsletter_new',[ProductosController::class, 'newsletter_new'])->name('newsletter_new');
-    Route::get('newsletter_list',[ProductosController::class, 'newsletter_list'])->name('newsletter_list');
-    Route::post('nl_correo_destroy',[ProductosController::class, 'nl_correo_destroy'])->name('nl_correo_destroy');
+    Route::post('/newsletter_new',[ProductosController::class, 'newsletter_new'])->name('newsletter_new');
+    Route::get('/newsletter_list',[ProductosController::class, 'newsletter_list'])->name('newsletter_list');
+    Route::post('/nl_correo_destroy',[ProductosController::class, 'nl_correo_destroy'])->name('nl_correo_destroy');
+    Route::get('/lista_dudas',[ProductosController::class, 'lista_dudas'])->name('lista_dudas');
+    Route::post('/dudas_destroy',[ProductosController::class, 'dudas_destroy'])->name('dudas_destroy');
+    Route::post('/respuesta_duda',[ProductosController::class, 'respuesta_duda'])->name('respuesta_duda');
+    Route::get('/lista_contacto',[ProductosController::class, 'lista_contacto'])->name('lista_contacto');
+    Route::post('/nueva_categoria',[ProductosController::class, 'nueva_categoria'])->name('nueva_categoria');
+    Route::post('/editar_categoria',[ProductosController::class, 'editar_categoria'])->name('editar_categoria');
+    Route::post('/destroy_categoria',[ProductosController::class, 'destroy_categoria'])->name('destroy_categoria');
+    Route::resource('/usuario', UserController::class);
+    Route::post('/update_usuario',[UserController::class, 'update_usuario'])->name('update_usuario');
+    Route::resource('/pedidos', VentasProductosController::class);
+    Route::post('/cambiarEstadoEntrega',[VentasProductosController::class, 'cambiarEstadoEntrega'])->name('cambiarEstadoEntrega');
 
-
-    Route::get('lista_dudas',[ProductosController::class, 'lista_dudas'])->name('lista_dudas');
-    Route::post('dudas_destroy',[ProductosController::class, 'dudas_destroy'])->name('dudas_destroy');
-    Route::post('respuesta_duda',[ProductosController::class, 'respuesta_duda'])->name('respuesta_duda');
-
-    Route::get('lista_contacto',[ProductosController::class, 'lista_contacto'])->name('lista_contacto');
-
-    Route::post('nueva_categoria',[ProductosController::class, 'nueva_categoria'])->name('nueva_categoria');
-    Route::post('editar_categoria',[ProductosController::class, 'editar_categoria'])->name('editar_categoria');
-    Route::post('destroy_categoria',[ProductosController::class, 'destroy_categoria'])->name('destroy_categoria');
-
-    Route::resource('usuario', UserController::class);
-
-    Route::post('update_usuario',[UserController::class, 'update_usuario'])->name('update_usuario');
-
-
-    Route::resource('pedidos', VentasProductosController::class);
-
-
-    Route::post('cambiarEstadoEntrega',[VentasProductosController::class, 'cambiarEstadoEntrega'])->name('cambiarEstadoEntrega');
-
-   
     //Blog.
-    Route::resource('blogs', BlogController::class);
-
-    Route::post('blogs/upload',[BlogController::class, 'upload'])->name('upload_cke');
-
+    Route::resource('/blogs', BlogController::class);
+    Route::post('/blogs/upload',[BlogController::class, 'upload'])->name('upload_cke');
 });
 
 Auth::routes();
@@ -148,5 +91,3 @@ Route::get('/clear-cache', function () {
     echo Artisan::call('cache:clear');
     echo Artisan::call('route:clear');
 });
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

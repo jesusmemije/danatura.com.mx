@@ -30,7 +30,7 @@
           @section('breadcumb')
             
           <ul class="breadcrumb">
-              <li style="color:#F79860" class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+              <li style="color:#F79860" class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
               <li class="breadcrumb-item"><a href="javascript:void(0);">Productos</a></li>
               <li class="breadcrumb-item active">Listado</li>
           </ul>

@@ -136,7 +136,7 @@ class HomeController extends Controller
         return view('front/puntos-venta', ["puntos" => $puntos]);
     }
 
-    public function getciudades()
+    public function get_ciudades()
     {
         $nombre = $_POST['ciudad'];
 
@@ -325,7 +325,7 @@ class HomeController extends Controller
         }
     }
 
-    function loadmore(Request $request)
+    function load_more(Request $request)
     {
         session_start();
 
@@ -523,8 +523,8 @@ class HomeController extends Controller
 
     public function carrito()
     {
-        echo 'User IP - ' . $_SERVER['REMOTE_ADDR'];
-        DB::table('carrito');
+        // echo 'User IP - ' . $_SERVER['REMOTE_ADDR'];
+        $carrito = DB::table('carrito');
 
         return view('front/carrito');
     }
@@ -628,7 +628,7 @@ class HomeController extends Controller
         }
     }
 
-    public function datosenvio(Request $request)
+    public function datos_envio(Request $request)
     {
         //Para verificar que el usuario solamente está cambiando su dirección de envio y "proteger" los otros datos.
         $ver = DB::table('venta_productos as vp')
