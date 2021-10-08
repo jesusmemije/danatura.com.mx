@@ -40,6 +40,8 @@ Route::post('/dudas',[HomeControllerFront::class, 'dudas'])->name('dudas');
 Route::post('/load-more',[HomeControllerFront::class, 'load_more']);
 Route::post('/procesa',[HomeControllerFront::class, 'procesa']);
 
+Route::post('/procesa-paypal',[HomeControllerFront::class, 'procesa_paypal']);
+
 /* Views */
 Route::view('/quienes-somos','front/quienes-somos')->name('quienes');
 Route::view('/politicas','front/politicas')->name('politicas');

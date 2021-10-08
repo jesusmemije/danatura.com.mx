@@ -76,7 +76,6 @@
                                 <th data-breakpoints="xs">Precio</th>
                                 <th data-breakpoints="xs">Cantidad</th>
                                 <th data-breakpoints="xs">Total</th>
-
                                 <th data-breakpoints="sm xs md">Acción</th>
                             </tr>
                         </thead>
@@ -89,28 +88,24 @@
                                
                                 foreach ($carrito as $key) {
                                    
-                                    if ($producto->id == $key['cursoID']) {
-                                        // echo $curso->imgCurso;
-                                        // echo $curso->nombreCurso;
-                                        // $cadena = "https://escueladeimagenymaquillaje.com/cursos_online/public/asset/img/inicio/" . $curso->imgCurso;
-                                        // echo $cadena;   
-                                        $fotografia=$producto->fotografia;
-                                        $source="assets/productos/".$fotografia;
-                                        $source=$fotografia;
+                                    if ($producto->id == $key['producto_id']) {
+
+                                        $fotografia = $producto->fotografia;
+                                        $source     = "assets/productos/".$fotografia;
+                                        $source     = $fotografia;
                         
-                                        if ($fotografia=="") {
-                                            $source=asset("assets/productos/goldenmilk.png");
+                                        if ( $fotografia == "" ) {
+                                            $source = asset("assets/productos/goldenmilk.png");
                                         }
                                 
-                                        if (strpos($source, 'https') !== false) {
-                                            $source=$source;
+                                        if ( strpos($source, 'https') !== false ) {
+                                            $source = $source;
                                         } else {
-                                            $source=asset("assets/productos")."/".$fotografia;
+                                            $source = asset("assets/productos")."/".$fotografia;
                                         }
 
-                                        $array_galeria=explode('|',$producto->galeria);
-        
-                                        $foto_principal=$array_galeria[0];
+                                        $array_galeria = explode('|',$producto->galeria);
+                                        $foto_principal = $array_galeria[0];
                                         ?>
 
                                         <tr>
@@ -120,14 +115,15 @@
                                             </td>
                                             <td><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
                                             <td id="<?php echo $producto->id ?>"><?php echo $producto->precio;  ?></td>
-                                            <td><?php echo $carrito[$i]['cantidad'];  ?></td>
+                                            <td><?php echo $key['cantidad'] ?></td>
                                             <td>
-                                                <?php  $totalPagar = $carrito[$i]['cantidad'] * $producto->precio+ $totalPagar;
-                                                echo $carrito[$i]['cantidad'] * $producto->precio;  ?></td>
+                                                <?php  $totalPagar = $key['cantidad'] * $producto->precio + $totalPagar;
+                                                echo $key['cantidad'] * $producto->precio;  ?>
+                                            </td>
                                             <td>
-                                                <!--  <a href="javascript:void(0);" class="btn btn-warning waves-effect waves-float btn-sm waves-green"><i class="fas fa-pencil-alt"></i></a> -->
-                                                <a onclick="remove('{{$producto->id}}')"
-                                                class="btn btn-danger waves-effect waves-float btn-sm waves-red"><i class="fas fa-trash-alt"></i></a>
+                                                <a onclick="remove('{{$producto->id}}')" class="btn btn-danger waves-effect waves-float btn-sm waves-red">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
                                             </td>
                                         </tr>
 
@@ -149,21 +145,19 @@
                             <div class="col-md-3">
                             </div>
                             @php
-                                if (strpos($totalPagar, '.') !== false) {
-                                    $totalPagar=$totalPagar;
+                                if ( strpos($totalPagar, '.') !== false ) {
+                                    $totalPagar = $totalPagar;
                                 } else {
-                                    $totalPagar=$totalPagar.".00";
+                                    $totalPagar = $totalPagar . ".00";
                                 }
                             @endphp
-
                             <div class="col-md-3"><b>Total de productos: </b><?php echo sizeof($carrito); ?></div>
-                            <div class="col-md-3"><b>Total pago: </b>$<label
-                                    id="totalPagar"><?php echo $totalPagar . " MXN"; ?></label></div>
-
+                            <div class="col-md-3"><b>Total pago: </b>$<label id="totalPagar"><?php echo $totalPagar . " MXN"; ?></label></div>
                             <div class="col-md-3">
-                                <?php $_SESSION['totalpagar']=$totalPagar;   ?>
-                                <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora <i
-                                        style="color:white" class="fas fa-credit-card"></i></a>
+                                <?php $_SESSION['totalpagar'] = $totalPagar;   ?>
+                                <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora 
+                                    <i style="color:white" class="fas fa-credit-card"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -172,7 +166,6 @@
         </div>
     </div>
 </div>
-<!--<span id="resultado"  onclick="ver()">Ver carrito</span>   -->
 
 @endsection
 
@@ -222,43 +215,19 @@
                 "idmodulo": idmodulo,
                 'costoModulo': costo,
                 "operacion": operacion
-            }, //datos que se envian a traves de ajax
-            url: 'actualizarModulos', //archivo que recibe la peticion
-            type: 'post', //método de envio
+            },
+            url: 'actualizarModulos',
+            type: 'post',
 
             success: function(response) { 
-                //una vez que el archivo recibe el request lo procesa y lo devuelve
                 // window.location="{{ url('contenido-carrito') }}"; 
                 // $("#resultado").html("Carrito: " + response);
                 // alert(response);
             },
-            error: function(response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-
+            error: function(response) {
                 window.open(JSON.stringify(response));
             }
         });
-    }
-
-    function ver() {
-
-        $.ajax({
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "remove": "remove"
-            }, //datos que se envian a traves de ajax
-            url: 'vercarrito', //archivo que recibe la peticion
-            type: 'post', //método de envio
-
-            success: function(response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-                // window.location="{{ url('contenido-carrito') }}"; 
-                $("#resultado").html("Carrito: " + response);
-            },
-            error: function(response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-
-                window.open(JSON.stringify(response));
-            }
-        });
-
     }
 
     function remove(remove) {
@@ -267,18 +236,14 @@
             data: {
                 "_token": "{{ csrf_token() }}",
                 "remove": remove
-            }, //datos que se envian a traves de ajax
-            url: 'procesa', //archivo que recibe la peticion
-            type: 'post', //método de envio
-
-            success: function(response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-            
+            },
+            url: 'procesa',
+            type: 'post',
+            success: function(response) {
                 window.location = "{{ route('carrito') }}";
                 // $("#resultado").html("Carrito: "+response);
-
-              //  alert(response);
             },
-            error: function(response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+            error: function(response) {
                 window.open(JSON.stringify(response));
             }
         });

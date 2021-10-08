@@ -11,6 +11,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
+// Send mail
+use App\Mail\CompraExitosa;
+use Illuminate\Support\Facades\Mail;
+
 class HomeController extends Controller
 {
     function index()
@@ -147,7 +151,6 @@ class HomeController extends Controller
             ->get();
         echo json_encode($ciudades);
     }
-
 
     public function newsletter(Request $request)
     {
@@ -523,6 +526,10 @@ class HomeController extends Controller
 
     public function carrito()
     {
+        if (auth()->user() == null) {
+            return redirect('/login');
+        }
+
         // echo 'User IP - ' . $_SERVER['REMOTE_ADDR'];
         $carrito = DB::table('carrito');
 
@@ -531,9 +538,12 @@ class HomeController extends Controller
 
     public function checkout(Request $request)
     {
+        if (auth()->user() == null) {
+            return redirect('/login');
+        }
+        
         return view('front/checkout');
     }
-
 
     public function procesa()
     {
@@ -557,8 +567,10 @@ class HomeController extends Controller
                 die();
             }
 
-            $cursoID = $_POST['id'];
+            $producto_id = $_POST['id'];
             $cantidad = $_POST['cantidad'];
+            $nombre = $producto->nombre;
+            $precio = $producto->precio;
 
             //Para verificar si ya existe un ID de producto dentro del carrito.
             if (isset($_SESSION['carrito'])) {
@@ -572,7 +584,7 @@ class HomeController extends Controller
                 foreach ($auxCarrito as $key => $value) {
                     $aux_cantidad_total = $aux_cantidad_total + $value['cantidad'];
 
-                    if ($cursoID == $key) {
+                    if ($producto_id == $key) {
                         $existe = true;
                     }
                 }
@@ -587,7 +599,7 @@ class HomeController extends Controller
                 }
 
                 if (!$existe) {
-                    array_push($auxCarrito, ['cursoID' => $cursoID, 'cantidad' => $cantidad]);
+                    array_push($auxCarrito, ['producto_id' => $producto_id, 'nombre' => $nombre, 'precio_unit' => $precio, 'cantidad' => $cantidad]);
 
                     $respuesta = ['operacion' => "bien"];
                     echo json_encode($respuesta);
@@ -600,7 +612,7 @@ class HomeController extends Controller
             } else {
                 //Cuando no hay registros previos de ese producto.
                 $carrito = [];
-                array_push($carrito, ['cursoID' => $cursoID, 'cantidad' => $cantidad]);
+                array_push($carrito, ['producto_id' => $producto_id, 'nombre' => $nombre, 'precio_unit' => $precio, 'cantidad' => $cantidad]);
 
                 $_SESSION['carrito'] = $carrito;
                 //echo sizeof($carrito);
@@ -610,20 +622,19 @@ class HomeController extends Controller
         }
 
         if (isset($_POST['remove'])) {
-            $cursoID = $_POST['remove'];
+            $producto_id = $_POST['remove'];
 
             if (isset($_SESSION['carrito'])) {
 
                 $auxCarrito = $_SESSION['carrito'];
 
                 for ($i = 0; $i < sizeof($auxCarrito); $i++) {
-                    if ($cursoID == $auxCarrito[$i]['cursoID']) {
+                    if ($producto_id == $auxCarrito[$i]['producto_id']) {
                         array_splice($auxCarrito, $i, 1);
                     }
                 }
                 $_SESSION['carrito'] = $auxCarrito;
 
-            } else {
             }
         }
     }
@@ -631,46 +642,47 @@ class HomeController extends Controller
     public function datos_envio(Request $request)
     {
         //Para verificar que el usuario solamente está cambiando su dirección de envio y "proteger" los otros datos.
-        $ver = DB::table('venta_productos as vp')
-            ->select('id_user')
-            ->where('vp.id_datosenvio', '=', $request->dato_id)
-            ->first();
+        if ( !empty($request->dato_id) ) {
 
-        if ($ver->id_user == Auth::user()->id) {
+            $ver = DB::table('venta_productos as vp')
+                ->select('id_user')
+                ->where('vp.id_datosenvio', '=', $request->dato_id)
+                ->first();
 
-            if (!empty($request->dato_id)) {
+            if ($ver->id_user == Auth::user()->id) {
                 $datosenvio = DatosEnvio::find($request->dato_id);
-            } else {
-                $datosenvio = new DatosEnvio();
             }
 
-            $datosenvio->nombre = $request->nombre;
-            $datosenvio->apellidos = $request->apellidos;
-            $datosenvio->empresa = $request->empresa;
-            $datosenvio->pais = $request->pais;
-            $datosenvio->direccion1 = $request->direccion1;
-            $datosenvio->direccion2 = $request->direccion2;
-            $datosenvio->localidad = $request->localidad;
-            $datosenvio->region = $request->region;
-            $datosenvio->cp = $request->cp;
-            $datosenvio->telefono = $request->telefono;
-            $datosenvio->email = $request->email;
-            $datosenvio->rfc = $request->rfc;
-            $datosenvio->referencia = $request->referencia;
-
-            $hecho = $datosenvio->save();
-
-            if ($hecho) {
-
-                $data = [
-                    "mensaje" => "Los datos se guardaron correctamente",
-                    "id" => $datosenvio->id
-                ];
-
-                echo json_encode($data);
-            } else {
-            }
+        } else {
+            $datosenvio = new DatosEnvio();
         }
+
+        $datosenvio->nombre = $request->nombre;
+        $datosenvio->apellidos = $request->apellidos;
+        $datosenvio->empresa = $request->empresa;
+        $datosenvio->pais = $request->pais;
+        $datosenvio->direccion1 = $request->direccion1;
+        $datosenvio->direccion2 = $request->direccion2;
+        $datosenvio->localidad = $request->localidad;
+        $datosenvio->region = $request->region;
+        $datosenvio->cp = $request->cp;
+        $datosenvio->telefono = $request->telefono;
+        $datosenvio->email = $request->email;
+        $datosenvio->rfc = $request->rfc;
+        $datosenvio->referencia = $request->referencia;
+
+        $hecho = $datosenvio->save();
+
+        if ($hecho) {
+
+            $data = [
+                "mensaje" => "Los datos se guardaron correctamente",
+                    "id" => $datosenvio->id
+            ];
+
+            echo json_encode($data);
+        }
+
     }
 
     public function payment(Request $request)
@@ -678,49 +690,79 @@ class HomeController extends Controller
         print_r($request->metodopago);
     }
 
-    public function procesapaypal()
+    public function procesa_paypal()
     {
         session_start();
 
         $data = $_POST['data'];
-        $auxdata = json_encode($data);
+        $id_envio = $_POST['id_envio'];
 
-        $file = fopen("archivoAjax.txt", "w");
+        # $auxdata = json_encode($data);
 
-        fwrite($file, $auxdata);
-        fclose($file);
+        $user = auth()->user();
+        $usuario_id = $user->id;
 
-        $f = auth()->user();
-        $idusuario = $f->id;
+        $nombre = $user->name;
+        $email  = $user->email;
 
-        $cantidadCursos = sizeof($_SESSION['carrito']);
+        # $cantidadCursos = sizeof($_SESSION['carrito']);
         $totalpagar = $_SESSION['totalpagar'];
         $carrito = $_SESSION['carrito'];
-        $fecha = date_create();
+        
         $idPaypal = $data['purchase_units'][0]['payments']['captures'][0]['id'];
-
-        $status           = "paid";
-        $fecha_creacion        = date("Y-m-d", strtotime($data['create_time']));
-
+        $status         = "paid";
+        $fecha_creacion = date("Y-m-d", strtotime($data['create_time']));
+        $fecha_update   = date_create();
         $method = 'PayPal';
+
         #Para el pago individual de modulos.
-        $cursos_id = [];
+        // $cursos_id = [];
 
         for ($i = 0; $i < sizeof($carrito); $i++) {
-            DB::table('venta_productos')->insert([
-                'id_user' => 1,
-                'id_producto' => 1,
-                'cantidad' => 1,
-                'idCurso' => $carrito[$i]['cursoID'],
+            $save_payment = DB::table('venta_productos')->insert([
+                'id_user'     => $usuario_id,
+                'id_producto' => $carrito[$i]['producto_id'],
+                'cantidad'    => $carrito[$i]['cantidad'],
                 'preciototal' => $totalpagar,
-                'status' => $status,
-                'chargeid' => $idPaypal,
-                'method' => $method,
-                'id_datosenvio' => "prueba",
-                'created_at' => $fecha_creacion,
-                'updated_at' => $fecha_creacion
+                'status'      => $status,
+                'chargeid'    => $idPaypal,
+                'method'      => $method,
+                'id_datosenvio' => $id_envio,
+                'created_at'  => $fecha_creacion,
+                'updated_at'  => $fecha_update
             ]);
         }
+
+        $datos_envio = DatosEnvio::find( $id_envio );
+
+        $direccion1 = $datos_envio->direccion1;
+        $direccion2 = $datos_envio->direccion2;
+        $cp         = $datos_envio->cp;
+        $localidad  = $datos_envio->localidad;
+        $region     = $datos_envio->region;
+        $pais       = $datos_envio->pais;
+        $telefono   = $datos_envio->telefono;
+        $referencia = $datos_envio->referencia;
+
+        if ( !empty($direccion2) ) {
+            $direccion_envio = $direccion1 . ', ' . $direccion2 . ', ' . $cp . ', ' . $localidad . ', ' . $region . ', ' . $pais;
+        } else {
+            $direccion_envio = $direccion1 . ', ' . $cp . ', ' . $localidad . ', ' . $region . ', ' . $pais;
+        }
+
+        $data_mail = array(
+            'nombre'  => $nombre,
+            'total'   => $totalpagar,
+            'method'  => $method,
+            'status'  => $status,
+            'direccion_envio' => $direccion_envio,
+            'carrito' => $carrito
+        );
+    
+        Mail::to( $email )->send( new CompraExitosa( $data_mail ) );
+
+        unset( $_SESSION['carrito'] );
+        unset( $_SESSION['totalpagar'] );
 
         return "hecho";
     }

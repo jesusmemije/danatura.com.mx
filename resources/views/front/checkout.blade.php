@@ -64,7 +64,7 @@
                     foreach ($productos as $producto) {
 
                         foreach ($carrito as $key) {
-                            if ($producto->id == $key['cursoID']) {
+                            if ($producto->id == $key['producto_id']) {
                                 $totalPagar = $producto->precio + $totalPagar;
                                 ?>
                                 <tr>
@@ -73,7 +73,7 @@
                                     </td>
                                     <td><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
                                     <td id="<?php echo $producto->id ?>"><?php echo $producto->precio;  ?></td>
-                                    <td><?php echo $carrito[$i]['cantidad'];  ?></td>
+                                    <td><?php echo $key['cantidad'];  ?></td>
                                 </tr>
                                 <?php
                                 $i++;
@@ -107,7 +107,7 @@
                 <!-- Datos del cliente -->
 
                 <!-- Datos de la tarjeta-->
-                <div id="pagotarjeta">
+                <!-- <div id="pagotarjeta">
                     Método de pago<br>
 
                     <div class="form-row col-md-12">
@@ -188,10 +188,10 @@
 
                     <br><button class="btn btn-danger" style="margin-left:25%;" id="pay-button"> &nbsp; &nbsp; Pagar
                         productos &nbsp; &nbsp; </button><br><br>
-                </div>
+                </div> -->
             </form>
 
-            <div id="pagopaynet" style="display:none; padding-bottom:4em">
+            <!-- <div id="pagopaynet" style="display:none; padding-bottom:4em">
                 <label style="margin-left:35%;"> Método de pago </label><br>
                 <div class="form-row col-md-12">
                     <div class="form-group" style="margin-right:10%;">
@@ -219,14 +219,14 @@
                     <input id="pay-oxxo" class="w3-btn frojo" type="submit" value=" &nbsp; &nbsp; Generar Referencia &nbsp; &nbsp;">
                 </div>
                 <br>
-            </div>
+            </div> -->
 
             </form>
 
-            <div id="pagopaypal" style="display:none; padding-bottom:4em">
+            <div id="pagopaypal" style="padding-bottom:4em; margin: 10px 80px;">
                 <label style="margin-left:35%;"> Método de pago </label><br>
                 <div class="form-row col-md-12">
-                    <div class="form-group" style="margin-right:10%;">
+                    <!-- <div class="form-group" style="margin-right:10%;">
                         <strong style="cursor:pointer;" class="txtrojo" onClick="document.getElementById('pagotarjeta').style.display='block'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='none';" ">Tarjeta de Crédito / Débito</strong>
                     </div>
                     <div class=" form-group" style="margin-right:10px;">
@@ -234,7 +234,7 @@
                     </div>
                     <div class="form-group" style="margin-left:10%;" onclick="validarDatosEnvio()">
                         <strong class="txtgrisc" onClick="document.getElementById('pagotarjeta').style.display='none'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='block';" style="cursor:pointer">PayPal</strong>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div style="margin-top: 10%;" id="paypal-button-container"></div>
@@ -318,15 +318,13 @@
     </div>
 </div>
 
-<!--<span id="resultado"  onclick="ver()">Ver carrito</span>   -->
-
 @endsection
 
 @section('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=AXIhxntAlr0Af7BvaMN6ypVNRqE7wpOh6tFXwVpk6uayEM1cuC4Jl0k2wGlFrNVKZBmV2yyFem4STVCQ"></script>
+<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id=AXIhxntAlr0Af7BvaMN6ypVNRqE7wpOh6tFXwVpk6uayEM1cuC4Jl0k2wGlFrNVKZBmV2yyFem4STVCQ"></script>
 
 <script type="text/javascript">
     var formvalidado=false;
@@ -404,7 +402,7 @@
     ->join('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
     ->where('venta_productos.id_user','=', Auth::user()->id)->get();
 
-    if( $envio_user ){
+    if( count($envio_user) >= 1 ){
         echo "<script>
             enviarData($envio_user); 
         </script>";
@@ -460,8 +458,7 @@
                     // $("#resultado").html("Carrito: "+response);
                 },
                 error:  function (response) { 
-                    //una vez que el archivo recibe el request lo procesa y lo devuelve
-                    console.log("fuccc");
+                    console.log( response );
                     // window.open(JSON.stringify(response));
                 }
             });
@@ -470,58 +467,57 @@
         }
     }
 
-    var cajamonto=document.getElementById('cajamonto').value;
+    var cajamonto = document.getElementById('cajamonto').value;
 
-    var FUNDING_SOURCES = [
-        paypal.FUNDING.PAYPAL,
-    ];
+    paypal.Buttons({
+        locale: {
+            country: 'MX',
+            lang: 'es'
+        },
+        style: {
+            size: 'small',
+            color:  'blue',
+            shape:  'pill',
+            label:  'pay',
+            tagline: 'false',
+            layout: 'horizontal',
+            size: 'responsive'
+        },
+        createOrder: function(data, actions) {
 
-    FUNDING_SOURCES.forEach(function(fundingSource) {
-
-        var button= paypal.Buttons({
-            fundingSource: fundingSource,
-            createOrder: function(data, actions) {
-                // This function sets up the details of the transaction, including the amount and line item details.
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: cajamonto
-                        }
-                    }]
-                });
-            },
-            onApprove: function(data, actions) {
-                // This function captures the funds from the transaction.
-                return actions.order.capture().then(function(details) {
-                    // This function shows a transaction success message to your buyer.
-                    //alert('Transacción completada por: ' + details.payer.name.given_name);
-                    Swal.fire({
-                        icon: 'info',
-                        title:'Transacción completada',
-                        text: 'Visite "Mis cursos" para ver el curso una vez se apruebe su pago'
-                    })
-
-                    // savePayPalData(details);
-                    // window.location="https://moonline.com.mx/cursos/public/mis-cursos-activos#/"
-                });
-            },
-            onError: function (err) {
-                // For example, redirect to a specific error page
-                alert('Algo ha salido mal intente de nuevo')
+            if ( !antesdePagar() ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title:'Info',
+                    text: 'Antes de realizar la compra debe llenar los datos de envío'
+                })
+                return false;
             }
-        })
-        
-        if (button.isEligible()) {
-            // Render the standalone button for that funding source
-            button.render('#paypal-button-container');
+
+            // This function sets up the details of the transaction, including the amount and line item details.
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: cajamonto
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // This function captures the funds from the transaction.
+            return actions.order.capture().then(function(details) {
+                // This function shows a transaction success message to your buyer.
+                console.log( details )
+                savePayPalData(details);
+                //alert('Transaction completed by ' + details.payer.name.given_name);
+            });
         }
-
-    });
-
-  //This function displays Smart Payment Buttons on your web page.
+    }).render('#paypal-button-container');
+    //This function displays Smart Payment Buttons on your web page.
 </script>
 
 <script>
+    
     function alerta(mensaje){
         Swal.fire({
             icon: 'error',
@@ -578,18 +574,28 @@
 
     function savePayPalData(data){
         
+        var id_envio = $('#inp-envios').val();
+
         $.ajax({
             data: {
                 "_token": "{{ csrf_token() }}",
-                "data": data
-            } ,//datos que se envian a traves de ajax
-            url: 'procesapaypal', //archivo que recibe la peticion
-            type:  'post', //método de envio
-            success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve  
-                console.log('hecho');
-                // $("#resultado").html("Carrito: "+response);
+                "data": data,
+                "id_envio": id_envio,
             },
-            error:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve 
+            url: 'procesa-paypal',
+            type:  'post',
+            success:  function (response) {
+                console.log( response );
+                // $("#resultado").html("Carrito: "+response);
+                Swal.fire({
+                    icon: 'success',
+                    title:'Transacción existosa',
+                    text: 'Hemos enviado un email con los detalles de su compra. Muchas gracias.'
+                }).then((result) => {
+                    window.location.href = '/';
+                })
+            },
+            error:  function (response) {
                 // window.open(JSON.stringify(response));
             }
         });
