@@ -24,6 +24,7 @@
     <link href="{{asset("assets/css/bootstrap.min.css")}}" rel="stylesheet">
     <!-- Main CSS -->
     <link href="{{asset("assets/css/styles.css")}}" rel="stylesheet">
+    <link href="{{asset('assets/css/app.css')}}" rel="stylesheet" />
 
     @yield('styles')
 </head>

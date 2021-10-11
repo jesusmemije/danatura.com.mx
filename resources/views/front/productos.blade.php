@@ -10,7 +10,7 @@
 
 @section('content')
 
-@include('front.layout.partials.secundario')
+@include('front.layout.partials.menu')
 
 <div class="container-fluid">
   <div class="row">

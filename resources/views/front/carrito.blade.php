@@ -15,7 +15,7 @@
 
 @section('content')
 
-@include('front.layout.partials.secundario')
+@include('front.layout.partials.menu')
 <div class="container pt-4 pb-4">
     <div class="row clearfix">
         <div class="col-lg-12 card-header">
@@ -71,8 +71,8 @@
                         <thead>
                             <tr>
                                 <th>Imagen</th>
-                                <th>Nombre o producto</th>
-                                <th data-breakpoints="sm xs">Descripción</th>
+                                <th>Producto</th>
+                                <th class="phone-hide" data-breakpoints="sm xs">Descripción</th>
                                 <th data-breakpoints="xs">Precio</th>
                                 <th data-breakpoints="xs">Cantidad</th>
                                 <th data-breakpoints="xs">Total</th>
@@ -113,7 +113,7 @@
                                             <td>
                                                 <h5><?php echo $producto->nombre; ?></h5>
                                             </td>
-                                            <td><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
+                                            <td class="phone-hide"><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
                                             <td id="<?php echo $producto->id ?>"><?php echo $producto->precio;  ?></td>
                                             <td><?php echo $key['cantidad'] ?></td>
                                             <td>

@@ -29,7 +29,7 @@
 
 @section('content') 
 
-@include('front.layout.partials.secundario')
+@include('front.layout.partials.menu')
 
   <div class="row" style="background:#FFEFD6; padding:5%; text-align:justify; font-family:'AmasisMTStd-Bold';">
     

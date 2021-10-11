@@ -9,6 +9,23 @@
         sup {
             color: red;
         }
+
+        #pagopaypal {
+            margin: 10px 80px;
+        }
+
+        .text-center-items {
+            text-align: unset;
+        }
+
+        @media screen and (max-width: 480px) {
+            #pagopaypal {
+                margin: 0;
+            }
+            .text-center-items {
+                text-align: center;
+            }
+        }
     </style>
 @endsection
 
@@ -24,11 +41,11 @@
  
 ?>
 
-@include('front.layout.partials.secundario')
+@include('front.layout.partials.menu')
+
 <div class="container pt-4 pb-4">
     <div class="row clearfix">
-
-        <div class="col-md-6">
+        <div class="col-md-6 col-12 text-center-items">
 
             <?php 
                 $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','fotografia')->get();
@@ -44,7 +61,7 @@
                 $totalPagar = 0;
             ?>
 
-            <p style="background:lightgreen; padding-left:30%;">Detalle de la compra</p>
+            <p class="text-center font-weight-bold h5 py-2" style="background:lightgreen;">Detalle de la compra</p>
             <p>Cantidad total de productos: {{$cantidad_carrito}} </p>
             <p>Monto total: ${{($_SESSION['totalpagar'])}} MXN</p>
 
@@ -53,8 +70,8 @@
             <table class="table table-hover product_item_list  mb-0">
                 <thead>
                     <tr>
-                        <th>Nombre o producto</th>
-                        <th data-breakpoints="sm xs">Descripción</th>
+                        <th>Producto</th>
+                        <th class="phone-hide" data-breakpoints="sm xs">Descripción</th>
                         <th data-breakpoints="xs">Precio</th>
                         <th data-breakpoints="xs">Cantidad</th>
                     </tr>
@@ -71,7 +88,7 @@
                                     <td>
                                         <h6><?php echo $producto->nombre; ?></h6>
                                     </td>
-                                    <td><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
+                                    <td class="phone-hide"><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
                                     <td id="<?php echo $producto->id ?>"><?php echo $producto->precio;  ?></td>
                                     <td><?php echo $key['cantidad'];  ?></td>
                                 </tr>
@@ -90,7 +107,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 col-12 text-center-items">
             <form action="{{ route('payment') }}" method="POST" id="payment-form" name="form">
 
                 <!-- datos de facturacion/ envio de producto -->
@@ -223,8 +240,10 @@
 
             </form>
 
-            <div id="pagopaypal" style="padding-bottom:4em; margin: 10px 80px;">
-                <label style="margin-left:35%;"> Método de pago </label><br>
+            <div id="pagopaypal" class="text-center mt-md-0 mt-5" style="padding-bottom:4em;">
+
+                <label class="font-weight-bold h5"> Método de pago </label><br>
+
                 <div class="form-row col-md-12">
                     <!-- <div class="form-group" style="margin-right:10%;">
                         <strong style="cursor:pointer;" class="txtrojo" onClick="document.getElementById('pagotarjeta').style.display='block'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='none';" ">Tarjeta de Crédito / Débito</strong>

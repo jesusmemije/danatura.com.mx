@@ -18,7 +18,7 @@
 
 
 @section('content') 
-@include('front.layout.partials.secundario')
+@include('front.layout.partials.menu')
 
   <div class="container" style="margin-top:3%; margin-bottom:2%">
 

@@ -211,7 +211,7 @@ Detalle producto
 
 @section('content')
 
-@include('front.layout.partials.secundario')
+@include('front.layout.partials.menu')
 
 <div class="container-fluid">
   <div class="card mb-12" style="padding-top: 8%; padding-bottom:8%;">
