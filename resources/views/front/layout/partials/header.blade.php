@@ -24,7 +24,7 @@
 
     @font-face {
         font-family: 'COSMOPOLITAN SCRIPT MEDIUM';
-        src: url('assets/fonts/COSMOPOLITAN SCRIPT MEDIUM.otf');
+        src: url('assets/fonts/COSMOPOLITAN-SCRIPT-MEDIUM.OTF');
     }
 
     @font-face {

@@ -304,7 +304,6 @@ Home
 
 @section('scripts')
 <script src="{{asset('assets/js/lightslider.js')}}"></script>
-<script src="sweetalert2.all.min.js"></script>
 
 <script type="text/javascript">
   $("#here").on("keyup", function() {
@@ -381,7 +380,7 @@ Home
         $('#fav'+element).addClass("press");
       });
       
-      console.log(ckie);
+      // console.log(ckie);
     }
   }
 

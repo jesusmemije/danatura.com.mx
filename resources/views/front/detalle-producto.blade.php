@@ -446,7 +446,7 @@ function getallcookies(){
      $('#fav'+element).addClass("press");
      
     });
-    console.log(ckie);
+    //console.log(ckie);
   }
 }
 

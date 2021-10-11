@@ -16,6 +16,17 @@
   .card-header {
     border: 0px !important;
   }
+
+  .info-text-size {
+    font-size: 4em;
+  }
+
+  @media screen and (max-width: 480px) {
+    .info-text-size {
+      font-size: 3em;
+    }
+  }
+
 </style>
 
 
@@ -25,7 +36,7 @@
 
 <div class="row row-principal" style="background:#FFEFD6;padding-left:6%; padding-right:6%;">
   <div class="quienes-somos-align" style="padding-top:5%; padding-bottom:5%;">
-    <span style="font-size:4em; color:#73482C; font-family:COSMOPOLITAN SCRIPT MEDIUM;">Información de la empresa</span>
+    <span class="info-text-size" style="color:#73482C; font-family:COSMOPOLITAN SCRIPT MEDIUM;">Información de la empresa</span>
     <div class="row-contenido">
       <div class="card">
         <div class="card-header" style="background:#FFE4BB;">
