@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VentasProductosController;
 use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\HomeController as HomeControllerAdmin;
+use App\Http\Controllers\cliente\ClienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], functio
     //Blog.
     Route::resource('/blogs', BlogController::class);
     Route::post('/blogs/upload',[BlogController::class, 'upload'])->name('upload_cke');
+});
+
+Route::group(['middleware'=>['auth']], function(){
+    Route::get('/historial_pedidos', [ClienteController::class,'index'])->name('historial_pedidos.index');
+    Route::post('/save_historial_pedidos',[ClienteController::class, 'store'])->name('historial_pedidos.store');
+    Route::post('/update_historial_pedidos/{id}',[ClienteController::class, 'update'])->name('historial_pedidos.update');
+    Route::get('/destroy_historial_pedidos/{id}',[ClienteController::class, 'destroy'])->name('historial_pedidos.destroy');
 });
 
 Auth::routes();

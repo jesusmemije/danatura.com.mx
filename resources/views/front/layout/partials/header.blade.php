@@ -1,22 +1,4 @@
-<style>
-    @font-face {
-        font-family: 'amasis';
-        src: url('assets/fonts/amasis.otf') format("opentype");
-        font-display: block;
-    }
-
-    @font-face {
-        font-family: 'AmasisMTStd-Bold';
-        src: url('assets/fonts/aa.ttf') format('truetype');
-        font-display: block;
-    }
-
-    @font-face {
-        font-family: 'AmasisMTStd-Black';
-        src: url('assets/fonts/AmasisMTStd-Black.otf');
-        font-display: block;
-    }
-
+<style type="text/css">
     @font-face {
         font-family: 'AmasisMTStd';
         src: url('assets/fonts/AmasisMTStd.otf');
@@ -118,6 +100,160 @@
     .dropdown-buscador table tr td a {
         color: rgb(22, 22, 22);
     }
+    #menu{
+        width: 100%;
+        margin: 0;
+        padding: 10px 0 0 0;
+        list-style: none;  
+        background: #F79860;
+        -moz-border-radius: 50px;
+        border-radius: 50px;
+        -moz-box-shadow: 0 2px 1px #9c9c9c;
+        -webkit-box-shadow: 0 2px 1px #9c9c9c;
+        box-shadow: 0 2px 1px #9c9c9c;
+    }
+
+    #menu li{
+        float: left;
+        padding: 0 0 10px 0;
+        position: relative;
+    }
+
+    #menu a{
+        float: left;
+        height: 25px;
+        padding: 0 25px;
+        color: #111111;
+        text-transform: uppercase;
+        font: bold 12px/25px Arial, Helvetica;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #000;
+    }
+
+    #menu li:hover > a{
+        color: #fafafa;
+    }
+
+    *html #menu li a:hover{ /* IE6 */
+        color: #fafafa;
+    }
+
+    #menu li:hover > ul{
+        display: block;
+    }
+
+    /* Sub-menu */
+
+    #menu ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;    
+        display: none;
+        position: absolute;
+        top: 35px;
+        left: 0;
+        z-index: 99999;    
+        background: #F79860;   
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    #menu ul li{
+        float: none;
+        margin: 0;
+        padding: 0;
+        display: block;  
+        -moz-box-shadow: 0 1px 0 #111111, 0 2px 0 #777777;
+        -webkit-box-shadow: 0 1px 0 #111111, 0 2px 0 #777777;
+        box-shadow: 0 1px 0 #111111, 0 2px 0 #777777;
+    }
+
+    #menu ul li:last-child{   
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;    
+    }
+
+    #menu ul a{    
+        padding: 10px;
+        height: auto;
+        line-height: 1;
+        display: block;
+        white-space: nowrap;
+        float: none;
+        text-transform: none;
+    }
+
+    *html #menu ul a{ /* IE6 */   
+        height: 10px;
+        width: 150px;
+    }
+
+    *:first-child+html #menu ul a{ /* IE7 */    
+        height: 10px;
+        width: 150px;
+    }
+
+    #menu ul a:hover{
+            background: #0186ba;
+    }
+
+    #menu ul li:first-child a{
+        -moz-border-radius: 5px 5px 0 0;
+        -webkit-border-radius: 5px 5px 0 0;
+        border-radius: 5px 5px 0 0;
+    }
+
+    #menu ul li:first-child a:after{
+        content: '';
+        position: absolute;
+        left: 30px;
+        top: -8px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 8px solid #444;
+    }
+
+    #menu ul li:first-child a:hover:after{
+        border-bottom-color: #04acec; 
+    }
+
+    #menu ul li:last-child a{
+        -moz-border-radius: 0 0 5px 5px;
+        -webkit-border-radius: 0 0 5px 5px;
+        border-radius: 0 0 5px 5px;
+    }
+
+    /* Clear floated elements */
+    #menu:after{
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+
+    * html #menu             { zoom: 1; } /* IE6 */
+    *:first-child+html #menu { zoom: 1; } /* IE7 */
+
+    #menu ul li:first-child a:after{
+        content: '';
+        position: absolute;
+        left: 30px;
+        top: -8px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 8px solid #444;
+    }
+
+    #menu ul li:first-child a:hover:after{
+        border-bottom-color: #04acec; 
+    }
 </style>
 <div class="container-fluid head-barra">
     <div class="row">
@@ -169,19 +305,39 @@
         </div>
         <div class="col-md-2 col-12 d-flex justify-content-center pt-md-0 pt-3">
             <div class="row">
-                @if (Auth::user()!=null)
-                <a href="{{route('dashboard')}}">
-                    <div style="font-size: 13px">Hola, {{Auth::user()->name}} <i style="color:#F79860; "
-                            class="fas fa-house-user"></i></div>
-                </a>
-                <a href="{{route('milogout')}}">
-                    <div style="font-size: 13px">Cerrar sesión <i style="color:#F79860; " class="fas fa-sign-out-alt"></i>
-                    </div>
-                </a>
+            @if (Auth::user()!=null)
+          
+                <ul id="menu">
+                    <li>
+                        <a href="#">Hola, {{Auth::user()->name}}</a>
+                        <ul>
+                            <li><a href="{{route('dashboard')}}">
+                            <p style="font-size: 13px">Hola, {{Auth::user()->name}} 
+                                <i style="color:#F79860; " class="fas fa-house-user"></i></p>
+                            </a>
+                            </li>
+                            <li><a href="{{route('historial_pedidos.index')}}">
+                                <p style="font-size: 13px">
+                                    Historial de pedidos
+                                    <i style="color:#F79860;"></i>
+                                </p>
+                            </a></li>
+                            <li><a href="#">Otro ejemplo</a></li>
+                            <li><a href="{{route('milogout')}}">
+                                <p style="font-size: 13px">Cerrar sesión 
+                                    <i style="color:#F79860; " class="fas fa-sign-out-alt"></i>
+                                </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
                 @else
                 <a href="{{route('login')}}">
-                    <div>Iniciar sesión <i style="color:#F79860; " class="fas fa-sign-in-alt"></i></div>
-                </a>
+        
+                    <p>Iniciar sesión  <i style="color:#F79860; " class="fas fa-sign-in-alt"></i></p>
+                    </a>
+                    
                 @endif
             </div>
         </div>
