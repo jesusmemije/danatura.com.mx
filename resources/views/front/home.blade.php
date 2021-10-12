@@ -8,11 +8,17 @@ Home
 <link type="text/css" rel="stylesheet" href="{{asset('assets/css/home.css')}}" />
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<style>
+  .bg-header-gris {
+    background: unset!important;
+  }
+</style>
+
 @section('content')
 
 <!--<button onclick="getallcookies()">Get all cookies</button>-->
 <div class="carousel-div">
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="ride">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>

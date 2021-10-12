@@ -1,4 +1,4 @@
-<div class="container-fluid pb-3" style="background: #b4c6a0;">
+<div class="container-fluid pb-3 bg-header-gris">
     <div class="row">
         <div class="danatura-logo col-md-5 col-12 text-center" style="padding-left: 3%;">
             <a href="{{route('home')}}">
