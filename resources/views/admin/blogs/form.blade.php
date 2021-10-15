@@ -1,52 +1,34 @@
-                              <div class="form-group">
-                                <label>Título</label>
-                                <input type="text" name="titulo" class="form-control"/>
-                            </div>  
-                            <div class="form-group">
-                                <label>Contenido</label>
-                                <textarea id="editor" name="cotenido" rows="15" cols="40" class="form-control tinymce-editor">
-                                
-                                </textarea>
-                            </div>  
-                            <div class="form-group">
-                                <label>Author Name</label>
-                                <input type="text" name="autor" class="form-control"/>                           
+<div class="form-group">
+  <label>Título</label>
+  <input type="text" name="titulo" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Contenido</label>
+  <textarea id="editor" name="cotenido" rows="15" cols="40" class="form-control tinymce-editor"></textarea>
+</div>
+<div class="form-group">
+  <label>Author Name</label>
+  <input type="text" name="autor" class="form-control" />
+</div>
 
-                            </div>
+<div class="form-group">
+  <label>Estatus</label>
+  <select name="estatus" id="" class="form-control">
+    <option value="">Selecciona un estatus</option>
+    <option value="pendiente">Pendiente</option>
+    <option value="publicada">Publicada</option>
+  </select>
+</div>
 
-                            <div class="form-group">
-                          
+<div class="form-group text-center">
+  <button type="submit" class="btn btn-success btn-sm">Guardar</button>
+</div>
 
-                                <label>Estatus</label>
-                                <select name="estatus" id="" class="form-control">
-                                <option value="">Selecciona un estatus</option>
-
-                                <option value="pendiente">Pendiente</option>
-                                <option value="publicada">Publicada</option>
-
-
-                                </select>
-                            
-
-                            </div>
-                            
-                            
-
-
-
-                            <div class="form-group text-center">
-                                <button type="submit" class="btn btn-success btn-sm">Guardar</button>
-                            </div>
-
-
-                            <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>  
-    <script type="text/javascript">
-
-   
-
-   // not.item(0).style.display="none"
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdn.tiny.cloud/1/dv3q5uytgmcxyuvxiicg1zsje98bzg2t5x5l98qypkizjawo/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script type="text/javascript">
+  // not.item(0).style.display="none"
     
    tinymce.init({
   selector: '#editor',
@@ -107,4 +89,4 @@
 not=document.getElementsByClassName('tox-notifications-container');
     console.log(not)
 
-    </script>
+</script>
