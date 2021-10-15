@@ -64,7 +64,7 @@
 
             <div class="direccines col-sm-12">
                 <br>
-                    <a class="pull-right btn btn-success" href="{{ url('/') }}">Regresar</a>
+                    <a class="pull-right btn btn-success" href="{{ url('/') }}">Ir al inicio</a>
                 <h2>Mis direcciones</h2>
                 <hr>
                 <div class="col-lg-11">
