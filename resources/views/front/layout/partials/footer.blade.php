@@ -19,8 +19,9 @@
         <li class="nav-item" style="margin-right: 2%;"><a href="https://www.instagram.com/Danatura_Comida_Real/"
             target="_blank" class="icon-instagram"> <i style="font-size:20px;"
               class="fab fa-instagram fa-sm ri-face"></i></a></li>
-        <li class="nav-item" style="margin-right: 2%;"><a href="" target="_blank" class="icon-instagram"> <i
-              style="font-size:20px;" class="fab fa-twitter fa-sm ri-face"></i></a></li>
+        <li class="nav-item" style="margin-right: 2%;"><a 
+              href="https://vm.tiktok.com/ZM8YSFf8H/" target="_blank" class="icon-instagram"> <i
+              style="font-size:20px;" class="fab fa-tiktok fa-sm ri-face"></i></a></li>
         <li class="nav-item" style="margin-right: 2%;"><a
             href="https://www.youtube.com/channel/UCt-0ISeB7NilGmMRfs2mVKA" target="_blank" class="icon-instagram"> <i
               style="font-size:17px;" class="fab fa-youtube fa-sm ri-face ii"></i></a></li>
@@ -30,7 +31,11 @@
             <i style="" class="fab fa-whatsapp fa-sm ri-face iw"></i></a></li>
       </ul>
       <div class="row d-flex justify-content-center" style="margin-top:8%; font-family:AmasisMTStd-Bold;">
-        <div class="text-center">¿Quieres ser distribuidor?  <br> <i style="" class="far fa-id-card fa-sm ri-face id"></i></div>
+        <div class="text-center">¿Quieres ser distribuidor?  <br>
+          <a href="mailto:ventas@danatura.com.mx?subject=Quiero%20ser%20distribuidor">
+            <i class="far fa-id-card fa-sm ri-face id"></i>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -79,7 +84,7 @@
       </a>
     </div>
     <div class="col-md-12 d-flex justify-content-end">
-      <img src="{{asset('assets/images/capmedios.png')}}" alt="">
+      <img src="{{asset('assets/images/capmedios.png')}}" class="img-fluid" alt="">
     </div>
     <div class="col-md-12 text-center" style="margin-top:4%; height:70px; background:#b3c6a0; display:flex; justify-content:center;">
       <span style="padding-top:2%; color:#4c5444; font-family:AmasisMTStd-Bold; ">

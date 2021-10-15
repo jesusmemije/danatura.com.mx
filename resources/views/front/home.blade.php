@@ -12,6 +12,18 @@ Home
   .bg-header-gris {
     background: unset!important;
   }
+  .btn-video-youtube {
+    font-size: 40px;
+    position: absolute;
+    left: 70%;
+    top: 52%;
+  }
+
+  @media screen and (max-width: 480px) {
+    .btn-video-youtube {
+      top: -12%;
+    }
+  }
 </style>
 
 @section('content')
@@ -226,12 +238,14 @@ Home
       <span class='span-delicioso'>¡Es delicioso!</span> </div>
   </div>
   <div class="col-md-6 " style="">
-    <div class="row"> <a target="_blank" href="https://youtube.com/channel/UCt-0ISeB7NilGmMRfs2mVKA"><i
-          style="font-size:40px; position:absolute; left:70%; top:30%;"
-          class="fab fa-youtube fa-sm circle-insta"></i></a> </div>
+    <div class="row">
+      <a target="_blank" href="https://youtube.com/channel/UCt-0ISeB7NilGmMRfs2mVKA">
+        <i class="fab fa-youtube circle-insta btn-video-youtube"></i>
+      </a>
+    </div>
     <div class="text-md-left text-center" style="margin-top: 10%;">
       <div class="pr-md-5 pr-0"> <span style="font-size: 1.8em;color:#73482C">Preparar platillos y menús
-          saludables puede ser muy facil.</span> </div> <span
+          saludables puede ser muy fácil.</span> </div> <span
         style="font-size:240%; font-family:AmasisMTStd-Bold; color:#73482C">¡Sigue nuestras recetas!</span>
     </div>
   </div>

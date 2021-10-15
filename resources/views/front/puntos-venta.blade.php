@@ -245,11 +245,12 @@
 		<div class="row" style="padding-bottom: 8%;">
 			<div class="ml-3 mt-5">
 				<h6 style="color:black; font-weight:bold; padding-bottom:2%; font-family:'AmasisMTStd-Bold'">
-					Encuentranos también en:
+					Encuéntranos también en:
 				</h6>
-				<img src="{{asset('assets/img/amazon-logo.png')}}" width="100" alt="">
+				<a href="https://www.amazon.com.mx/s?me=A363UH1A80THI0&marketplaceID=A1AM78C64UM0Y8" target="_BLANK">
+					<img src="{{asset('assets/img/amazon-logo.png')}}" width="100" alt="">
+				</a>	
 			</div>
-
 		</div>
 	</div>
 </div>

@@ -295,9 +295,11 @@ Detalle producto
               <!-- Your share button code -->
               <div class="fb-share-button" data-href="{{$url}}" data-layout="button_count">
               </div>
-              <li class="nav-item" style="margin-top:-1%; margin-left: 2%;"><a href="" target="_blank"
-                  class="icon-instagram">
-                  <i style="font-size:20px;" class="far fa-envelope fa-sm ri-face"></i></a></li>
+              <li class="nav-item" style="margin-top:-1%; margin-left: 2%;">
+                <a href="mailto:contacto@danatura.com.mx?subject=Danatura%20-%20Productos" target="_blank" class="icon-instagram">
+                  <i style="font-size:20px;" class="far fa-envelope fa-sm ri-face"></i>
+                </a>
+              </li>
             </ul>
           </div>
           <div>

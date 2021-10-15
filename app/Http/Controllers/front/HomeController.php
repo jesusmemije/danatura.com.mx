@@ -476,10 +476,24 @@ class HomeController extends Controller
                     <span>MOSTRANDO ' . $aux_seg . ' de ' . $count . ' productos</span>
                 </div>';
 
+                if ( $aux_seg == 9 ) {
+                    $progress_with = 'width: 16.5%;';
+                } elseif ( $aux_seg == 18 ) {
+                    $progress_with = 'width: 33%;';
+                } elseif ( $aux_seg == 27 ) {
+                    $progress_with = 'width: 49.5%;';
+                } elseif ( $aux_seg == 36 ) {
+                    $progress_with = 'width: 66%;';
+                } elseif ( $aux_seg == 45 ) {
+                    $progress_with = 'width: 82.5%;';
+                } else {
+                    $progress_with = 'width: 100%;';
+                }
+
                 $output .=
                     '<div id="showpro" class="col-md-3 divbar" style="margin-left: 38%;">
                     <div id="progressbar">
-                        <div></div>
+                        <div style="' . $progress_with .'"></div>
                     </div>
                 </div>';
 
