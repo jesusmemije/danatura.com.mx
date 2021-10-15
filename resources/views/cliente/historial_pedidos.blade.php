@@ -43,6 +43,12 @@
         background: #fafafa;
         border-radius: 18px;
       }
+      .pull-left {
+          float: left !important;
+        }
+        .pull-right {
+            float: right !important;
+        }
     </style>
 @endsection
 
@@ -55,8 +61,10 @@
                     {{ session('mensaje') }}
                 </div>
             @endif
+
             <div class="direccines col-sm-12">
                 <br>
+                    <a class="pull-right btn btn-success" href="{{ url('/') }}">Regresar</a>
                 <h2>Mis direcciones</h2>
                 <hr>
                 <div class="col-lg-11">
