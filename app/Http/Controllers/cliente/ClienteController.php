@@ -29,23 +29,21 @@ class ClienteController extends Controller
     public function index()
     {
             $datosdirection = DB::table('datos_envios')
-                // ->join('venta_productos','datos_envios.id','=','venta_productos.id_datosenvio')
-                ->join('users','datos_envios.email','=','users.email')
+                ->join('users','datos_envios.id_user','=','users.id')
                 ->select('datos_envios.*')
-                // ->where('venta_productos.id_user','=',auth()->user()->id)
-                ->where('datos_envios.email','=',auth()->user()->email)
+                ->where('datos_envios.id_user','=',auth()->user()->id)
                 ->distinct('datos_envios.direccion1')
                 ->get();
-            // dd($datosdirection);
+            
             // Historial de compras
             
             $historialPedido = DB::table('venta_productos')
-            ->join('users','venta_productos.id_user','=','users.id')
-            ->join('productos','venta_productos.id_producto','=','productos.id')
-            ->join('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
-            ->select('venta_productos.*','users.name', 'productos.nombre AS Producto', 'datos_envios.direccion1')
-            ->where('venta_productos.id_user','=',auth()->user()->id)
-            ->distinct('datos_envios.direccion1')->paginate(10);
+                ->join('users','venta_productos.id_user','=','users.id')
+                ->join('productos','venta_productos.id_producto','=','productos.id')
+                ->join('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
+                ->select('venta_productos.*','users.name', 'productos.nombre AS Producto', 'datos_envios.direccion1')
+                ->where('venta_productos.id_user','=',auth()->user()->id)
+                ->get();
 
         return view('cliente.historial_pedidos',compact(['historialPedido',$historialPedido,'datosdirection',$datosdirection]));
     }

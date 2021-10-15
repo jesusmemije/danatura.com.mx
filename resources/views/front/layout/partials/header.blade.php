@@ -344,12 +344,11 @@
                                 </a>
                             </li>
                             <li><a href="{{route('historial_pedidos.index')}}">
-                                    <p style="font-size: 13px">
-                                        Historial de pedidos
-                                        <i style="color:#F79860;"></i>
-                                    </p>
-                                </a></li>
-                            <li><a href="#">Otro ejemplo</a></li>
+                                <p style="font-size: 13px">
+                                    Historial de pedidos
+                                    <i style="color:#F79860;"></i>
+                                </p>
+                            </a></li>
                             <li><a href="{{route('milogout')}}">
                                     <p style="font-size: 13px">Cerrar sesión
                                         <i style="color:#F79860; " class="fas fa-sign-out-alt"></i>

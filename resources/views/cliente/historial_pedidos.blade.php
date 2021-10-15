@@ -7,16 +7,17 @@
 @section('styles')
     <link type="text/css" rel="stylesheet" href="{{asset('assets/css/lightslider.css')}}" />
     <link type="text/css" rel="stylesheet" href="{{asset('assets/css/home.css')}}" />
-
+    
+    <link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}"/>
     <style>
 
       .principal{
-        background:#FFEFD6;
+        background: #C0C0C0;
         padding-left:6%;
         padding-right:6%;
       }
       .contenido{
-        color: #73482C;
+        /*color: #73482C;*/
         font-family:AmasisMTStd-Bold;
       }
       .card{
@@ -25,10 +26,23 @@
       .card-header{
         border: 0px !important;
       }
+      .bottonEditar{
+        border-color: yellow;
+        border-width: 2px;
+      }
       .direccines{
+        background: #fafafa;
+        border-radius: 18px;
         position: relative;
       }
-
+      .imagendireccion{
+        height: 45px;
+        border-radius: 18px;
+      }
+      .historial{
+        background: #fafafa;
+        border-radius: 18px;
+      }
     </style>
 @endsection
 
@@ -41,8 +55,9 @@
                     {{ session('mensaje') }}
                 </div>
             @endif
-            <div class="col-lg-11" style="background: #fafafa;">
-                <h2>Mis Direcciones</h2>
+            <div class="direccines col-sm-12">
+                <br>
+                <h2>Mis direcciones</h2>
                 <hr>
                 <div class="col-lg-11">
                     <table class="table table-responsive">
@@ -50,7 +65,7 @@
                             @foreach ($datosdirection as $resul)
                             <tr>
                                 <td colspan="" rowspan="" headers="">
-                                    <img height="45" src="{{asset('assets/icons/ICON7-13.png')}}">
+                                    <img class="imagendireccion" src="{{asset('assets/icons/casa.png')}}">
                                 </td>
                                 <td style="width: 650px;">
                                     <label>{{$resul->empresa}}</label>
@@ -60,46 +75,56 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <button class="btn  btn-sm" style="border-color: yellow; border-width: 2px;" data-nombre="{{$resul->nombre}}" data-apellidos="{{$resul->apellidos}}" data-empresa="{{$resul->empresa}}" data-pais="{{$resul->pais}}" data-direccion1="{{$resul->direccion1}}" data-direccion2="{{$resul->direccion2}}" data-localidad="{{$resul->localidad}}" data-region="{{$resul->region}}" data-cp="{{$resul->cp}}" data-telefono="{{$resul->telefono}}" data-email="{{$resul->email}}" data-rfc="{{$resul->rfc}}" data-referencia="{{$resul->referencia}}" data-id="{{$resul->id}}" data-toggle="modal" data-target="#editDirection">Editar <i class="fa fa-edit"></i></button>
-                                    <a class="btn  btn-sm" style="border-color: red; border-width: 2px;" href="{{ url('/destroy_historial_pedidos/'.$resul->id)}}">Eliminar <i class="fa fa-trash"></i></a>
+                                    <button class="btn  btn-warning" data-nombre="{{$resul->nombre}}" data-apellidos="{{$resul->apellidos}}" data-empresa="{{$resul->empresa}}" data-pais="{{$resul->pais}}" data-direccion1="{{$resul->direccion1}}" data-direccion2="{{$resul->direccion2}}" data-localidad="{{$resul->localidad}}" data-region="{{$resul->region}}" data-cp="{{$resul->cp}}" data-telefono="{{$resul->telefono}}" data-email="{{$resul->email}}" data-rfc="{{$resul->rfc}}" data-referencia="{{$resul->referencia}}" data-id="{{$resul->id}}" data-toggle="modal" data-target="#editDirection"> <i class="fa fa-edit"></i></button>
+                                    {{-- <a class="btn  btn-sm" style="border-color: red; border-width: 2px;" href="{{ url('/destroy_historial_pedidos/'.$resul->id)}}">Eliminar <i class="fa fa-trash"></i></a> --}}
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a>
+                    {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a> --}}
                 </div>
             </div>
             <br>
-            <div class="col-lg-11" style="background: #fafafa;">
-                <h2>Historial de Pedidos</h2>
-                <hr>
+            <div class="historial col-sm-12">
+                <br>
                 <div>
-                    <table class="table table-hover">
-                        <thead>
-                            <th>
-                                <td>Cantidad</td>
-                                <td>Total</td>
-                                <td>Metodo</td>
-                            </th>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($historialPedido as $registros){
-                            ?>
-                            <tr>
-                                <td><?php echo $registros->Producto ?></td>
-                                <td><?php echo $registros->cantidad ?></td>
-                                <td>$<?php echo $registros->preciototal ?> MXN</td>
-                                <td><?php echo $registros->method ?></td>
-                            </tr>
-                            <?php
-                            }
-                        ?>
-                        </tbody>
-                    </table>
+                    <h2>Mi historial de pedidos</h2>
+                    <hr>
+                    <div>
+                        @if (!empty($historialPedido))
+                        <table class="table js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Cantidad</th>
+                                    <th>Precio total</th>
+                                    <th>Metodo de pago</th>
+                                    <th>Estatus</th>
+                                    <th>Estado de entrega</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($historialPedido as $registros)
+                                    <tr>
+                                        <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
+                                        <td>{{$registros->Producto}}</td>
+                                        <td>{{$registros->cantidad}}</td>
+                                        <td>$ {{$registros->preciototal}} MXN</td>
+                                        <td>{{$registros->method}}</td>
+                                        <td>{{$registros->status}}</td>
+                                        <td>{{$registros->estado_entrega}}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                            <p>No hay registro en la base de datos</p>
+                        @endif
+                    </div>
                 </div>
-                    {{ $historialPedido->links() }}
+                <br>
             </div>
         </div>
     </div>
@@ -176,7 +201,7 @@
     </div>
 
 
-<div id="editDirection" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+    <div id="editDirection" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -252,7 +277,11 @@
 @endsection
 
 @section('scripts')
+    <script src="{{asset('assets/bundles/datatablescripts.bundle.js')}}"></script>
+    <script src="{{asset('assets/js/pages/tables/jquery-datatable.js')}}"></script>
+        
     <script type="text/javascript">
+
         $('#editDirection').on('show.bs.modal', function(event){
                 console.log('Model editar Materia funcionando');
                 var button = $(event.relatedTarget)
