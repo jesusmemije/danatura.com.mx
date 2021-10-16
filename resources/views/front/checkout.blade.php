@@ -343,7 +343,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
-<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id=AXIhxntAlr0Af7BvaMN6ypVNRqE7wpOh6tFXwVpk6uayEM1cuC4Jl0k2wGlFrNVKZBmV2yyFem4STVCQ"></script>
+<!-- Paypal Sandbox -->
+<!-- <script src="https://www.paypal.com/sdk/js?currency=MXN&client-id=AXIhxntAlr0Af7BvaMN6ypVNRqE7wpOh6tFXwVpk6uayEM1cuC4Jl0k2wGlFrNVKZBmV2yyFem4STVCQ"></script> -->
+<!-- Paypal Producción -->
+<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id=AUxzHm8_N1t5ziOAVX6zO4i3seFPnBFgRvCPPfF48YaiJvCf1qv06Zg9wIZrBclbdVDkRlHcbLjUuOIs"></script>
 
 <script type="text/javascript">
     var formvalidado=false;
@@ -517,6 +520,7 @@
             return actions.order.create({
                 purchase_units: [{
                     amount: {
+                        "currency_code": "MXN",
                         value: cajamonto
                     }
                 }]
@@ -611,7 +615,7 @@
                     title:'Transacción existosa',
                     text: 'Hemos enviado un email con los detalles de su compra. Muchas gracias.'
                 }).then((result) => {
-                    window.location.href = '/';
+                    window.location.href = '/historial_pedidos';
                 })
             },
             error:  function (response) {
