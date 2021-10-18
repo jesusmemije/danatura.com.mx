@@ -4,127 +4,125 @@
 
 
 <style>
+  .table tbody {
+    color: #212529;
+  }
 
-.table tbody{
-        color:#212529;
-    }
-  
-.breadcrumb{
+  .breadcrumb {
     background: #f8f9fc;
     padding-top: 0% !important;
-}
-.card{
-    border:5px solid #fff;
-}
+  }
 
-
-
+  .card {
+    border: 5px solid #fff;
+  }
 </style>
 
 
-    <div class="col-md-12">
-  
-        <div class="card shadow"> 
-            
-          @section('pagina-actual','Listado de productos')
-          @section('breadcumb')
-            
-          <ul class="breadcrumb">
-              <li style="color:#F79860" class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="javascript:void(0);">Productos</a></li>
-              <li class="breadcrumb-item active">Listado</li>
-          </ul>
-          <a href="{{route('productos.create')}}" style="background:#F79860" class="d-none d-sm-inline-block btn btn-primary shadow-sm"><i
-            class="fas fa-plus fa-sm text-white-50"></i> Añadir nuevo</a>
-          @endsection
+<div class="col-md-12">
+
+  <div class="card shadow">
+
+    @section('pagina-actual','Listado de productos')
+    @section('breadcumb')
+
+    <ul class="breadcrumb">
+      <li style="color:#F79860" class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i
+            class="zmdi zmdi-home"></i> Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="javascript:void(0);">Productos</a></li>
+      <li class="breadcrumb-item active">Listado</li>
+    </ul>
+    <a href="{{route('productos.create')}}" style="background:#F79860"
+      class="d-none d-sm-inline-block btn btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Añadir
+      nuevo</a>
+    @endsection
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Sabor</th>
+              <th>Descripcion</th>
+              <th>Gramos</th>
+              <th>Precio</th>
+              <th>Fotografía</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Nombre</th>
+              <th>Sabor</th>
+              <th>Descripcion</th>
+              <th>Gramos</th>
+              <th>Precio</th>
+              <th>Fotografía</th>
+              <th>Acciones</th>
+            </tr>
+          </tfoot>
+          <tbody>
+
+            @foreach($productos as $producto)
+
+            @php
+
+            $foto="";
+
+            if (strpos($producto->fotografia, 'https') !== false) {
+            $foto=$producto->fotografia;
+            }else{
+            $foto="../assets/productos/".$producto->fotografia;
+            }
+
+            @endphp
+
+            <tr>
+
+              <td>{{$producto->nombre}}</td>
+              <td>{{$producto->sabor}}</td>
+              <td>{{$producto->descripcion}}</td>
+              <td>{{$producto->gramos}}</td>
+              <td>{{$producto->precio}}</td>
+              <td>
+                <center>
+                  <a class='btn btn-success btn-sm  redondo ie' target="_blank" href="{{$foto}}">
+                    <i class='fa fa-eye'></i>
+                  </a>
+                </center>
+              </td>
+
+              <td>
+                <a class="btn btn-warning btn-sm redondo" href="{{route('productos.edit',$producto->id)}}">
+                  <i class="fa fa-edit"></i>
+                </a>
+
+                <button class="btn btn-sm btn-danger btn-circle shadow-sm redondo" data-toggle="modal"
+                  data-target="#deleteUserModal" data-id="{{ $producto->id}}" data-name="{{ $producto->nombre }}">
+                  <i class="fas fa-trash fa-sm text-white-50"></i>
+
+                </button>
+              </td>
 
 
-         
-            <div class="card-body" >
-            <div class="table-responsive" >
-            <table class="table table-bordered" id="dataTable"  >
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Sabor</th>
-                                            <th>Descripcion</th>
-                                            <th>Gramos</th>
-                                            <th>Precio</th>
-                                            <th>Fotografía</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                            <th>Nombre</th>
-                                            <th>Sabor</th>
-                                            <th>Descripcion</th>
-                                            <th>Gramos</th>
-                                            <th>Precio</th>
-                                            <th>Fotografía</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-
-                                        @foreach($productos as $producto)
-
-                                            @php
-
-                                              $foto="";
-
-                                              if (strpos($producto->fotografia, 'https') !== false) {
-                                                $foto=$producto->fotografia;
-                                              }else{
-                                                $foto="../assets/productos/".$producto->fotografia;
-                                              }
-
-                                            @endphp
-
-                                            <tr>
-
-                                                <td>{{$producto->nombre}}</td>
-                                                <td>{{$producto->sabor}}</td>
-                                                <td>{{$producto->descripcion}}</td> 
-                                                <td>{{$producto->gramos}}</td>
-                                                <td>{{$producto->precio}}</td>
-                                                <td>
-                                                <center>
-                                                <a class='btn btn-success btn-sm  redondo ie' target="_blank" href="{{$foto}}">
-                                                  <i class='fa fa-eye'></i>
-                                                </a> 
-                                                </center>  
-                                              </td>
-
-                                                <td>
-                                                    <a class="btn btn-warning btn-sm redondo" href="{{route('productos.edit',$producto->id)}}">
-                                                    <i class="fa fa-edit"></i>
-                                                    </a>
-
-                                                    <button class="btn btn-sm btn-danger btn-circle shadow-sm redondo" data-toggle="modal" data-target="#deleteUserModal" data-id="{{ $producto->id}}" data-name="{{ $producto->nombre }}">
-                                                        <i class="fas fa-trash fa-sm text-white-50"></i>
-                                                      
-                                                      </button> 
-                                                </td>
+            </tr>
 
 
-                                            </tr>
+            @endforeach
 
 
-                                        @endforeach
+          </tbody>
+        </table>
 
-
-                                    </tbody>
-                                </table>
-
-            </div>
-        </div>
-
+      </div>
     </div>
 
+  </div>
 
 
-<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+
+  <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -141,14 +139,15 @@
             <i class="fas fa-times fa-sm text-white-50"></i>
             No, salir
           </button>
-          <form id="formDelete" action="{{ route('productos.destroy', 0) }}" data-action="{{ route('productos.destroy', 0) }}" method="POST">
+          <form id="formDelete" action="{{ route('productos.destroy', 0) }}"
+            data-action="{{ route('productos.destroy', 0) }}" method="POST">
             @method('DELETE')
             @csrf
             <button type="submit" class="btn  btn-danger shadow-sm">
               <i class="fas fa-trash fa-sm text-white-50"></i>
               Si, eliminar
             </button>
-            
+
           </form>
         </div>
       </div>
@@ -157,20 +156,20 @@
 
 
 
-@endsection
-@section('scripts')
+  @endsection
+  @section('scripts')
 
 
 
-    <!-- Page level plugins -->
-    <script src="{{asset('admin_assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
- 
-    <!-- Page level custom scripts -->
-    <script src="{{asset('admin_assets/js/demo/datatables-demo.js')}}"></script>
+  <!-- Page level plugins -->
+  <script src="{{asset('admin_assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+  <script src="{{asset('admin_assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{{asset('admin_assets/js/demo/datatables-demo.js')}}"></script>
 
   <script>
-       $('#deleteUserModal').on('show.bs.modal', function (event) {
+    $('#deleteUserModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id = button.data('id') // Extract info from data-* attributes
         var name = button.data('nombre')
@@ -194,4 +193,4 @@
 
   </script>
 
-@endsection
+  @endsection

@@ -2,19 +2,37 @@
 
 @section('content')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha256-aAr2Zpq8MZ+YA/D6JtRD3xtrwpEz2IqOS+pWD/7XKIw=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"
-    integrity="sha256-OFRAJNoaD8L3Br5lglV7VyLRf0itmoBzWUoM+Sji4/8=" crossorigin="anonymous"></script>
-
 <div class="col-md-12">
-    <h3>Datos de la nueva entrada al blog</h3>
-    <form class="image-upload" method="post" action="{{ route('blogs.store') }}" enctype="multipart/form-data">
-        @csrf
-        @include('admin.blogs.form')
-    </form>
+    <div class="card shadow">
+        <div class="card-header">
+            @section('pagina-actual','Nueva publicación')
+            @section('breadcumb')
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">
+                    <i class="zmdi zmdi-home"></i>Dashboard</a>
+                </li>
+                <li class="breadcrumb-item"><a href="{{route('blogs.index')}}"">Publicaciones</a></li>
+                <li class=" breadcrumb-item active">Nuevo</li>
+            </ul>
+            @endsection
+        </div>
+
+        @if (\Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <strong>Guardado correctamente!</strong> La publicación se ha guardado.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+
+        <div class="card-body">
+            <form class="image-upload" method="post" action="{{ route('blogs.store') }}" enctype="multipart/form-data">
+                @csrf
+                @include('admin.blogs.form')
+            </form>
+        </div>
+    </div>   
 </div>
 
 @endsection
@@ -26,7 +44,6 @@
 
 <!-- Page level custom scripts -->
 <script src="{{asset('admin_assets/js/demo/datatables-demo.js')}}"></script>
-
 
 <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
 
