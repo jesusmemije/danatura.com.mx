@@ -238,22 +238,26 @@
                                     <td align="left" style="padding-top: 20px;">
                                         <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
-                                                <td class="font-folio" width="75%" align="left" bgcolor="#eeeeee"> Resumen de compra</td>
-                                                <td class="font-folio" width="25%" align="left" bgcolor="#eeeeee"> </td>
+                                                <td class="font-folio" width="70%" align="left" bgcolor="#eeeeee"> Resumen de compra</td>
+                                                <td class="font-folio" width="30%" align="left" bgcolor="#eeeeee"> </td>
                                             </tr>
                                             <?php
                                                 $carrito = $data['carrito'];
                                                 for ($i = 0; $i < sizeof($carrito); $i++) {
                                                     ?>
                                                     <tr>
-                                                        <td class="font-productos" width="75%" align="left"> <?php echo $carrito[$i]['nombre'] ?> </td>
-                                                        <td class="font-productos" width="25%" align="left"> 
-                                                            <?php echo $carrito[$i]['cantidad'] . ' x ' . $carrito[$i]['precio_unit'] . ' = ' . $carrito[$i]['cantidad'] * $carrito[$i]['precio_unit']; ?> 
+                                                        <td class="font-productos" width="70%" align="left"> <?php echo $carrito[$i]['nombre'] ?> </td>
+                                                        <td class="font-productos" width="30%" align="left"> 
+                                                            <?php echo $carrito[$i]['cantidad'] . ' x ' . $carrito[$i]['precio_unit'] . ' = $' .  number_format($carrito[$i]['cantidad'] * $carrito[$i]['precio_unit'], 2, '.', ','); ?> 
                                                         </td>
                                                     </tr>
                                                     <?php
                                                 }
                                             ?>
+                                            <tr>
+                                                <td class="font-productos" width="70%" align="left">Envío</td>
+                                                <td class="font-productos" width="30%" align="left">${{ number_format(170, 2, '.', ',') }}</td>
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>
@@ -261,8 +265,8 @@
                                     <td align="left" style="padding-top: 20px;">
                                         <table cellspacing="0" cellpadding="0" border="0" width="100%">
                                             <tr>
-                                                <td class="font-total" width="75%" align="left"> TOTAL </td>
-                                                <td class="font-total" width="25%" align="left"> ${{ $data['total'] }} </td>
+                                                <td class="font-total" width="70%" align="left"> TOTAL </td>
+                                                <td class="font-total" width="30%" align="left">${{ number_format($data['total'], 2, '.', ',') }} </td>
                                             </tr>
                                         </table>
                                     </td>

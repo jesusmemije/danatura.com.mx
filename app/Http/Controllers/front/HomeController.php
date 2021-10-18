@@ -657,17 +657,10 @@ class HomeController extends Controller
     {
         //Para verificar que el usuario solamente está cambiando su dirección de envio y "proteger" los otros datos.
         if ( !empty($request->dato_id) ) {
-
-            $ver = DB::table('venta_productos as vp')
-                ->select('id_user')
-                ->where('vp.id_datosenvio', '=', $request->dato_id)
-                ->first();
-
-            if ($ver->id_user == Auth::user()->id) {
-                $datosenvio = DatosEnvio::find($request->dato_id);
-            }
-
+            $msj = 'Los datos se actualizaron correctamente';
+            $datosenvio = DatosEnvio::find( $request->dato_id );
         } else {
+            $msj = 'Los datos se guardaron correctamente';
             $datosenvio = new DatosEnvio();
         }
         
@@ -686,13 +679,11 @@ class HomeController extends Controller
         $datosenvio->rfc = $request->rfc;
         $datosenvio->referencia = $request->referencia;
 
-        $hecho = $datosenvio->save();
-
-        if ($hecho) {
+        if ( $datosenvio->save() ) {
 
             $data = [
-                "mensaje" => "Los datos se guardaron correctamente",
-                    "id" => $datosenvio->id
+                "mensaje" => $msj,
+                "id" => $datosenvio->id
             ];
 
             echo json_encode($data);

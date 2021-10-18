@@ -78,8 +78,8 @@
             <br>
             <p class="font-weight-bold h5">Resumen:</p>
             <p>Cantidad total de productos: {{$cantidad_carrito}} </p>
-            <p>Costo por envio: ${{($_SESSION['gastoEnvio'])}} MXN</p>
-            <p>Monto total: ${{($_SESSION['totalpagar'])}} MXN</p>
+            <p>Costo por envio: ${{ number_format($_SESSION['gastoEnvio'], 2, '.', ',') }}</p>
+            <p>Monto total: ${{ number_format($_SESSION['totalpagar'], 2, '.', ',') }}</p>
 
             <br>
             <br>
@@ -90,8 +90,8 @@
                     <tr>
                         <th>Producto</th>
                         <th class="phone-hide" data-breakpoints="sm xs">Descripción</th>
-                        <th data-breakpoints="xs">Precio</th>
                         <th data-breakpoints="xs">Cantidad</th>
+                        <th data-breakpoints="xs">Precio</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,8 +107,8 @@
                                         <h6><?php echo $producto->nombre; ?></h6>
                                     </td>
                                     <td class="phone-hide"><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
-                                    <td id="<?php echo $producto->id ?>"><?php echo $producto->precio;  ?></td>
                                     <td><?php echo $key['cantidad'];  ?></td>
+                                    <td id="<?php echo $producto->id ?>">$<?php echo number_format($producto->precio, 2, '.', ',') ?></td>
                                 </tr>
                                 <?php
                                 $i++;
@@ -417,33 +417,42 @@
 </script>
 
 <script>
-    function enviarData(datos){
-        console.log(datos[0]);
-        $('#dato_id').val(datos[0].id_datosenvio);
-        $('#nombreenvio').val(datos[0].nombre);
-        $('#apellidosenvio').val(datos[0].apellidos);
-        $('#empresaenvio').val(datos[0].empresa);
-        $('#paisenvio').val(datos[0].pais);
-        $('#direccion1envio').val(datos[0].direccion1);
-        $('#direccion2nvio').val(datos[0].direccion2);
-        $('#localidadenvio').val(datos[0].localidad);
-        $('#regionenvio').val(datos[0].region);
-        $('#cpenvio').val(datos[0].cp);
-        $('#telefonoenvio').val(datos[0].telefono)
-        $('#emailenvio').val(datos[0].email)
-        $('#rfcenvio').val(datos[0].rfc)
-        $('#referenciaenvio').val(datos[0].referencia)
+    function enviarData( data ){
+        // console.log(data);
+        $('#dato_id').val(data.id);
+        $('#nombreenvio').val(data.nombre);
+        $('#apellidosenvio').val(data.apellidos);
+        $('#empresaenvio').val(data.empresa);
+        $('#paisenvio').val(data.pais);
+        $('#direccion1envio').val(data.direccion1);
+        $('#direccion2nvio').val(data.direccion2);
+        $('#localidadenvio').val(data.localidad);
+        $('#regionenvio').val(data.region);
+        $('#cpenvio').val(data.cp);
+        $('#telefonoenvio').val(data.telefono)
+        $('#emailenvio').val(data.email)
+        $('#rfcenvio').val(data.rfc)
+        $('#referenciaenvio').val(data.referencia)
     }    
 </script>
 
 @php
-    $envio_user = DB::table('venta_productos')
-    ->join('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
-    ->where('venta_productos.id_user','=', Auth::user()->id)->get();
 
-    if( count($envio_user) >= 1 ){
+    $envio_user = DB::table('datos_envios')
+    ->where('datos_envios.id_user','=', Auth::user()->id)->latest('created_at')->first();
+
+    $data =  json_encode( $envio_user );
+    
+    if( $envio_user ){
         echo "<script>
-            enviarData($envio_user); 
+            $('#paypal-button-container').show();
+            $('#nopaypal').hide();
+            enviarData( $data ); 
+        </script>";
+    } else {
+        echo "<script>
+            $('#paypal-button-container').hide();
+            $('#nopaypal').show();
         </script>";
     }
 
@@ -455,9 +464,9 @@
         if(antesdePagar()){
         
             formvalidado=true;
-            $('#nopaypal').hide();
-
+            
             $('#paypal-button-container').show();
+            $('#nopaypal').hide();
 
             $('#modalenvio').modal('hide');
         } else {

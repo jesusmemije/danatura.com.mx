@@ -55,7 +55,7 @@
 @section('content')
 
     <div class="principal col-sm-12 align-content-center">
-        <div class="contenido container-fluid" style="padding-top:5%; padding-bottom:5%; text-align:justify;">
+        <div class="contenido container-fluid" style="padding-top:5%; padding-bottom:5%;">
             @if ( session('mensaje') )
                 <div class="alert alert-success" role="alert">
                     {{ session('mensaje') }}
