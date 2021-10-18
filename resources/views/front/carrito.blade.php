@@ -32,7 +32,7 @@
                 foreach ($carrito as $key=>$value) {
                    // $aux_cantidad_total=$aux_cantidad_total+
                 }
-
+                $gastoEnvio = 170;
                 $totalPagar = 0;
 
             } else {
@@ -137,7 +137,7 @@
                     </table>
                 </div>
             </div>
-            <div class="card pt-3">
+            <div class="card pt-6">
                 <div class="body">
 
                     <div class="col-md-12">
@@ -151,10 +151,11 @@
                                     $totalPagar = $totalPagar . ".00";
                                 }
                             @endphp
-                            <div class="col-md-3"><b>Total de productos: </b><?php echo sizeof($carrito); ?></div>
-                            <div class="col-md-3"><b>Total pago: </b>$<label id="totalPagar"><?php echo $totalPagar . " MXN"; ?></label></div>
-                            <div class="col-md-3">
-                                <?php $_SESSION['totalpagar'] = $totalPagar;   ?>
+                            <div class="col-md-2"><b>Total de productos: </b><?php echo sizeof($carrito); ?></div>
+                            <div class="col-md-2"><b>Gastos de envio: </b>$<?php echo $gastoEnvio . " MXN" ?></div>
+                            <div class="col-md-2"><b>Total pago: </b>$<label id="totalPagar"><?php echo $totalPagar + $gastoEnvio . " MXN"; ?></label></div>
+                            <div class="col-md-2">
+                                <?php $_SESSION['totalpagar'] = $totalPagar  + $gastoEnvio;   ?>
                                 <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora 
                                     <i style="color:white" class="fas fa-credit-card"></i>
                                 </a>

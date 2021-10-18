@@ -50,23 +50,9 @@ class ClienteController extends Controller
 
     public function store(Request $request)
     {
-        $validacion = $this->validate($request, [
-            'nombre'    => 'required|string',
-            'apellidos' => 'required|string',
-            'empresa'   => 'string',
-            'pais'      => 'required|string',
-            'direccion1'=> 'required',
-            'direccion2'=> 'string',
-            'localidad' => 'required|string',
-            'region'    => 'required|string',
-            'cp'        => 'required',
-            'telefono'  => 'required|numeric',
-            'email'     => 'required|email',
-            'rfc'       => 'string',
-            'referencia'=> 'string',
-        ]);
 
         $newDirection = new DatosEnvio();
+        $newDirection->id_user = Auth::user()->id;
         $newDirection->nombre = $request->input('nombre');
         $newDirection->apellidos = $request->input('apellidos');
         $newDirection->empresa = $request->input('empresa');
@@ -80,9 +66,10 @@ class ClienteController extends Controller
         $newDirection->email = $request->input('email');
         $newDirection->rfc = $request->input('rfc');
         $newDirection->referencia = $request->input('referencia');
+        
         $newDirection->save();
 
-        return redirect()->route('historial_pedidos.index')->with('mensaje', 'Dirección registrada con exito.');
+        return redirect()->back()->with('mensaje', 'Dirección registrada con exito.');
     }
 
     public function update(Request $request)

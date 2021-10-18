@@ -90,7 +90,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a> --}}
+                    {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a>
+                    <br> --}}
                 </div>
             </div>
             <br>

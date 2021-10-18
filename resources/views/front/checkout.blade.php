@@ -17,6 +17,12 @@
         .text-center-items {
             text-align: unset;
         }
+        .pull-left {
+          float: left !important;
+        }
+        .pull-right {
+            float: right !important;
+        }
 
         @media screen and (max-width: 480px) {
             #pagopaypal {
@@ -43,10 +49,17 @@
 
 @include('front.layout.partials.menu')
 
+    
+
 <div class="container pt-4 pb-4">
+    <div class="container col-sm-12">
+        <a class="btn btn-light pull-right" href="{{url('carrito')}}">Cancelar</a>
+        <br>
+    </div>
+    <br>
+    <hr>
     <div class="row clearfix">
         <div class="col-md-6 col-12 text-center-items">
-
             <?php 
                 $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','fotografia')->get();
 
@@ -62,11 +75,16 @@
             ?>
 
             <p class="text-center font-weight-bold h5 py-2" style="background:lightgreen;">Detalle de la compra</p>
+            <br>
+            <p class="font-weight-bold h5">Resumen:</p>
             <p>Cantidad total de productos: {{$cantidad_carrito}} </p>
+            <p>Costo por envio: ${{($_SESSION['gastoEnvio'])}} MXN</p>
             <p>Monto total: ${{($_SESSION['totalpagar'])}} MXN</p>
 
+            <br>
+            <br>
             <input id="cajamonto" type="hidden" value="{{($_SESSION['totalpagar'])}}">
-            <p style="font-weight: bold;">Detalles:</p>
+            <p style="font-weight: bold;">Detalles de pedido:</p>
             <table class="table table-hover product_item_list  mb-0">
                 <thead>
                     <tr>
@@ -260,7 +278,6 @@
                 <div style="margin-top: 30%;"><input type="hidden"></div>
 
                 <span id="nopaypal" class="badge badge-danger">Debe escribir sus datos de envio para poder continuar</span>
-
             </div>
         </div>
     </div>
