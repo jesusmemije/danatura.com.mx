@@ -5,13 +5,13 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Blogs;
+use App\Models\Blog;
 
 class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = Blogs::all();
+        $blogs = Blog::all();
         return view('admin.blogs.index', ['blogs' => $blogs]);
     }
 
@@ -22,14 +22,14 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        $blogs = new Blogs();
-        $blogs->titulo = $request->titulo;
-        $blogs->contenido = $request->contenido;
-        $blogs->autor = $request->autor;
-        $blogs->estatus = $request->estatus;
-        $blogs->save();
+        $blog = new Blog();
+        $blog->titulo = $request->titulo;
+        $blog->contenido = $request->contenido;
+        $blog->autor = $request->autor;
+        $blog->estatus = $request->estatus;
+        $blog->save();
 
-        if( $blogs->save() ){
+        if( $blog->save() ){
             return redirect()->back()->with('success', 'good');  
         } else {
             return redirect()->back()->with('error', 'bad');  

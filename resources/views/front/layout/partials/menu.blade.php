@@ -48,6 +48,7 @@
                                 <li class="nav-item px-4 px-md-3 mia"><a href="{{route('quienes')}}">¿Quiénes somos?</a></li>
                                 <li class="nav-item px-4 px-md-3 mia"><a href="{{route('productos')}}">Productos</a></li>
                                 <li class="nav-item px-4 px-md-3 mia"><a href="{{route('puntos-venta')}}">Puntos de venta</li></a>
+                                <li class="nav-item px-4 px-md-3 mia"><a href="{{route('blog')}}">Blog</li></a>
                                 <li class="nav-item px-4 px-md-3 mia"><a href="{{route('contacto')}}">Contacto</li></a>
                             </ul>
                         </div>

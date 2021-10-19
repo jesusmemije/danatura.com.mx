@@ -34,23 +34,12 @@
 
           <tbody>
 
-            @php
-              use Carbon\Carbon;
-              $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-            @endphp
-
             @foreach($blogs as $blog)
-
-            @php
-              $fecha = Carbon::parse( $blog->created_at );
-              $mes = $meses[($fecha->format('n')) - 1];
-              $created_at = $fecha->format('d') . ' de ' . $mes . ' de ' . $fecha->format('Y');
-            @endphp
 
             <tr>
               <td>{{$blog->titulo}}</td>
               <td>{{$blog->autor}}</td>
-              <td>{{$created_at}}</td>
+              <td>{{$blog->getDateAdminList( $blog->created_at )}}</td>
               <td>
                 @php
                     echo $blog->estatus == 'publicada' ? '<span class="badge badge-success">Publicada</span>' : '<span class="badge badge-warning">Pendiente</span>';

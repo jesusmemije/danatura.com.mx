@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 /* Class Front */
 use App\Http\Controllers\front\HomeController as HomeControllerFront;
+use App\Http\Controllers\front\BlogController as BlogControllerFront;
 /* Class Admin */
 use App\Http\Controllers\admin\ProductosController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VentasProductosController;
-use App\Http\Controllers\admin\BlogController;
+use App\Http\Controllers\admin\BlogController as BlogControllerAdmin;
 use App\Http\Controllers\admin\HomeController as HomeControllerAdmin;
 use App\Http\Controllers\cliente\ClienteController;
 
@@ -34,6 +35,9 @@ Route::get('/carrito',[HomeControllerFront::class, 'carrito'])->name('carrito');
 Route::get('/checkout',[HomeControllerFront::class, 'checkout'])->name('checkout');
 Route::post('/payment',[HomeControllerFront::class, 'payment'])->name('payment');
 Route::post('/datos-envio',[HomeControllerFront::class, 'datos_envio'])->name('datos-envio');
+/* Blog */
+Route::get('/blog', [BlogControllerFront::class, 'index'])->name('blog');
+Route::get('/blog/{id}',[BlogControllerFront::class, 'show'])->name('blog.show');
 
 Route::post('/get-ciudades',[HomeControllerFront::class, 'get_ciudades'])->name('get-ciudades');
 Route::post('/newsletter',[HomeControllerFront::class, 'newsletter'])->name('newsletter-front');
@@ -82,8 +86,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], functio
     Route::post('/cambiarEstadoEntrega',[VentasProductosController::class, 'cambiarEstadoEntrega'])->name('cambiarEstadoEntrega');
 
     //Blog.
-    Route::resource('/blogs', BlogController::class);
-    Route::post('/blogs/upload',[BlogController::class, 'upload'])->name('upload_cke');
+    Route::resource('/blogs', BlogControllerAdmin::class);
+    Route::post('/blogs/upload',[BlogControllerAdmin::class, 'upload'])->name('upload_cke');
 });
 
 Route::group(['middleware'=>['auth']], function(){
