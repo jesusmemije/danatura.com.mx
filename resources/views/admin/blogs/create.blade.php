@@ -11,7 +11,7 @@
                 <li class="breadcrumb-item"><a href="{{route('dashboard')}}">
                     <i class="zmdi zmdi-home"></i>Dashboard</a>
                 </li>
-                <li class="breadcrumb-item"><a href="{{route('blogs.index')}}"">Publicaciones</a></li>
+                <li class="breadcrumb-item"><a href="{{route('blogs.index')}}">Publicaciones</a></li>
                 <li class=" breadcrumb-item active">Nuevo</li>
             </ul>
             @endsection

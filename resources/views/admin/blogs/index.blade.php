@@ -51,13 +51,12 @@
                   </a>
               </td>
               <td class="text-center">
-                <a class="btn btn-warning btn-sm redondo" href="">
+                <a class="btn btn-warning btn-sm redondo" href="{{ url('admin/blogs/'.$blog->id.'/edit ') }}">
                   <i class="fa fa-edit"></i>
                 </a>
-                <button class="btn btn-sm btn-danger btn-circle shadow-sm redondo" data-toggle="modal"
-                  data-target="#deleteUserModal" data-id="" data-name="">
+                <a class="btn btn-sm btn-danger btn-circle shadow-sm redondo" type="submit" href="{{ url('admin/blogs/'.$blog->id) }}" onclick="return confirm('¿Seguro que desea eliminarlo?')">
                   <i class="fas fa-trash fa-sm text-white-50"></i>
-                </button>
+                </a>
               </td>
             </tr>
 
@@ -105,23 +104,5 @@
 <!-- Page level custom scripts -->
 <script src="{{asset('admin_assets/js/demo/datatables-demo.js')}}"></script>
 
-<script>
-  $('#deleteUserModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var name = button.data('nombre')
-
-    action = $('#formDelete').attr('data-action').slice(0, -1)
-    action += id
-    console.log(action)
-
-    $('#formDelete').attr('action', action)
-
-    var modal = $(this)
-    modal.find('.modal-title').text('Confirmar eliminación') 
-    modal.find('.name-user').text(name)
-  })
-
-</script>
 
 @endsection

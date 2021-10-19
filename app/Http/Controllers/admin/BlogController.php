@@ -62,4 +62,49 @@ class BlogController extends Controller
             echo $re;
         }
     }
+
+    public function edit($id)
+    {
+        $blogs = Blog::findOrFail($id);
+        return view('admin.blogs.edit', compact('blogs'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $blog =request()->except(['_token','_method']);
+        $blog = Blog::findOrFail($id);
+        $blog->titulo = $request->titulo;
+        $blog->contenido = $request->contenido;
+        $blog->autor = $request->autor;
+        $blog->estatus = $request->estatus;
+        $blog->update();
+
+        if( $blog->update() ){
+            return redirect()->back()->with('success', 'good');  
+        } else {
+            return redirect()->back()->with('error', 'bad');  
+        }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $blog = Blog::findOrFail($id);
+        $blog->delete();
+        if( $blog->delete() ){
+            return redirect()->back()->with('success', 'good');  
+        } else {
+            return redirect()->back()->with('error', 'bad');  
+        }
+
+        return redirect()->back();
+    }
+
 }
