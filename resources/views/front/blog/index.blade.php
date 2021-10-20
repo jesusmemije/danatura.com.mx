@@ -25,14 +25,33 @@ Blog
     </div>
     <div class="card-deck my-5">
 
-        @foreach ($blogs as $blog)
+        <?php
+                              
+            foreach ($blogs as $blog) {
+
+                $imagen = $blog->portada;
+                $source     = "assets/blogs/".$imagen;
+                $source     = $imagen;
+                        
+                if ( $imagen == "" ) {
+                    $source = asset("assets/blogs/jar-loading.gif");
+                }
+                                
+                if ( strpos($source, 'https') !== false ) {
+                    $source = $source;
+                } else {
+                    $source = asset("assets/blogs")."/".$imagen;
+                }
+
+                $array_galeria = explode('|',$blog->portada);
+                $foto_principal = $array_galeria[0];
+        ?>
 
         <div class="card">
-            <img class="card-img-top" src="{{ asset('images/blog/default.png') }}" alt="Card image cap">
+            <img class="card-img-top" src="{{ $foto_principal }}" alt="Card image cap">
             <div class="card-body">
                 <a href="{{ route('blog.show', $blog->id) }}"><h5 class="card-title">{{ $blog->titulo }}</h5></a>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
+                <p class="card-text text-justify">{{$blog->resumen}}</p>
                 <a href="{{ route('blog.show', $blog->id) }}" class="btn btn-primary">Ver publicación</a>
             </div>
             <div class="card-footer">
@@ -41,7 +60,9 @@ Blog
             </div>
         </div>
             
-        @endforeach
+        <?php
+            }
+        ?>
 
     </div>
 </div>

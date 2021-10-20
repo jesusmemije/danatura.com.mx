@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -22,14 +23,42 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
+
+        $domain='http://';
+        $imagen="";
+        $asset=$_SERVER['DOCUMENT_ROOT'].'/assets/blogs/';
+        $asset_bd="$domain{$_SERVER['HTTP_HOST']}/assets/blogs/";
+     
+
+        //Para la imagen.
+        //Se guardan las imagenes del proyecto.
+        if ($request->hasFile('portada')) {
+
+            for ($i = 0; $i < sizeof($request->portada); $i++) {
+                $nombre_img = $_FILES['portada']['name'][$i];
+                $nombre_img=str_replace(' ', '', $nombre_img);
+                $url = time() . $nombre_img;
+
+                $fullurl=$asset_bd.$url;
+
+               
+
+                $imagen=$imagen.$fullurl.'|';
+                
+               move_uploaded_file($_FILES['portada']['tmp_name'][$i], $asset. $url);
+            }
+        }
+
         $blog = new Blog();
+        $blog->portada = $imagen;
         $blog->titulo = $request->titulo;
         $blog->contenido = $request->contenido;
+        $blog->resumen = $request->resumen;
         $blog->autor = $request->autor;
         $blog->estatus = $request->estatus;
-        $blog->save();
+        $save = $blog->save();
 
-        if( $blog->save() ){
+        if( $save ){
             return redirect()->back()->with('success', 'good');  
         } else {
             return redirect()->back()->with('error', 'bad');  
@@ -71,10 +100,40 @@ class BlogController extends Controller
 
     public function update(Request $request, $id)
     {
-        $blog =request()->except(['_token','_method']);
+
+        $domain='http://';
+        $imagen="";
+        $asset=$_SERVER['DOCUMENT_ROOT'].'/assets/blogs/';
+        $asset_bd="$domain{$_SERVER['HTTP_HOST']}/assets/blogs/";
+     
+        //Para la imagen.
+        //Se guardan las imagenes del proyecto.
+        
+        if ($request->hasFile('portada')) {
+
+            for ($i = 0; $i < sizeof($request->portada); $i++) {
+                $nombre_img = $_FILES['portada']['name'][$i];
+                $nombre_img = str_replace(' ', '', $nombre_img);
+                $url = time() . $nombre_img;
+
+                
+                $fullurl=$asset_bd.$url;
+
+               
+
+                $imagen=$imagen.$fullurl.'|';
+                
+             move_uploaded_file($_FILES['portada']['tmp_name'][$i], $asset. $url);
+            }
+        }
+
+        $imagen_real=$request->imagen.$imagen;
+
         $blog = Blog::findOrFail($id);
+        $blog->portada = $imagen_real;
         $blog->titulo = $request->titulo;
         $blog->contenido = $request->contenido;
+        $blog->resumen = $request->resumen;
         $blog->autor = $request->autor;
         $blog->estatus = $request->estatus;
         $blog->update();

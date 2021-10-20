@@ -50,7 +50,7 @@ border-radius: 50%;
 
 
 </style>
-
+@yield('styles')
 <body class="theme-orange">
 
 <!-- Page Loader -->
