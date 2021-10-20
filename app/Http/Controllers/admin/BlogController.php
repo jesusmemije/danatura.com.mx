@@ -139,7 +139,7 @@ class BlogController extends Controller
         $blog->update();
 
         if( $blog->update() ){
-            return redirect()->back()->with('success', 'good');  
+            return redirect()->route('blogs.index')->with('success', 'good');  
         } else {
             return redirect()->back()->with('error', 'bad');  
         }

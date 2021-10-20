@@ -44,15 +44,23 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Título</label>
-                      <input type="text" name="titulo" class="form-control" value="{{ $blogs->titulo}}" />
+                      <input type="text" name="titulo" required class="form-control" value="{{ $blogs->titulo}}" />
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="portada">Portada</label>
+                  <div class="col-md-6 d-flex">
+                    <div class="form-group pull-left col-md-6">
+                      <label for="portada">Imagen de portada</label>
                       <div class="input-images"></div>
 
                       <input hidden name="galeria" id="galeria" type="text" value="{{$blogs->portada}}">
+                    </div>
+                    <br>
+                    <div class="form-group pull-right col-md-6" style="background: #999;">
+                      <label></label>
+                      <img width="200" height="200" src="{{asset('assets/blogs/image.jpeg')}}">
+                    </div>
+                    <div>
+                      
                     </div>
                   </div>
                 </div>
@@ -61,13 +69,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Nombre del autor</label>
-                      <input type="text" name="autor" value="{{ $blogs->autor}}" class="form-control" />
+                      <input type="text" name="autor" required value="{{ $blogs->autor}}" class="form-control" />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Estatus</label>
-                      <select name="estatus" id="" class="form-control">
+                      <select name="estatus" id="" class="form-control" required>
                         <option value="{{ $blogs->estatus}}">{{ $blogs->estatus}}</option>
                         <option value="pendiente">Pendiente</option>
                         <option value="publicada">Publicada</option>
@@ -78,7 +86,7 @@
                 
                 <div class="form-group">
                   <label>Resumen</label>
-                  <input type="text" name="resumen" value="{{ $blogs->resumen}}" class="form-control" maxlength="160" />
+                  <textarea name="resumen" required class="form-control" maxlength="160" >{{$blogs->resumen}}</textarea>
                 </div>
 
                 <div class="form-group">
@@ -195,8 +203,8 @@ $('.input-images').imageUploader({
 
 imagesInputName: 'portada',
 preloaded:preloaded,
-label: "Arrastra tus imagenes o da click para seleccionarlas",
-
+label: "Arrastra tu imagen o da click para seleccionarlas",
+maxFiles: 1,
 preloadedInputName: 'old',
 
 

@@ -3,8 +3,14 @@
 @section('styles')
     <link type="text/css" rel="stylesheet" href="{{asset('assets/uploader/image-uploader.min.css')}}">
     <style>
-      .tox-notification { display: none !important }
-      .tox-statusbar__branding { display: none !important }
+        .tox-notification { display: none !important }
+        .tox-statusbar__branding { display: none !important }
+        .pull-left {
+            float: left !important;
+        }
+        .pull-right {
+            float: right !important;
+        }
     </style>
 @endsection
 
@@ -114,8 +120,11 @@ console.log(not)
 <script>
 
 $('.input-images').imageUploader({
+    preloadedInputName: "assets/blogs/image.jpeg",
     imagesInputName: 'portada',
-    label: "Arrastra tus imagenes o da click para seleccionarlas"
+    label: "Arrastra tu imagen o da click para seleccionarla",
+    maxSize: 616 * 425,
+    maxFiles: 1,
 });
 
 $('#phase1').on('submit', function(event) {
@@ -130,6 +139,24 @@ $('#phase1').on('submit', function(event) {
     }
 
 })
+
+var _URL = window.URL || window.webkitURL;
+$("#myfile").change(function (e) {
+    var file, img;
+    if ((file = this.files[0])) {
+        img = new Image();
+        img.onload = function () {
+            var wid = this.width;
+            var ht = this.height;
+
+            alert(this.width + " " + this.height);
+            alert(wid);
+            alert(ht);
+        };
+
+        img.src = _URL.createObjectURL(file);
+    }
+});
 
 </script>
 @endsection
