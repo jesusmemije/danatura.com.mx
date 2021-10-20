@@ -9,10 +9,6 @@
     <div class="form-group">
       <label>Portada</label>
       <div class="input-images"></div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="nuevo">
-          <label class="form-check-label" for="inlineCheckbox1">¿Nueva imagen?</label>
-        </div>
     </div>
   </div>
 </div>

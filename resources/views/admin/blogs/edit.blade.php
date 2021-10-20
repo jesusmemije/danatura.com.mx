@@ -51,12 +51,8 @@
                     <div class="form-group">
                       <label for="portada">Portada</label>
                       <div class="input-images"></div>
-                      <div class="form-check form-check-inline">
-                          <input checked class="form-check-input" type="checkbox" id="inlineCheckbox1" name="nuevo">
-                          <label class="form-check-label" for="inlineCheckbox1">¿Nueva imagen?</label>
-                        </div>
 
-                      <input  name="galeria" id="galeria" type="text" value="{{$blogs->portada}}">
+                      <input hidden name="galeria" id="galeria" type="text" value="{{$blogs->portada}}">
                     </div>
                   </div>
                 </div>
