@@ -1,108 +1,104 @@
 @extends('admin.layout.app')
 
- 
+
 @section('styles')
 <link type="text/css" rel="stylesheet" href="{{asset('assets/uploader/image-uploader.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/js/dropify/css/dropify.min.css')}}">
-  <style>
-    .tox-notification { display: none !important }
-    .tox-statusbar__branding { display: none !important }
-  </style>
+<style>
+  .tox-notification {
+    display: none !important
+  }
+
+  .tox-statusbar__branding {
+    display: none !important
+  }
+</style>
 @endsection
 
 @section('content')
 
 <div class="col-md-12">
-    <div class="card shadow">
-        <div class="card-header">
-            @section('pagina-actual','Nueva publicación')
-            @section('breadcumb')
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('dashboard')}}">
-                    <i class="zmdi zmdi-home"></i>Dashboard</a>
-                </li>
-                <li class="breadcrumb-item"><a href="{{route('blogs.index')}}">Publicaciones</a></li>
-                <li class=" breadcrumb-item active">Nuevo</li>
-            </ul>
-            @endsection
+  <div class="card shadow">
+    <div class="card-header">
+      @section('pagina-actual','Nueva publicación')
+      @section('breadcumb')
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{route('dashboard')}}">
+            <i class="zmdi zmdi-home"></i>Dashboard</a>
+        </li>
+        <li class="breadcrumb-item"><a href="{{route('blogs.index')}}">Publicaciones</a></li>
+        <li class=" breadcrumb-item active">Nuevo</li>
+      </ul>
+      @endsection
+    </div>
+
+    @if (\Session::has('success'))
+    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+      <strong>Actualizado correctamente!</strong> La publicación se ha guardado.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    @endif
+
+    <div class="card-body">
+      <form id="phase1" method="POST" action="{{ url('admin/blogs/' .$blogs->id) }}" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        {{ method_field('PATCH') }}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Título</label>
+              <input type="text" name="titulo" required class="form-control" value="{{ $blogs->titulo}}" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Nombre del autor</label>
+              <input type="text" name="autor" required value="{{ $blogs->autor}}" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Resumen (máximo 150 caracteres)</label>
+              <textarea name="resumen" required class="form-control" maxlength="150">{{$blogs->resumen}}</textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Estatus</label>
+              <select name="estatus" id="" class="form-control" required>
+                <option value="{{ $blogs->estatus}}">{{ $blogs->estatus}}</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="publicada">Publicada</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="portada">Imagen de portada</label>
+            <div class="input-images"></div>
+            <input hidden name="galeria" id="galeria" type="text" value="{{$blogs->portada}}">
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label>Contenido</label>
+          <textarea id="editor" name="contenido" rows="15" cols="40" class="form-control tinymce-editor">
+            {{ $blogs->contenido}}
+          </textarea>
         </div>
 
-        @if (\Session::has('success'))
-        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
-            <strong>Actualizado correctamente!</strong> La publicación se ha guardado.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-success btn-sm">Guardar</button>
+          <a type="submit" class="btn btn-sm btn-danger" href="{{ route('blogs.index') }}">Regresar</a>
         </div>
-        @endif
-
-        <div class="card-body">
-            <form id="phase1" method="POST" action="{{ url('admin/blogs/' .$blogs->id) }}" enctype="multipart/form-data">
-            {{ csrf_field() }}
-            {{ method_field('PATCH') }}
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Título</label>
-                      <input type="text" name="titulo" required class="form-control" value="{{ $blogs->titulo}}" />
-                    </div>
-                  </div>
-                  <div class="col-md-6 d-flex">
-                    <div class="form-group pull-left col-md-6">
-                      <label for="portada">Imagen de portada</label>
-                      <div class="input-images"></div>
-
-                      <input hidden name="galeria" id="galeria" type="text" value="{{$blogs->portada}}">
-                    </div>
-                    <br>
-                    <div class="form-group pull-right col-md-6" style="background: #999;">
-                      <label></label>
-                      <img width="200" height="200" src="{{asset('assets/blogs/image.jpeg')}}">
-                    </div>
-                    <div>
-                      
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Nombre del autor</label>
-                      <input type="text" name="autor" required value="{{ $blogs->autor}}" class="form-control" />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Estatus</label>
-                      <select name="estatus" id="" class="form-control" required>
-                        <option value="{{ $blogs->estatus}}">{{ $blogs->estatus}}</option>
-                        <option value="pendiente">Pendiente</option>
-                        <option value="publicada">Publicada</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label>Resumen</label>
-                  <textarea name="resumen" required class="form-control" maxlength="160" >{{$blogs->resumen}}</textarea>
-                </div>
-
-                <div class="form-group">
-                  <label>Contenido</label>
-                  <textarea id="editor" name="contenido" rows="15" cols="40" class="form-control tinymce-editor">
-                      {{ $blogs->contenido}}
-                  </textarea>
-                </div>
-
-                <div class="form-group text-center">
-                  <button type="submit" class="btn btn-success btn-sm">Guardar</button>
-                  <a type="submit" class="btn btn-sm btn-danger" href="{{ route('blogs.index') }}">Regresar</a>
-                </div>
-            </form>
-        </div>
-    </div>   
+      </form>
+    </div>
+  </div>
 </div>
 
 @endsection
@@ -117,7 +113,8 @@
 
 <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
 
-<script src="https://cdn.tiny.cloud/1/dv3q5uytgmcxyuvxiicg1zsje98bzg2t5x5l98qypkizjawo/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.tiny.cloud/1/dv3q5uytgmcxyuvxiicg1zsje98bzg2t5x5l98qypkizjawo/tinymce/5/tinymce.min.js"
+  referrerpolicy="origin"></script>
 <script type="text/javascript" src="{{asset('assets/uploader/image-uploader.min.js')}}"></script>
 
 <script src="{{asset('assets/js/dropify/js/dropify.js')}}"></script>
@@ -127,7 +124,7 @@
   tinymce.init({
   selector: '#editor',
   language : 'es',
-  height: 500,
+  height: 420,
   plugins: 'print preview tinymcespellchecker searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
   toolbar: 'spellchecker | formatselect | bold italic strikethrough forecolor backcolor | link | insert | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | print',
   toolbar_mode: 'floating',
@@ -168,57 +165,38 @@
   console.log(not);
 
 </script>
-  
 
 <script>
+  var public_path = "{{asset('assets')}}";
+  var galeria = $('#galeria').val();
+  var arr_galeria = galeria.split("|");
+  var preloaded = [];
 
-var public_path="{{asset('assets')}}";
-
-var galeria=$('#galeria').val();
-
-var arr_galeria=galeria.split("|");
-
-var preloaded=[];
-
-
-
-for (let i in arr_galeria) {
-
+  for (let i in arr_galeria) {
     if(arr_galeria[i]!=""){
-    
-        preloaded.push({id:i,src:arr_galeria[i]})
-}
-}
+      preloaded.push({id:i,src:arr_galeria[i]})
+    }
+  }
+
+  var foto = public_path+"/blogs/"+$('#primera_foto').val();
+
+  $('.input-images').imageUploader({
+    imagesInputName: 'portada',
+    preloaded: preloaded,
+    label: "La imagen deberá ser de 616px x 425px",
+    /* maxSize: 616 * 425, */
+    maxFiles: 1,
+    preloadedInputName: 'old',
+  });
 
 
-
-var foto=public_path+"/blogs/"+$('#primera_foto').val();
-
-
-
-
-
-
-$('.input-images').imageUploader({
-
-imagesInputName: 'portada',
-preloaded:preloaded,
-label: "Arrastra tu imagen o da click para seleccionarlas",
-maxFiles: 1,
-preloadedInputName: 'old',
-
-
-});
-
-
-$(".delete-image").on('click', function(event){
+  $(".delete-image").on('click', function(event){
     event.stopPropagation();
     event.stopImmediatePropagation();
     //(... rest of your JS code)
     parent=this.parentNode;
     img=parent.getElementsByTagName('img');
-   console.log(img[0].src);
-
+    console.log(img[0].src);
 
     for (let i in arr_galeria) {
 
@@ -227,33 +205,24 @@ $(".delete-image").on('click', function(event){
       }
     }
 
-console.log(arr_galeria.toString());
+    console.log(arr_galeria.toString());
 
-$('#galeria').val(arr_galeria.join("|"));
-  
-});
+    $('#galeria').val(arr_galeria.join("|"));
+    
+  });
 
+  $('#phase1').on('submit', function(event) {
+    event.preventDefault();
 
+    var numItems = $('.uploaded-image').length;
 
-$('#phase1').on('submit', function(event) {
+    if(numItems==0){
+      alert("Debes seleccionar al menos 1 imágen.");
+    } else {
+      event.currentTarget.submit();
+    }
 
-
-event.preventDefault();
-
-var numItems = $('.uploaded-image').length;
-
-
-if(numItems==0){
-  alert("Debes seleccionar al menos 1 imágen.");
-}else{
-  event.currentTarget.submit();
-}
-
-
-
-
-
-})
+  })
 
 
 </script>

@@ -69,7 +69,7 @@
 tinymce.init({
   selector: '#editor',
   language : 'es',
-  height: 500,
+  height: 420,
   plugins: 'print preview tinymcespellchecker searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
   toolbar: 'spellchecker | formatselect | bold italic strikethrough forecolor backcolor | link | insert | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | print',
   toolbar_mode: 'floating',
@@ -122,8 +122,8 @@ console.log(not)
 $('.input-images').imageUploader({
     preloadedInputName: "assets/blogs/image.jpeg",
     imagesInputName: 'portada',
-    label: "Arrastra tu imagen o da click para seleccionarla",
-    maxSize: 616 * 425,
+    label: "La imagen deberá ser de 616px x 425px",
+    /* maxSize: 616 * 425, */
     maxFiles: 1,
 });
 

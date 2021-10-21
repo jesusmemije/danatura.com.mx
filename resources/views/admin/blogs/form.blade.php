@@ -5,15 +5,10 @@
       <input type="text" name="titulo" class="form-control" required />
     </div>
   </div>
-  <div class="col-md-6 d-flex">
-    <div class="form-group pull-left col-md-6">
-      <label>Imagen de portada</label>
-      <div id="myfile" class="input-images"></div>
-    </div>
-    <br>
-    <div class="form-group pull-right col-md-6" style="background: #999;">
-      <label></label>
-      <img width="200" height="200" src="{{asset('assets/blogs/image.jpeg')}}">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label>Nombre del autor</label>
+      <input type="text" name="autor" required class="form-control" />
     </div>
   </div>
 </div>
@@ -21,11 +16,10 @@
 <div class="row">
   <div class="col-md-6">
     <div class="form-group">
-      <label>Nombre del autor</label>
-      <input type="text" name="autor" required class="form-control" />
+      <label>Resumen (máximo 150 caracteres)</label>
+      <textarea type="text" name="resumen" required class="form-control" maxlength="150" ></textarea>
     </div>
   </div>
-
   <div class="col-md-6">
     <div class="form-group">
       <label>Estatus</label>
@@ -38,11 +32,13 @@
   </div>
 </div>
 
-<div class="form-group">
-  <label>Resumen</label>
-  <textarea type="text" name="resumen" required class="form-control" maxlength="160" ></textarea>
+<div class="row">
+  <div class="col-md-6">
+    <label>Imagen de portada</label>
+    <div id="myfile" class="input-images"></div>
+  </div>
 </div>
-
+<br>
 <div class="form-group">
   <label>Contenido</label>
   <textarea id="editor"  required name="contenido" rows="15" cols="40" class="form-control tinymce-editor"></textarea>

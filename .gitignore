@@ -6,6 +6,7 @@
 # /public/admin_assets/vendor
 # /public/hot
 # /public/storage
+/public/assets/blogs
 /storage/*.key
 /vendor
 .env
