@@ -765,7 +765,7 @@ class HomeController extends Controller
             'carrito' => $carrito
         );
     
-        Mail::to( $email )->send( new CompraExitosa( $data_mail ) );
+        Mail::to( $email )->cc('contacto@danatura.com.mx')->send( new CompraExitosa( $data_mail ) );
 
         unset( $_SESSION['carrito'] );
         unset( $_SESSION['totalpagar'] );
