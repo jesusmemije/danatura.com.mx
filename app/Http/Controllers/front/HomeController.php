@@ -741,14 +741,16 @@ class HomeController extends Controller
 
         $datos_envio = DatosEnvio::find( $id_envio );
 
-        $direccion1 = $datos_envio->direccion1;
-        $direccion2 = $datos_envio->direccion2;
-        $cp         = $datos_envio->cp;
-        $localidad  = $datos_envio->localidad;
-        $region     = $datos_envio->region;
-        $pais       = $datos_envio->pais;
-        $telefono   = $datos_envio->telefono;
-        $referencia = $datos_envio->referencia;
+        $nombre_envio = $datos_envio->nombre . ' ' . $datos_envio->apellidos;
+        $email_envio  = $datos_envio->email;
+        $direccion1   = $datos_envio->direccion1;
+        $direccion2   = $datos_envio->direccion2;
+        $cp           = $datos_envio->cp;
+        $localidad    = $datos_envio->localidad;
+        $region       = $datos_envio->region;
+        $pais         = $datos_envio->pais;
+        $telefono_envio = $datos_envio->telefono;
+        $referencia   = $datos_envio->referencia;
 
         if ( !empty($direccion2) ) {
             $direccion_envio = $direccion1 . ', ' . $direccion2 . ', ' . $cp . ', ' . $localidad . ', ' . $region . ', ' . $pais;
@@ -758,10 +760,14 @@ class HomeController extends Controller
 
         $data_mail = array(
             'nombre'  => $nombre,
+            'email'   => $email,
             'total'   => $totalpagar,
             'method'  => $method,
             'status'  => $status,
+            'nombre_envio' => $nombre_envio,
             'direccion_envio' => $direccion_envio,
+            'telefono_envio' => $telefono_envio,
+            'email_envio' => $email_envio,
             'carrito' => $carrito
         );
     

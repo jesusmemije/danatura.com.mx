@@ -32,7 +32,7 @@
       </ul>
       <div class="row d-flex justify-content-center" style="margin-top:8%; font-family:AmasisMTStd-Bold;">
         <div class="text-center">¿Quieres ser distribuidor?  <br>
-          <a href="mailto:ventas@danatura.com.mx?subject=Quiero%20ser%20distribuidor">
+          <a href="mailto:distribuidores@danatura.com.mx?subject=Quiero%20ser%20distribuidor">
             <i class="far fa-id-card fa-sm ri-face id"></i>
           </a>
         </div>

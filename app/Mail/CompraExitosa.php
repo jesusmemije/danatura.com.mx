@@ -30,6 +30,6 @@ class CompraExitosa extends Mailable
      */
     public function build()
     {
-        return $this->view('mails.payment');
+        return $this->view('mails.order');
     }
 }
