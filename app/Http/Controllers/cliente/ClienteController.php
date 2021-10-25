@@ -37,12 +37,13 @@ class ClienteController extends Controller
             
             // Historial de compras
             
-            $historialPedido = DB::table('venta_productos')
-                ->join('users','venta_productos.id_user','=','users.id')
-                ->join('productos','venta_productos.id_producto','=','productos.id')
-                ->join('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
-                ->select('venta_productos.*','users.name', 'productos.nombre AS Producto', 'datos_envios.direccion1')
-                ->where('venta_productos.id_user','=',auth()->user()->id)
+            $historialPedido = DB::table('compra_item')
+                ->join('compra','compra_item.compra_id','=','compra.id')
+                ->join('users','compra.id_user','=','users.id')
+                ->join('productos','compra_item.id_producto','=','productos.id')
+                ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+                ->select('compra_item.*','compra.*','users.name', 'productos.nombre AS Producto', 'datos_envios.direccion1')
+                ->where('compra.id_user','=',auth()->user()->id)
                 ->get();
 
         return view('cliente.historial_pedidos',compact(['historialPedido',$historialPedido,'datosdirection',$datosdirection]));

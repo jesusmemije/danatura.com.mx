@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Productos;
-use App\Models\DatosEnvio;
-use Illuminate\Support\Facades\DB;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Models\DatosEnvio;
+use App\Models\Productos;
+use App\Models\Compra;
+use App\Models\User;
 
 // Send mail
 use App\Mail\CompraExitosa;
@@ -20,12 +21,12 @@ class HomeController extends Controller
     function index()
     {
         $masvendidos =
-            DB::table('venta_productos')
-            ->join('productos', 'venta_productos.id_producto', '=', 'productos.id')
+            DB::table('compra_item')
+            ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
 
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
-            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'precio', 'fotografia', "galeria")
+            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
             ->limit(6)
             ->get();
 
@@ -68,12 +69,12 @@ class HomeController extends Controller
     function detalle_producto(Request $request)
     {
         $masvendidos =
-            DB::table('venta_productos')
-            ->join('productos', 'venta_productos.id_producto', '=', 'productos.id')
+            DB::table('compra_item')
+            ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
 
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
-            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'precio', 'fotografia', "galeria")
+            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
             ->limit(6)
             ->get();
 
@@ -525,8 +526,8 @@ class HomeController extends Controller
         } else {
 
             $masvendidos =
-                DB::table('venta_productos')
-                ->join('productos', 'venta_productos.id_producto', '=', 'productos.id')
+                DB::table('compra_item')
+                ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
 
                 ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia')
                 ->orderByRaw('sum(cantidad) desc ')
@@ -720,20 +721,35 @@ class HomeController extends Controller
         $fecha_creacion = date("Y-m-d", strtotime($data['create_time']));
         $fecha_update   = date_create();
         $method = 'PayPal';
-
+        
         #Para el pago individual de modulos.
         // $cursos_id = [];
 
+         DB::table('compra')->insert([
+            'id_user'       => $usuario_id,
+            'preciototal'   => $totalpagar,
+            'status'        => $status,
+            'chargeid'      => $idPaypal,
+            'method'        => $method,
+            'id_datosenvio' => $id_envio,
+            'created_at'    => $fecha_creacion,
+            'updated_at'    => $fecha_update
+        ]);
+
+        $idOrder = Compra::latest('id')->first();
+        $id      = $idOrder->id;
+
         for ($i = 0; $i < sizeof($carrito); $i++) {
-            $save_payment = DB::table('venta_productos')->insert([
-                'id_user'     => $usuario_id,
+            $prod = Productos::find($carrito[$i]['producto_id']);
+
+            $total= $prod->precio*$carrito[$i]['cantidad'];
+            
+            $save_payment     = DB::table('compra_item')->insert([
+                'compra_id'   => $id,
                 'id_producto' => $carrito[$i]['producto_id'],
                 'cantidad'    => $carrito[$i]['cantidad'],
-                'preciototal' => $totalpagar,
-                'status'      => $status,
-                'chargeid'    => $idPaypal,
-                'method'      => $method,
-                'id_datosenvio' => $id_envio,
+                'precio'      => $prod->precio,
+                'total'       => $total,
                 'created_at'  => $fecha_creacion,
                 'updated_at'  => $fecha_update
             ]);

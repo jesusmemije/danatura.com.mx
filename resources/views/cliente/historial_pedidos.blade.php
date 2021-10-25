@@ -90,8 +90,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a>
-                    <br> --}}
+                    {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a> --}}
+                    <br>
                 </div>
             </div>
             <br>
@@ -108,7 +108,8 @@
                                     <th></th>
                                     <th></th>
                                     <th>Cantidad</th>
-                                    <th>Precio total</th>
+                                    <th>Precio</th>
+                                    <th>total</th>
                                     <th>Metodo de pago</th>
                                     <th>Estatus</th>
                                     <th>Estado de entrega</th>
@@ -120,7 +121,8 @@
                                         <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
                                         <td>{{$registros->Producto}}</td>
                                         <td>{{$registros->cantidad}}</td>
-                                        <td>$ {{$registros->preciototal}} MXN</td>
+                                        <td>$ {{$registros->precio}} MXN</td>
+                                        <td>$ {{$registros->total}} MXN</td>
                                         <td>{{$registros->method}}</td>
                                         <td>{{$registros->status}}</td>
                                         <td>{{$registros->estado_entrega}}</td>
