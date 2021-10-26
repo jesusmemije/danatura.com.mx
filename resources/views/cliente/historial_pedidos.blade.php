@@ -65,7 +65,7 @@
             <div class="direccines col-sm-12">
                 <br>
                     <a class="pull-right btn btn-success" href="{{ url('/') }}">Ir al inicio</a>
-                <h2>Mis direcciones</h2>
+                <h2>Mi dirección de envío</h2>
                 <hr>
                 <div class="col-lg-11">
                     <table class="table table-responsive">
@@ -78,8 +78,9 @@
                                 <td style="width: 650px;">
                                     <label>{{$resul->empresa}}</label>
                                     <br>
-                                    <p style="font-family: arial;">
-                                    {{$resul->direccion1}}, {{$resul->localidad}}, {{$resul->region}}. Código postal: {{$resul->cp}}  
+                                    <p style="font-family: Arial, Helvetica, sans-serif;">
+                                    {{$resul->direccion1}}, {{$resul->localidad}}, {{$resul->region}}. Código postal: {{$resul->cp}}  <br>
+                                    Recibe: {{$resul->nombre . ' ' . $resul->apellidos}} - {{$resul->telefono}}
                                     </p>
                                 </td>
                                 <td>
@@ -98,7 +99,7 @@
             <div class="historial col-sm-12">
                 <br>
                 <div>
-                    <h2>Mi historial de pedidos</h2>
+                    <h2>Mi historial de compras</h2>
                     <hr>
                     <div>
                         @if (!empty($compra))
@@ -106,27 +107,39 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Costo por envio</th>
+                                    <th>Folio</th>
+                                    <th>Costo envío</th>
                                     <th>Subtotal</th>
-                                    <th>Precio total</th>
-                                    <th>Metodo de pago</th>
+                                    <th>Total</th>
+                                    <th>Método pago</th>
                                     <th>Estatus</th>
-                                    <th>Estado de entrega</th>
-                                    <th>Acciones</th>
+                                    <th>Estatus entrega</th>
+                                    <th>Productos</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="font-family: Arial, Helvetica, sans-serif;">
                                 @foreach ($compra as $registros)
+
+                                @php
+                                    if ($registros->status == 'paid') {
+                                        $status = 'Pagado';
+                                        $status = "<span class='badge badge-success'>$status</span>";
+                                    } else {
+                                        $status = "<span class='badge badge-danger'>$registros->status</span>";
+                                    }
+                                @endphp
+
                                     <tr>
                                         <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
-                                        <td>$ {{$registros->costo_envio}} MXN</td>
-                                        <td>$ {{$registros->subtotal}} MXN</td>
-                                        <td>$ {{$registros->preciototal}} MXN</td>
-                                        <td>{{$registros->method}}</td>
-                                        <td>{{$registros->status}}</td>
-                                        <td>{{$registros->estado_entrega}}</td>
-                                        <td>
-                                            <a class='btn btn-info btn-sm redondo ie' data-toggle="modal" data-target="#idModal-{{$registros->id}}">
+                                        <td>#00{{$registros->id}}</td>
+                                        <td>${{$registros->costo_envio}} MXN</td>
+                                        <td>${{$registros->subtotal}} MXN</td>
+                                        <td>${{$registros->preciototal}} MXN</td>
+                                        <td class="text-center"><span class="badge badge-primary">{{$registros->method}}</span></td>
+                                        <td>@php echo $status; @endphp</td>
+                                        <td class="text-center">{{$registros->estado_entrega}}</td>
+                                        <td class="text-center">
+                                            <a class='btn btn-warning btn-sm redondo ie' data-toggle="modal" data-target="#idModal-{{$registros->id}}">
                                                 <i class='fa fa-eye'></i>
                                             </a>
                                         </td>
@@ -150,7 +163,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="height: 560px; width: 850px;">
                 <div class="modal-header text-center">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Productos del dia {{$registros->created_at}}</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Folio #00{{$registros->id}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -162,7 +175,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th></th>
+                                    <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Precio</th>
                                     <th>Total</th>
@@ -176,9 +189,9 @@
                                     <tr>
                                         <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
                                         <td>{{$item->Producto}}</td>
-                                        <td>{{$item->cantidad}}</td>
-                                        <td>$ {{$item->precio}} MXN</td>
-                                        <td>$ {{$item->total}} MXN</td>
+                                        <td>{{$item->cantidad}} pzas.</td>
+                                        <td>${{$item->precio}} MXN</td>
+                                        <td>${{$item->total}} MXN</td>
                                     </tr>
                                 <?php
                                     }
@@ -272,10 +285,13 @@
 
     <div id="editDirection" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agrega la nueva dirección</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Editar dirección de envío <br>
+                        <span style="font-size: 10px">Si ya realizó su compra y quiere cambiar la dirección de envío, llame al <a href="tel:+523339566141">(33) 39566141</a></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
