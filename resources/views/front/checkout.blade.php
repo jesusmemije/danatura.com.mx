@@ -80,7 +80,7 @@
             <p>Cantidad total de productos: {{$cantidad_carrito}} </p>
             <p>Costo por envio: ${{ number_format($_SESSION['gastoEnvio'], 2, '.', ',') }}</p>
             <p>Monto total: ${{ number_format($_SESSION['totalpagar'], 2, '.', ',') }}</p>
-
+            <p hidden>SubTotal: ${{ number_format($_SESSION['subtotal'], 2, '.', ',') }}</p>
             <br>
             <br>
             <input id="cajamonto" type="hidden" value="{{($_SESSION['totalpagar'])}}">

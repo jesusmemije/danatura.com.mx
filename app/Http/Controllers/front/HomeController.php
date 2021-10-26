@@ -724,9 +724,14 @@ class HomeController extends Controller
         
         #Para el pago individual de modulos.
         // $cursos_id = [];
+        
+        $costo_envio = $_SESSION['gastoEnvio'];
+        $subtotal    = $_SESSION['subtotal'];
 
          DB::table('compra')->insert([
             'id_user'       => $usuario_id,
+            'costo_envio'   => $costo_envio,
+            'subtotal'      => $subtotal,
             'preciototal'   => $totalpagar,
             'status'        => $status,
             'chargeid'      => $idPaypal,

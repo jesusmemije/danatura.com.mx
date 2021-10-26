@@ -101,31 +101,35 @@
                     <h2>Mi historial de pedidos</h2>
                     <hr>
                     <div>
-                        @if (!empty($historialPedido))
+                        @if (!empty($compra))
                         <table class="table js-basic-example dataTable">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th></th>
-                                    <th>Cantidad</th>
-                                    <th>Precio</th>
-                                    <th>total</th>
+                                    <th>Costo por envio</th>
+                                    <th>Subtotal</th>
+                                    <th>Precio total</th>
                                     <th>Metodo de pago</th>
                                     <th>Estatus</th>
                                     <th>Estado de entrega</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($historialPedido as $registros)
+                                @foreach ($compra as $registros)
                                     <tr>
                                         <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
-                                        <td>{{$registros->Producto}}</td>
-                                        <td>{{$registros->cantidad}}</td>
-                                        <td>$ {{$registros->precio}} MXN</td>
-                                        <td>$ {{$registros->total}} MXN</td>
+                                        <td>$ {{$registros->costo_envio}} MXN</td>
+                                        <td>$ {{$registros->subtotal}} MXN</td>
+                                        <td>$ {{$registros->preciototal}} MXN</td>
                                         <td>{{$registros->method}}</td>
                                         <td>{{$registros->status}}</td>
                                         <td>{{$registros->estado_entrega}}</td>
+                                        <td>
+                                            <a class='btn btn-info btn-sm redondo ie' data-toggle="modal" data-target="#idModal-{{$registros->id}}">
+                                                <i class='fa fa-eye'></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -140,6 +144,60 @@
         </div>
     </div>
 
+    @foreach ($compra as $registros)
+    <!-- Modal -->
+    <div class="modal fade" id="idModal-{{$registros->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="height: 560px; width: 850px;">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Productos del dia {{$registros->created_at}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background: #fafafa;">
+                    <div class="col-md-12">
+                        @if (!empty($compra_item))
+                        <table class="table js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($compra_item as $item){
+                                    if($item->compra_id == $registros->id){
+                                ?>
+                                    <tr>
+                                        <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
+                                        <td>{{$item->Producto}}</td>
+                                        <td>{{$item->cantidad}}</td>
+                                        <td>$ {{$item->precio}} MXN</td>
+                                        <td>$ {{$item->total}} MXN</td>
+                                    </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        @else
+                            <p>No hay registro en la base de datos</p>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
 
     <div id="addModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">

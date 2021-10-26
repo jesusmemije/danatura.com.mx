@@ -33,6 +33,7 @@
                    // $aux_cantidad_total=$aux_cantidad_total+
                 }
                 $_SESSION['gastoEnvio'] = 170;
+                $_SESSION['subtotal'] = 0;
                 $totalPagar = 0;
 
             } else {
@@ -159,6 +160,11 @@
                                 <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora 
                                     <i style="color:white" class="fas fa-credit-card"></i>
                                 </a>
+                            </div>
+                            <div hidden>
+                                <b>
+                                <?php echo $_SESSION['subtotal'] = $totalPagar ?>
+                                </b>
                             </div>
                         </div>
                     </div>

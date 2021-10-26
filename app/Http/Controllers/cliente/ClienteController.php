@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Compra;
 use App\Models\DatosEnvio;
 
 class ClienteController extends Controller
@@ -37,16 +38,27 @@ class ClienteController extends Controller
             
             // Historial de compras
             
-            $historialPedido = DB::table('compra_item')
-                ->join('compra','compra_item.compra_id','=','compra.id')
+            $compra = DB::table('compra')
+                // ->join('compra_item','compra.id','=','compra_item.compra_id')
+                // ->join('productos','compra_item.id_producto','=','productos.id')
                 ->join('users','compra.id_user','=','users.id')
-                ->join('productos','compra_item.id_producto','=','productos.id')
-                ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
-                ->select('compra_item.*','compra.*','users.name', 'productos.nombre AS Producto', 'datos_envios.direccion1')
+                // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+                ->select('compra.*')
                 ->where('compra.id_user','=',auth()->user()->id)
+                ->distinct('compra.id')
                 ->get();
 
-        return view('cliente.historial_pedidos',compact(['historialPedido',$historialPedido,'datosdirection',$datosdirection]));
+            $compra_item = DB::table('compra_item')
+                ->join('compra','compra_item.compra_id','=','compra.id')
+                ->join('productos','compra_item.id_producto','=','productos.id')
+                // ->join('users','compra.id_user','=','users.id')
+                // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+                ->select('compra_item.*','productos.nombre AS Producto')
+                // ->where('compra.id_user','=',auth()->user()->id)
+                ->distinct('compra_item.id')
+                ->get();
+
+        return view('cliente.historial_pedidos',compact(['compra',$compra,'compra_item',$compra_item,'datosdirection',$datosdirection]));
     }
 
     public function store(Request $request)

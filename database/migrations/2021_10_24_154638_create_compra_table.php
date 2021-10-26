@@ -17,6 +17,8 @@ class CreateCompraTable extends Migration
             $table->id();
             $table->bigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users');
+            $table->float('costo_envio', 8, 2);
+            $table->decimal('subtotal', $precision = 10, $scale = 2);
             $table->decimal('preciototal', $precision = 10, $scale = 2);
             $table->string('status',100);
             $table->string('chargeid',255);
