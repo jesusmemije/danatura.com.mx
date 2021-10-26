@@ -5,7 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\VentaProductos;
+use App\Models\Compra;
 
 class VentasProductosController extends Controller
 {
@@ -17,10 +17,10 @@ class VentasProductosController extends Controller
     public function index()
     {
         //
-        $ventas=VentaProductos::leftJoin('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
-        ->get(['datos_envios.*', 'venta_productos.*','venta_productos.id as idventa']);
+        $ventas=Compra::leftJoin('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+        ->leftJoin('compra_item','compra.id','=','compra_item.compra_id')
+        ->get(['datos_envios.*', 'compra.*', 'compra_item.*','compra.id as idventa']);
 
-       
 
         return view('admin.ventas.index',['ventas'=> $ventas]);
     }
@@ -95,7 +95,7 @@ class VentasProductosController extends Controller
     public function cambiarEstadoEntrega(Request $request){
 
 
-        $cambio_venta=DB::table('venta_productos')
+        $cambio_venta=DB::table('compra')
         ->where('id','=',$request->id_venta)
         ->update([
 

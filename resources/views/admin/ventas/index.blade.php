@@ -153,17 +153,23 @@ use App\Models\Productos;
 
 
                                                         <div class="col-md-1 mr-3">
-                                                            <a class="btn btn-warning btn-sm btn-circle" href="{{route('pedidos.edit',$venta->idventa)}}">
+                                                            {{-- <a class="btn btn-warning btn-sm btn-circle" href="{{route('pedidos.edit',$venta->idventa)}}">
                                                                 <i class="fa fa-edit"></i>
-                                                                </a>
-                
+                                                                </a> --}}
+                                                              <button class="btn btn-warning btn-sm btn-circle" data-toggle="modal" data-target="#ModalAlert">
+                                                                <i class="fa fa-edit"></i>
+                                                              
+                                                              </button> 
                                                         </div>
 
                                                          <div class="col-md-1">
-                                                            <button class="btn btn-sm btn-danger btn-circle shadow-sm" data-toggle="modal" data-target="#deleteUserModal" data-id="{{ $venta->idventa}}" data-name="{{ $venta->nombre }}">
+                                                          <button class="btn btn-sm btn-danger btn-circle shadow-sm" data-toggle="modal" data-target="#ModalAlert">
+                                                                <i class="fas fa-trash fa-sm text-white-50"></i>
+                                                              </button> 
+                                                            {{-- <button class="btn btn-sm btn-danger btn-circle shadow-sm" data-toggle="modal" data-target="#deleteUserModal" data-id="{{ $venta->idventa}}" data-name="{{ $venta->nombre }}">
                                                                 <i class="fas fa-trash fa-sm text-white-50"></i>
                                                               
-                                                              </button> 
+                                                              </button>  --}}
                                                         </div>
 
                                                     </div>
@@ -298,14 +304,14 @@ use App\Models\Productos;
         </button>
       </div>
       <div  class="modal-body">
-        <label for="">Persona</label>
+        <label for="" style="font-size: 20px;">Persona</label>
         <p id="nombremodal"></p>
-        <label for="">Direccion completa</label>
+        <label for="" style="font-size: 20px;">Direccion completa</label>
         <p id="direccionmodal"></p>
-        <label for="">Telefono</label>
+        <label for=""style="font-size: 20px;">Telefono</label>
         <p id="telefonomodal"></p>
 
-        <label for="">Correo electronico</label>
+        <label for="" style="font-size: 20px;">Correo electronico</label>
         <p id="emailmodal"></p>
         
       </div>
@@ -352,6 +358,31 @@ use App\Models\Productos;
         </div>
       </div>
     </div>
+
+</div>
+
+
+<div class="modal fade" id="ModalAlert" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div id="contenidomodal" class="modal-content bg-red">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Alerta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div  class="modal-body">
+        <label for="" style="font-size: 30px;">Por el momento esta función no esta disponible.</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary shadow-sm" data-dismiss="modal">
+          <i class="fas fa-times fa-sm text-white-50"></i>
+          Cerrar
+        </button>
+        
+      </div>
+    </div>
+  </div>
 
 </div>
 
