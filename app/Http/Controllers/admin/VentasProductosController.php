@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Compra;
 
 class VentasProductosController extends Controller
 {
@@ -16,13 +15,26 @@ class VentasProductosController extends Controller
      */
     public function index()
     {
-        //
-        $ventas=Compra::leftJoin('datos_envios','compra.id_datosenvio','=','datos_envios.id')
-        ->leftJoin('compra_item','compra.id','=','compra_item.compra_id')
-        ->get(['datos_envios.*', 'compra.*', 'compra_item.*','compra.id as idventa']);
+        $datosdirection = DB::table('datos_envios')
+                ->select('datos_envios.*')
+                ->get();
+            
+        $compra = DB::table('compra')
+                ->join('users','compra.id_user','=','users.id')
+                ->join('tiposuario','users.tipo','=','tiposuario.id')
+                ->select('compra.*','users.name','tiposuario.tipo','compra.id as idventa')
 
+                ->distinct('compra.id')
+                ->get();
 
-        return view('admin.ventas.index',['ventas'=> $ventas]);
+        $compra_item = DB::table('compra_item')
+                ->join('compra','compra_item.compra_id','=','compra.id')
+                ->join('productos','compra_item.id_producto','=','productos.id')
+                ->select('compra_item.*','productos.*')
+                ->distinct('compra_item.id')
+                ->get();
+
+        return view('admin.ventas.index',compact(['compra',$compra,'compra_item',$compra_item,'datosdirection',$datosdirection]));
     }
 
     /**

@@ -1,13 +1,7 @@
 @extends('admin.layout.app')
 
 @section('content')
-@php
-use App\Models\User;
-
-use App\Models\Productos;
-
-@endphp
-
+<link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}"/>
 <style>
 
 .table tbody{
@@ -71,10 +65,10 @@ use App\Models\Productos;
                                         <tr>
                                             <th>ID</th>
                                             <th>Cliente</th>
-                                            <th>Tipo usuario</th>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio total</th>
+                                            <th>T. usuario</th>
+                                            <th>C. envio</th>
+                                            <th>Subtotal</th>
+                                            <th>P. total</th>
                                             <th>Estatus</th>
                                             <th>Método</th>
                                             <th>Acciones</th>
@@ -83,18 +77,18 @@ use App\Models\Productos;
                                    
                                     <tbody>
 
-                                        @foreach($ventas as $venta)
+                                        @foreach($compra as $venta)
 
                                         @php 
 
                                         $trcolor="";
                                         
-                                        $usuario=User::find($venta->id_user);
-                                        $producto=Productos::find($venta->id_producto);
-                                        $fullname=$venta->nombre .' '. $venta->apellidos;
-                                        $tipo=DB::table('tiposuario')->where('id','=',$usuario->tipo)->first();
-
-                                        $fulldireccion=$venta->direccion1 .', '. $venta->localidad  .', '. $venta->region  .', '. $venta->cp;
+                                        if ($venta->status == 'paid') {
+                                            $status = 'Pagado';
+                                            $status = "<span class='badge badge-success'>$status</span>";
+                                        } else {
+                                            $status = "<span class='badge badge-danger'>$venta->status</span>";
+                                        }
 
                                         switch($venta->estado_entrega){
 
@@ -120,35 +114,61 @@ use App\Models\Productos;
 
                                             <tr class="{{$trcolor}}">
                                                 <td>{{$venta->id}}</td>
-                                                <td>{{$usuario->name}}</td>
-                                                <td>{{$tipo->tipo}}</td>
-                                                <td>{{$producto->nombre}}</td>
-                                                <td>{{$venta->cantidad}}</td> 
+                                                <td>{{$venta->name}}</td>
+                                                <td>{{$venta->tipo}}</td>
+                                                <td>{{$venta->costo_envio}}</td>
+                                                <td>{{$venta->subtotal}}</td> 
                                                 <td>{{$venta->preciototal}}</td>
-                                                <td>{{$venta->status}}</td>
+                                                <td>@php echo $status; @endphp</td>
                                                 <td>{{$venta->method}}</td>
 
                                                 <td>
                                                     <div class="row">
 
                                                       <div class="col-md-1 mr-3">
-                                                        <a class="btn btn-info btn-sm btn-circle" data-email='{{$venta->email}}' data-telefono='{{$venta->telefono}}'  data-nombre='{{$fullname}}' data-direccion='{{$fulldireccion}}' href="" data-toggle="modal" data-target="#detallesModal">
-                                                        <i class="fas fa-street-view"></i>
-                                                            </a>
+                                                        <a class="btn btn-info btn-sm btn-circle"
+                                                        <?php
+                                                        foreach($datosdirection as $direccion) {
+                                                          if($venta->id_datosenvio == $direccion->id){
+                                                            $fullname=$direccion->nombre .' '. $direccion->apellidos;
+                                                            $fulldireccion=$direccion->direccion1 .', '. $direccion->localidad  .', '. $direccion->region  .', '. $direccion->cp;
+                                                        ?>
+                                                         data-email='{{$direccion->email}}' data-telefono='{{$direccion->telefono}}'  data-nombre='{{$fullname}}' data-direccion='{{$fulldireccion}}'
+                                                         <?php
+                                                          }
+                                                         }
+                                                       ?>
+                                                          href="" data-toggle="modal" data-target="#detallesModal">
+                                                          <i class="fas fa-street-view"></i>
+                                                        </a>
             
                                                     </div>
 
                                                       <div class="col-md-1 mr-3">
                                                         <a class="btn btn-success btn-sm btn-circle ie"
+                                                        <?php
+                                                          foreach($compra_item as $item) {
+                                                            if($venta->id == $item->compra_id) {
+                                                        ?>
                                                         data-id_venta='{{$venta->id}}'
                                                         data-estadopagoventa='{{$venta->status}}' data-metodoventa='{{$venta->method}}' data-estadoentregaventa='{{$venta->estado_entrega}}'
                                                         data-cargoventa='{{$venta->chargeid}}'
-                                                        data-cantidadventa='{{$venta->cantidad}}' data-precioventa='{{$venta->preciototal}}'
-                                                           data-tipoventa='{{$tipo->tipo}}' data-productoventa='{{$producto->nombre}}'
-                                                          data-nombre='{{$fullname}}'  href="" data-toggle="modal" data-target="#detallesPedidoModal">
-                                                            <i class="fa fa-eye"></i>
-                                                            </a>
+                                                        data-cantidadventa='{{$item->cantidad}}' data-precioventa='{{$venta->preciototal}}'
+                                                           data-tipoventa='{{$venta->tipo}}' data-productoventa='{{$item->nombre}}'
+                                                          data-nombre='{{$fullname}}'
+                                                          <?php
+                                                            }
+                                                          }
+                                                          ?>
+                                                          href="" data-toggle="modal" data-target="#detallesPedidoModal">
+                                                          <i class="fa fa-eye"></i>
+                                                        </a>
             
+                                                      </div>
+                                                      <div class="col-md-1 mr-3">
+                                                        <a class='btn btn-secondary btn-sm btn-circle ie' data-toggle="modal" data-target="#idModal-{{$venta->id}}">
+                                                          <i class='fa fa-eye'></i>
+                                                        </a>                                                        
                                                       </div>
 
 
@@ -387,6 +407,62 @@ use App\Models\Productos;
 </div>
 
 
+@foreach ($compra as $registros)
+    <!-- Modal -->
+    <div class="modal fade" id="idModal-{{$registros->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="height: 560px; width: 950px;">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Folio #00{{$registros->id}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background: #fafafa;">
+                    <div class="col-md-12">
+                        @if (!empty($compra_item))
+                        <table class="table js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Folio</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($compra_item as $item){
+                                    if($item->compra_id == $registros->id){
+                                ?>
+                                    <tr>
+                                        <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
+                                        <td>#00{{$item->id}}</td>
+                                        <td>{{$item->nombre}}</td>
+                                        <td>{{$item->cantidad}} pzas.</td>
+                                        <td>${{$item->precio}} MXN</td>
+                                        <td>${{$item->total}} MXN</td>
+                                    </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        @else
+                            <p>No hay registro en la base de datos</p>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
 
 @endsection
 @section('scripts')
@@ -400,6 +476,8 @@ use App\Models\Productos;
     <!-- Page level custom scripts -->
     <script src="{{asset('admin_assets/js/demo/datatables-demo.js')}}"></script>
 
+<script src="{{asset('assets/bundles/datatablescripts.bundle.js')}}"></script>
+    <script src="{{asset('assets/js/pages/tables/jquery-datatable.js')}}"></script>
   <script>
        $('#deleteUserModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
