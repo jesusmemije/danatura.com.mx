@@ -182,7 +182,7 @@
                                                               </button> 
                                                         </div>
 
-                                                         <div class="col-md-1">
+                                                         <div class="col-md-1 mr-3">
                                                           <button class="btn btn-sm btn-danger btn-circle shadow-sm" data-toggle="modal" data-target="#ModalAlert">
                                                                 <i class="fas fa-trash fa-sm text-white-50"></i>
                                                               </button> 
@@ -411,7 +411,7 @@
     <!-- Modal -->
     <div class="modal fade" id="idModal-{{$registros->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" style="height: 560px; width: 950px;">
+            <div class="modal-content">
                 <div class="modal-header text-center">
                     <h5 class="modal-title" id="exampleModalLongTitle">Folio #00{{$registros->id}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -419,7 +419,7 @@
                     </button>
                 </div>
                 <div class="modal-body" style="background: #fafafa;">
-                    <div class="col-md-12">
+                    <div class="col-md-12 table-responsive">
                         @if (!empty($compra_item))
                         <table class="table js-basic-example dataTable">
                             <thead>

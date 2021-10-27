@@ -5,8 +5,6 @@
 @endsection
 
 @section('styles')
-    <link type="text/css" rel="stylesheet" href="{{asset('assets/css/lightslider.css')}}" />
-    <link type="text/css" rel="stylesheet" href="{{asset('assets/css/home.css')}}" />
     
     <link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}"/>
     <style>
@@ -67,8 +65,8 @@
                     <a class="pull-right btn btn-success" href="{{ url('/') }}">Ir al inicio</a>
                 <h2>Mi dirección de envío</h2>
                 <hr>
-                <div class="col-lg-11">
-                    <table class="table table-responsive">
+                <div class="col-lg-11 table-responsive">
+                    <table class="table">
                         <tbody>
                             @foreach ($datosdirection as $resul)
                             <tr>
@@ -101,7 +99,7 @@
                 <div>
                     <h2>Mi historial de compras</h2>
                     <hr>
-                    <div>
+                    <div class="table-responsive">
                         @if (!empty($compra))
                         <table class="table js-basic-example dataTable">
                             <thead>
@@ -161,7 +159,7 @@
     <!-- Modal -->
     <div class="modal fade" id="idModal-{{$registros->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" style="height: 560px; width: 850px;">
+            <div class="modal-content">
                 <div class="modal-header text-center">
                     <h5 class="modal-title" id="exampleModalLongTitle">Folio #00{{$registros->id}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -169,7 +167,7 @@
                     </button>
                 </div>
                 <div class="modal-body" style="background: #fafafa;">
-                    <div class="col-md-12">
+                    <div class="col-md-12 table-responsive">
                         @if (!empty($compra_item))
                         <table class="table js-basic-example dataTable">
                             <thead>
@@ -285,7 +283,7 @@
 
     <div id="editDirection" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
