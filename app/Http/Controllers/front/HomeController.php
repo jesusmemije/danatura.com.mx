@@ -528,11 +528,11 @@ class HomeController extends Controller
             $masvendidos =
                 DB::table('compra_item')
                 ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
-
-                ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia')
+    
+                ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
                 ->orderByRaw('sum(cantidad) desc ')
-                ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'precio', 'fotografia')
-                ->limit(3)
+                ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
+                ->limit(6)
                 ->get();
 
             return redirect()->route('home', ['masvendidos' => $masvendidos]);
