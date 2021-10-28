@@ -63,21 +63,25 @@
             <div class="direccines col-sm-12">
                 <br>
                     <a class="pull-right btn btn-success" href="{{ url('/') }}">Ir al inicio</a>
-                <h2>Mi dirección de envío</h2>
+                <h4>Mi dirección de envío</h4>
                 <hr>
                 <div class="col-lg-11 table-responsive">
-                    <table class="table">
+                    <table class="table" style=" white-space: nowrap;">
                         <tbody>
                             @foreach ($datosdirection as $resul)
+                            @php
+                                $direction = $resul->direccion1.', '.$resul->localidad.', '.$resul->region.'. Código postal: '.$resul->cp;
+                            @endphp
                             <tr>
                                 <td colspan="" rowspan="" headers="">
                                     <img class="imagendireccion" src="{{asset('assets/icons/casa.png')}}">
                                 </td>
-                                <td style="width: 650px;">
+                                <td>
                                     <label>{{$resul->empresa}}</label>
                                     <br>
                                     <p style="font-family: Arial, Helvetica, sans-serif;">
-                                    {{$resul->direccion1}}, {{$resul->localidad}}, {{$resul->region}}. Código postal: {{$resul->cp}}  <br>
+                                        <?php echo $direction ?>
+                                      <br>
                                     Recibe: {{$resul->nombre . ' ' . $resul->apellidos}} - {{$resul->telefono}}
                                     </p>
                                 </td>
@@ -91,13 +95,15 @@
                     </table>
                     {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a> --}}
                     <br>
+                    <br>
                 </div>
+                <br>
             </div>
             <br>
             <div class="historial col-sm-12">
                 <br>
                 <div>
-                    <h2>Mi historial de compras</h2>
+                    <h4>Mi historial de compras</h4>
                     <hr>
                     <div class="table-responsive">
                         @if (!empty($compra))
