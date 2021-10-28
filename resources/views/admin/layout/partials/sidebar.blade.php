@@ -30,7 +30,7 @@
                 </div>
             </li>
             <li><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
-            <li><a href=""><i class="zmdi zmdi-account-circle"></i><span>Mi perfil</span></a></li>
+            <li><a href="{{route('pedidos.index')}}"><i class="zmdi zmdi-money"></i><span>Pedidos</span></a></li>
            
             <li> <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-assignment"></i><span>Productos</span></a>
                 <ul class="ml-menu">
@@ -38,17 +38,6 @@
                     <li><a  href="{{route('productos.create')}}">Añadir nuevo producto</a></li>
                     <li><a href="{{route('categorias')}}">Categorías</a></li>
               
-                </ul>
-            </li>
-            <li> <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-money"></i><span>Pedidos</span></a>
-                <ul class="ml-menu">
-
-                <!--    <li><a href="">Todos los pedidos</a></li>  -->
-
-                    <li><a href="{{route('pedidos.index')}}">Todas los pedidos</a></li>
-
-                    
-                   
                 </ul>
             </li>
             <li> <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-add"></i><span>Usuarios</span></a>

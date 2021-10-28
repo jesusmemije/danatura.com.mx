@@ -87,8 +87,6 @@
 
             @php
 
-            $trcolor="";
-
             if ($venta->status == 'paid') {
               $status = 'Pagado';
               $status = "<span class='badge badge-success'>$status</span>";
@@ -96,26 +94,9 @@
               $status = "<span class='badge badge-danger'>$venta->status</span>";
             }
 
-            switch($venta->estado_entrega){
-              case "sin":
-                $trcolor="";
-                break;
-              case "entregado":
-                $trcolor="table-success";
-                break;
-              case "pendiente":
-                $trcolor="table-warning";
-                break;
-              case "cancelado":
-                $trcolor="table-danger";
-                break;
-              default:
-                $trcolor="";
-            }
-
             @endphp
 
-            <tr class="{{$trcolor}}">
+            <tr>
               <td>#00{{$venta->id}}</td>
               <td>{{$venta->name}}</td>
               <td>${{$venta->preciototal}}</td>
@@ -154,26 +135,6 @@
                     </a>
                   </div>
 
-                  {{-- <div class="col-md-1 mr-3">
-                     <a class="btn btn-warning btn-sm btn-circle" href="{{route('pedidos.edit',$venta->idventa)}}">
-                      <i class="fa fa-edit"></i>
-                    </a>
-                    <button class="btn btn-warning btn-sm btn-circle" data-toggle="modal" data-target="#ModalAlert">
-                      <i class="fa fa-edit"></i>
-                    </button>
-                  </div>
-
-                  <div class="col-md-1">
-                    <button class="btn btn-sm btn-danger btn-circle shadow-sm" data-toggle="modal"
-                      data-target="#ModalAlert">
-                      <i class="fas fa-trash fa-sm text-white-50"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger btn-circle shadow-sm" data-toggle="modal"
-                      data-target="#deleteUserModal" data-id="{{ $venta->idventa}}" data-name="{{ $venta->nombre }}">
-                      <i class="fas fa-trash fa-sm text-white-50"></i>
-                    </button>
-                  </div> --}}
-
                 </div>
               </td>
             </tr>
@@ -203,8 +164,8 @@
             <label for="">Estado de entrega:</label>
             <select required name="estado_entrega" id="estadoentregaventa" class="form-control">
               <option value="">Seleccione uno</option>
-              <option value="entregado">Entregado</option>
               <option value="pendiente">Pendiente</option>
+              <option value="entregado">Entregado</option>
               <option value="cancelado">Cancelado</option>
             </select>
           </div>
