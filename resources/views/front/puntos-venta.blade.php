@@ -9,6 +9,10 @@
 	integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==">
 </script>
 
+@section('title')
+	Puntos de venta
+@endsection
+
 @section('content')
 
 @include('front.layout.partials.menu')
@@ -249,7 +253,10 @@
 				</h6>
 				<a href="https://www.amazon.com.mx/s?me=A363UH1A80THI0&marketplaceID=A1AM78C64UM0Y8" target="_BLANK">
 					<img src="{{asset('assets/img/amazon-logo.png')}}" width="100" alt="">
-				</a>	
+				</a>
+				<a href="https://listado.mercadolibre.com.mx/_CustId_705718792" target="_BLANK">
+					<img src="{{asset('assets/img/marcadolibre-logo.png')}}" width="100" alt="">
+				</a>
 			</div>
 		</div>
 	</div>

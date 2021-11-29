@@ -461,6 +461,9 @@
 <script>
     function validarDatosEnvio(){
 
+        $('#paypal-button-container').hide();
+        $('#nopaypal').show();
+
         if(antesdePagar()){
         
             formvalidado=true;
@@ -469,20 +472,58 @@
             $('#nopaypal').hide();
 
             $('#modalenvio').modal('hide');
-        } else {
-            alert("Debe escribir los datos requeridos");
-            $('#paypal-button-container').hide();
-            $('#nopaypal').show();
         }
 
     }
 
+    function ValidateEmail(mail) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function ValidateCP(cp) {
+        if (/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/.test(cp)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function ValidatePhone(phone) {
+        if (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     function antesdePagar(){
 
         if( $('#nombreenvio').val()=="" || $('#apellidosenvio').val()=="" || $('#paisenvio').val()=="" || $('#direccion1envio').val()==""
             || $('#localidadenvio').val()=="" || $('#regionenvio').val()=="" || $('#cpenvio').val()=="" || $('#telefonoenvio').val()=="" || $('#emailenvio').val()=="" ) {
+            
+            alert("Debe escribir los datos requeridos");
             return false;
         } else {
+
+            if ( !ValidateEmail( $('#emailenvio').val() ) ) {
+                alert('El correo electrónico es inválido');
+                return false;
+            }
+
+            if ( !ValidateCP( $('#cpenvio').val() ) ) {
+                alert('El Código Postal es inválido');
+                return false;
+            }
+
+            if ( !ValidatePhone( $('#telefonoenvio').val() ) ) {
+                alert('El Teléfono/celular es inválido');
+                return false;
+            }
+
             var form = $('#form-envios')[0];
             var fileform = new FormData(form); // <-- 'this' is your form element
             var token = $('meta[name="csrf-token"]').attr('content');

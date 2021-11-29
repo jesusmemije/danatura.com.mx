@@ -541,13 +541,6 @@ class HomeController extends Controller
 
     public function carrito()
     {
-        if (auth()->user() == null) {
-            return redirect('/login');
-        }
-
-        // echo 'User IP - ' . $_SERVER['REMOTE_ADDR'];
-        $carrito = DB::table('carrito');
-
         return view('front/carrito');
     }
 
