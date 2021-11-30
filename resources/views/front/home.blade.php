@@ -6,6 +6,7 @@ Home
 
 <link type="text/css" rel="stylesheet" href="{{asset('assets/css/lightslider.css')}}" />
 <link type="text/css" rel="stylesheet" href="{{asset('assets/css/home.css')}}" />
+<link type="text/css" rel="stylesheet" href="{{asset('assets/plugins/lity/dist/lity.min.css')}}" />
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
@@ -324,6 +325,14 @@ Home
 
 @section('scripts')
 <script src="{{asset('assets/js/lightslider.js')}}"></script>
+<script src="{{asset('assets/plugins/lity/dist/lity.min.js')}}"></script>
+
+<script>
+  $( window ).on( "load", function() {
+    var instance = lity('http://danatura.com.mx/files/danatura-welcome.mp4');
+    var opener = instance.opener();
+  });
+</script>
 
 <script type="text/javascript">
   $("#here").on("keyup", function() {

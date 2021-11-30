@@ -280,8 +280,8 @@
     <div class="row">
         <div class="col-md-3 col-12 text-center pt-md-4 pt-3">
             <span class="pl-md-4 pl-0" style="color:#4c5444; font-weight:bold">
-                <a href="tel:+523339566141">
-                    Contáctanos(33) 39566141
+                <a href="tel:+523330238418">
+                    Contáctanos(33) 30238418
                 </a>
             </span>
         </div>
