@@ -329,7 +329,7 @@ Home
 
 <script>
   $( window ).on( "load", function() {
-    var instance = lity('/files/danatura-welcome.mp4');
+    var instance = lity("<video controls muted autoplay><source src='/files/danatura-welcome.mp4' type='video/mp4'></video>");
     var opener = instance.opener();
   });
 </script>

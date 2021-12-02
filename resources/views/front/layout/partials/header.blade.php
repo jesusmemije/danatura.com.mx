@@ -310,16 +310,52 @@
                         <i style="" class="fab fa-whatsapp fa-sm ri-face iw"></i></a></li>
             </ul>
         </div>
+        <style>
+            .forma-circle {
+                background-color: #f79860;
+                color: #fff;
+                border-radius: 50%;
+                padding: .4em .6em;
+                font-weight: 700;
+                top: -1.6em;
+                left: -1em;
+                position: relative;
+            }
+        </style>
+        @php
+            if(!isset($_SESSION)) {
+                session_start(); 
+            }
+        @endphp
         <div class="col-md-4 col-12 pt-md-0 pt-3" style="color:#4c5444;">
             <ul class="nav align-items-center justify-content-center">
-                <li class="nav-item ml-md-auto"><img height="35" src="{{asset('assets/icons/Carrito.png')}}" alt="">
+                <li class="nav-item ml-md-auto">
+                    <a href="{{route('carrito')}}">
+                        <img height="35" src="{{asset('assets/icons/Carrito.png')}}" alt="">
+                        @if ( isset($_SESSION['carrito']) )
+                            <span class="badge badge-light forma-circle" style="">
+                                @php
+                                    echo sizeof($_SESSION['carrito']);
+                                @endphp
+                            </span>
+                        @endif
+                    </a>
                 </li>
-                <li class="nav-item" style="padding-top: 6px; font-size:18px;"><a href="{{route('carrito')}}">Mi
-                        compra</a></li>
-                <li style="padding-left:6%" class="nav-item"><img height="35"
-                        src="{{asset('assets/icons/Corazón.png')}}" alt=""></li>
-                <li class="nav-item" style="padding-top: 6px; font-size:18px;"><a href="{{route('mis-favoritos')}}">Mis
-                        favoritos</a></li>
+                <li class="nav-item" style="padding-top: 6px; font-size:18px;">
+                    <a href="{{route('carrito')}}">
+                        Mi compra
+                    </a>
+                </li>
+                <li style="padding-left:6%" class="nav-item">
+                    <a href="{{route('mis-favoritos')}}">
+                        <img height="35" src="{{asset('assets/icons/Corazón.png')}}" alt="">
+                    </a>
+                </li>
+                <li class="nav-item" style="padding-top: 6px; font-size:18px;">
+                    <a href="{{route('mis-favoritos')}}">
+                        Mis favoritos
+                    </a>
+                </li>
             </ul>
         </div>
         <div style="color:white; padding-left:5%; " class="col-md-3 col-12 d-flex justify-content-center pt-md-0 pt-3">

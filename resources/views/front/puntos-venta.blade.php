@@ -129,10 +129,18 @@
 
 <div style="background: #f5e6cd;">
 
-	<div class="container">
+	<div class="container py-5">
 		<div class="row">
-			<div class="col-md-12 mt-5 ml-2">
-				<h6 style="color:black; font-weight:bold; font-family:'AmasisMTStd-Bold'">
+			<div class="col-md-6" style="display: ruby;">
+				<img src="{{asset('assets/img/marcador.png')}}" width="100" alt="">
+				<a href="{{route('puntos-venta')}}">
+					<h3 style="color:#F79860; font-weight:bold; font-family:'AmasisMTStd-Bold'">
+						PUNTOS DE VENTA
+					</h3>
+				</a>
+			</div>
+			<div class="col-md-6" style="margin-top: 30px">
+				<h6 style="color:#7B4828; font-weight:bold; font-family:'AmasisMTStd-Bold'">
 					Encuéntranos también en:
 				</h6>
 				<a href="https://www.amazon.com.mx/s?me=A363UH1A80THI0&marketplaceID=A1AM78C64UM0Y8" target="_BLANK">
@@ -143,25 +151,9 @@
 				</a>
 			</div>
 		</div>
-	</div>
-
-	<div class="container">
-		<div style="padding-top:4%; padding-bottom:4%;">
-			<div class="row" style="padding-bottom: 8%;">
-				<div style="position:relative">
-					<img src="{{asset('assets/img/marcador.png')}}" width="100" alt="">
-				</div>
-				<a style="padding-top:2%" href="{{route('puntos-venta')}}">
-					<h3 style="color:#F79860; font-weight:bold; padding-bottom:2%; font-family:'AmasisMTStd-Bold'">
-						PUNTOS DE VENTA</h3>
-				</a>
-			</div>
-
-			<div class="row">
-				<div class="col-md-12 d-flex justify-content-center">
-					<img class="img-fluid" src="{{asset('assets/img/mapa5.png')}}" alt="">
-
-				</div>
+		<div class="row">
+			<div class="col-md-12 d-flex justify-content-center">
+				<img class="img-fluid" src="{{asset('assets/img/mapa5.png')}}" alt="">
 			</div>
 		</div>
 	</div>

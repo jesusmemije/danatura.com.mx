@@ -511,7 +511,7 @@ function fav(dato, id){
       }
 
       if(response['operacion']=="bien"){
-        window.location="{{route('carrito')}}"; 
+        window.location="{{route('productos')}}"; 
       }
                      
     },
