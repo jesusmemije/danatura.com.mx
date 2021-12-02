@@ -132,14 +132,14 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 mt-5 ml-2">
-				<h6 style="color:black; font-weight:bold; padding-bottom:2%; font-family:'AmasisMTStd-Bold'">
+				<h6 style="color:black; font-weight:bold; font-family:'AmasisMTStd-Bold'">
 					Encuéntranos también en:
 				</h6>
 				<a href="https://www.amazon.com.mx/s?me=A363UH1A80THI0&marketplaceID=A1AM78C64UM0Y8" target="_BLANK">
 					<img src="{{asset('assets/img/amazon-logo.png')}}" width="100" alt="">
 				</a>&nbsp;
 				<a href="https://listado.mercadolibre.com.mx/_CustId_705718792" target="_BLANK">
-					<img src="{{asset('assets/img/marcadolibre-logo.png')}}" width="100" alt="">
+					<img src="{{asset('assets/img/marcadolibre-logo.png')}}" width="150" alt="">
 				</a>
 			</div>
 		</div>

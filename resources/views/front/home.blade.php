@@ -329,7 +329,7 @@ Home
 
 <script>
   $( window ).on( "load", function() {
-    var instance = lity('http://danatura.com.mx/files/danatura-welcome.mp4');
+    var instance = lity('/files/danatura-welcome.mp4');
     var opener = instance.opener();
   });
 </script>
