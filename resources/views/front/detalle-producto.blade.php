@@ -206,6 +206,12 @@ Detalle producto
       padding-top: 6%;
     }
   }
+
+  .corazon {
+    top: 66px;
+    left: 88%;
+  }
+
 </style>
 @endsection
 
@@ -249,6 +255,7 @@ Detalle producto
         $foto_principal=$array_galeria[0];
         @endphp
 
+        <i id="fav{{ $producto->id }}" onclick="fav(this,{{ $producto->id }})" class="fas fa-heart fa-lg corazon" aria-hidden="true"></i>
         <img id="img-principal" src="{{$foto_principal}}" alt="...">
       </div>
 

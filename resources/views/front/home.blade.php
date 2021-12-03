@@ -69,10 +69,11 @@ Home
 </div>
 <div class="container-fluid">
   <div class="row pt-5">
-    <div class="col-md-12 ">
-      <div class="row d-flex justify-content-center" style="color:#73472b;font-size: 2em;">PRODUCTOS</div>
-      <div class="row d-flex justify-content-center"
-        style="color:#fb985f; font-size:3em; font-family:AmasisMTStd-Bold; ">MÁS VENDIDOS</div>
+    <div class="col-md-12">
+      <div class="text-center">
+        <div style="color:#73472b; font-size:4em; font-family: COSMOPOLITAN SCRIPT MEDIUM; line-height:1;">Productos</div>
+        <div style="color:#fb985f; font-size:3em; font-family:AmasisMTStd-Bold; line-height:1;">MÁS VENDIDOS</div>
+      </div>
     </div>
     <div class="col-md-12">
       <ul id="lightSlider">
@@ -252,15 +253,18 @@ Home
   </div>
 </div>
 <div class="row py-0 px-0 py-md-5 px-md-0" style="background:#FFE4B8;">
-  <div class="col-md-3 col-6 mb-1" style="display:inline-block;"> <img
-      style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/Image_Ig1.jpg')}}"
-      alt=""> </div>
-  <div class="col-md-3 col-6 mb-1"> <img style='max-height: 100%; max-width: 113%; object-fit: cover'
-      src="{{asset('assets/images/Image_Ig2.jpg')}}" alt=""> </div>
-  <div class="col-md-3 col-6"> <img style='max-height: 100%; max-width: 113%; object-fit: cover'
-      src="{{asset('assets/images/Image_Ig3.jpg')}}" alt=""> </div>
-  <div class="col-md-3 col-6"> <img style='max-height: 100%; max-width: 113%; object-fit: cover'
-      src="{{asset('assets/images/Image_Ig4.jpg')}}" alt=""> </div>
+  <div class="col-md-3 col-6 mb-1" style="display:inline-block;">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_01.png')}}">
+  </div>
+  <div class="col-md-3 col-6 mb-1">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_02.png')}}">
+  </div>
+  <div class="col-md-3 col-6">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_03.png')}}">
+  </div>
+  <div class="col-md-3 col-6">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_04.png')}}">
+  </div>
 </div>
 <div class="row" style="height:300px; background:#F79860">
   <div class="col-md-12" style="padding-top: 4%;">
