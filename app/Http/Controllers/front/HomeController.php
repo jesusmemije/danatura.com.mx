@@ -11,9 +11,11 @@ use App\Models\DatosEnvio;
 use App\Models\Productos;
 use App\Models\Compra;
 use App\Models\User;
+use App\Models\Contacto;
 
 // Send mail
 use App\Mail\CompraExitosa;
+use App\Mail\MensajeContacto;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -37,14 +39,15 @@ class HomeController extends Controller
 
     function registrar_contacto(Request $request)
     {
-        $hecho = DB::table('contacto')->insert([
-            'nombre' => $request->nombre,
-            'email' => $request->email,
-            'asunto' => $request->asunto,
-            'mensaje' => $request->mensaje,
-        ]);
+        $contacto = new Contacto();
+        $contacto->nombre  = $request->nombre;
+        $contacto->email   = $request->email;
+        $contacto->asunto  = $request->asunto;
+        $contacto->mensaje = $request->mensaje;
 
-        if ($hecho) {
+        Mail::to('contacto@danatura.com.mx')->send( new MensajeContacto( $contacto ) );
+
+        if ( $contacto->save() ) {
             return redirect()->back()->with('mensaje', 'Su información se ha enviado a nuestro equipo de trabajo.');
         } else {
             return redirect()->back()->with('error', 'Su información no ha podido ser enviada, intentelo de nuevo.');

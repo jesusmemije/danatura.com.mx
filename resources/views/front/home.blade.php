@@ -254,13 +254,13 @@ Home
 </div>
 <div class="row py-0 px-0 py-md-5 px-md-0" style="background:#FFE4B8;">
   <div class="col-md-3 col-6 mb-1" style="display:inline-block;">
-    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_01.png')}}">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_03.png')}}">
   </div>
   <div class="col-md-3 col-6 mb-1">
-    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_02.png')}}">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_01.png')}}">
   </div>
   <div class="col-md-3 col-6">
-    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_03.png')}}">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_02.png')}}">
   </div>
   <div class="col-md-3 col-6">
     <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_04.png')}}">

@@ -211,7 +211,7 @@
                                                     <td style="font-size: 18px; font-weight: 400;">
                                                         <p
                                                             style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;">
-                                                            <a href="#" target="_blank" style="color: #ffffff; text-decoration: none;">Ticket &nbsp;</a>
+                                                            <a href="#" target="_blank" style="color: #ffffff; text-decoration: none;">Tienda &nbsp;</a>
                                                         </p>
                                                     </td>
                                                     <td style="font-size: 18px; font-weight: 400; line-height: 24px;">
