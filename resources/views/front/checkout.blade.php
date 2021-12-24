@@ -1,38 +1,36 @@
 @extends('front.layout.app')
 
 @section('title')
-    Checkout
+Checkout
 @endsection
 
 @section('styles')
-    <style>
-        sup {
-            color: red;
-        }
+<style>
+    sup {
+        color: red;
+    }
 
-        #pagopaypal {
-            margin: 10px 80px;
-        }
+    .text-center-items {
+        text-align: unset;
+    }
 
+    .pull-left {
+        float: left !important;
+    }
+
+    .pull-right {
+        float: right !important;
+    }
+
+    @media screen and (max-width: 480px) {
         .text-center-items {
-            text-align: unset;
+            text-align: center;
         }
-        .pull-left {
-          float: left !important;
-        }
-        .pull-right {
-            float: right !important;
-        }
+    }
+</style>
 
-        @media screen and (max-width: 480px) {
-            #pagopaypal {
-                margin: 0;
-            }
-            .text-center-items {
-                text-align: center;
-            }
-        }
-    </style>
+<link href="{{asset('assets/css/checkout.css')}}" rel="stylesheet" />
+
 @endsection
 
 @section('content')
@@ -48,8 +46,6 @@
 ?>
 
 @include('front.layout.partials.menu')
-
-    
 
 <div class="container pt-4 pb-4">
     <div class="container col-sm-12">
@@ -102,15 +98,23 @@
                             if ($producto->id == $key['producto_id']) {
                                 $totalPagar = $producto->precio + $totalPagar;
                                 ?>
-                                <tr>
-                                    <td>
-                                        <h6><?php echo $producto->nombre; ?></h6>
-                                    </td>
-                                    <td class="phone-hide"><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
-                                    <td><?php echo $key['cantidad'];  ?></td>
-                                    <td id="<?php echo $producto->id ?>">$<?php echo number_format($producto->precio, 2, '.', ',') ?></td>
-                                </tr>
-                                <?php
+                    <tr>
+                        <td>
+                            <h6>
+                                <?php echo $producto->nombre; ?>
+                            </h6>
+                        </td>
+                        <td class="phone-hide"><span class="text-muted">
+                                <?php echo $producto->descripcion;  ?>
+                            </span></td>
+                        <td>
+                            <?php echo $key['cantidad'];  ?>
+                        </td>
+                        <td id="<?php echo $producto->id ?>">$
+                            <?php echo number_format($producto->precio, 2, '.', ',') ?>
+                        </td>
+                    </tr>
+                    <?php
                                 $i++;
                             }
                         }
@@ -126,159 +130,161 @@
         </div>
 
         <div class="col-md-6 col-12 text-center-items">
-            <form action="{{ route('payment') }}" method="POST" id="payment-form" name="form">
 
-                <!-- datos de facturacion/ envio de producto -->
-                <input hidden type="text" id="inp-envios">
-                <input type="hidden" id="metodo-pago" name="metodopago">
-                <input name="_token" type="hidden" value="{{ csrf_token() }}" />
-                <input type="hidden" name="tipo" value="1">
-                <input type="hidden" name="paquete" id="paquete" value="0">
-                <!--Input for Token-->
-                <input type="hidden" name="token_id" id="token_id">
-                <!-- Datos de la suscripción-->
-                <!--<input type="hidden" name="idplan" value="">-->
-
-                <!-- Datos del cliente -->
-
-                <!-- Datos de la tarjeta-->
-                <!-- <div id="pagotarjeta">
-                    Método de pago<br>
-
-                    <div class="form-row col-md-12">
-                        <div class="form-group" style="margin-right:10px;"><strong class="txtrojo">Tarjeta de Crédito /
-                                Débito</strong></div>
-                        <div class="form-group" style="margin-right:10px;"><strong class="txtgrisc"
-                                onClick="document.getElementById('pagotarjeta').style.display='none'; document.getElementById('pagopaynet').style.display='block';"
-                                style="cursor:pointer">Efectivo en Oxxo</strong></div>
-                        <div class="form-group" style="margin-left:10px;" onclick="validarDatosEnvio()"><strong
-                                class="txtgrisc"
-                                onClick="document.getElementById('pagotarjeta').style.display='none'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='block';"
-                                style="cursor:pointer">PayPal</strong><br></div>
-                    </div>
-
-                    <br>
-                    Nombre del Tarjetahabiente
-                    <br>
-                    <input type="text" class="form-control" name="nombretarjeta" class="w3-input" maxlength="50"
-                        data-conekta="card[name]" autocomplete="off" required><br>
-
-                    Número de Tarjeta
-                    <br>
-                    <input type="text" class="form-control" name="numtarjeta" class="w3-input" pattern="[0-9]+"
-                        maxlength="16" minlength="16" data-conekta="card[number]" onkeypress="return numeros(event)"
-                        required><br>
-
-                    <div class="w3-row" style="width: 100%">
-                        <div class="w3-col" style="width:68%;">
-                            Fecha de Vencimiento
-                            <br>
-                            <select class="form-control" name="mes" class="w3-input"
-                                style="width:46%; float:left; margin-right:4%" data-conekta="card[exp_month]" required>
-                                <option disabled selected>[Mes]</option>
-                                <?php
-                                    $meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-
-                                    for ($i = 1; $i <= sizeof($meses); $i++) { ?>
-                                <?php if ($i <= 9) : ?>
-                                <option value="<?php echo "0" . $i ?>"><?php echo "0" . $i . " - " . $meses[$i - 1] ?>
-                                </option>
-                                <?php else : ?>
-                                <option value="<?php echo $i ?>"><?php echo $i . " - " . $meses[$i - 1] ?></option>
-                                <?php endif ?>
-
-                                <?php } ?>
-                            </select>
-
-                            <select class="form-control" name="anio" class="w3-input"
-                                style="width:46%; float:left; margin-right:4%" data-conekta="card[exp_year]" required>
-                                <option disabled selected>[Año]</option>
-
-                                <?php for ($i = 19; $i <= 30; $i++) { ?>
-                                <option value="<?php echo $i ?>"><?php echo $i . " - " . "20" . $i ?></option>
-                                <?php } ?>
-
-                            </select></div><br><br>
-                        <p>CVV</p>
-                        <div class="row col-lg-12 col-xs-4" id="borde">
-
-                            <input class="form-control col-lg-4 col-4" type="text" name="CVV" class="w3-input"
-                                pattern="[0-9]+" maxlength="4" minlength="3" placeholder="CVV" data-conekta="card[cvc]"
-                                onkeypress="return numeros(event)" required>
-                            <img style="margin-left:2%;" src="{{asset('assets/images/cvv.png')}}" alt="">
-
-                        </div>
-                        <br>
-                    </div>
-                    <div class="row">
-                        <div class="conekta col-xl-6">
-                            <label>Transacciones realizadas vía:</label>
-                            <img style="height:40px" src="{{asset('assets/images/conekta.png')}}" alt="">
-                        </div>
-                        <div class="secure col-xl-6">
-                            Tus pagos se realizan de forma segura con encriptación de 256 bits
-                            <img style="height:40px" src="{{asset('assets/images/security.png')}}" alt="">
-                        </div>
-                    </div>
-
-                    <br><button class="btn btn-danger" style="margin-left:25%;" id="pay-button"> &nbsp; &nbsp; Pagar
-                        productos &nbsp; &nbsp; </button><br><br>
-                </div> -->
-            </form>
-
-            <!-- <div id="pagopaynet" style="display:none; padding-bottom:4em">
-                <label style="margin-left:35%;"> Método de pago </label><br>
-                <div class="form-row col-md-12">
-                    <div class="form-group" style="margin-right:10%;">
-                        <strong style="cursor:pointer;" class="txtrojo" onClick="document.getElementById('pagotarjeta').style.display='block'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='none';" ">Tarjeta de Crédito / Débito</strong></div>
-                    <div class=" form-group" style="margin-right:10px;">
-                        <strong class="txtgrisc" style="cursor:pointer">Efectivo en Oxxo</strong>
-                    </div>
-                    <div class="form-group" style="margin-left:10px;" onclick="validarDatosEnvio()">
-                        <strong class="txtgrisc" onClick="document.getElementById('pagotarjeta').style.display='none'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='block';" style="cursor:pointer">PayPal</strong><br>
-                    </div>
-                </div>
-
-                <br><br>
-
-                <div class="w3-row" style="text-align:center">
-                    <img src="https://escueladeimagenymaquillaje.com/cursos_online/public/asset/img/oxxopay.png" style="width:250px;" class="imgmax"><br><br>
-                    Paga en efectivo en tu Oxxo más cercano
-                </div>
-                <input name="_token" type="hidden" value="{{ csrf_token() }}" />
-                <input type="hidden" name="tipo" value="2">
-                <input type="hidden" name="paquete" id="paquetep" value="0">
-
-                <br>
-                <div class="w3-row" style="text-align:center">
-                    <input id="pay-oxxo" class="w3-btn frojo" type="submit" value=" &nbsp; &nbsp; Generar Referencia &nbsp; &nbsp;">
-                </div>
-                <br>
-            </div> -->
-
-            </form>
-
-            <div id="pagopaypal" class="text-center mt-md-0 mt-5" style="padding-bottom:4em;">
-
+            <div class="text-center">
                 <label class="font-weight-bold h5"> Método de pago </label><br>
-
-                <div class="form-row col-md-12">
-                    <!-- <div class="form-group" style="margin-right:10%;">
-                        <strong style="cursor:pointer;" class="txtrojo" onClick="document.getElementById('pagotarjeta').style.display='block'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='none';" ">Tarjeta de Crédito / Débito</strong>
-                    </div>
-                    <div class=" form-group" style="margin-right:10px;">
-                        <strong class="txtgrisc" onClick="document.getElementById('pagotarjeta').style.display='none'; document.getElementById('pagopaynet').style.display='block'; document.getElementById('pagopaypal').style.display='none';" style="cursor:pointer">Efectivo en Oxxo</strong>
-                    </div>
-                    <div class="form-group" style="margin-left:10%;" onclick="validarDatosEnvio()">
-                        <strong class="txtgrisc" onClick="document.getElementById('pagotarjeta').style.display='none'; document.getElementById('pagopaynet').style.display='none'; document.getElementById('pagopaypal').style.display='block';" style="cursor:pointer">PayPal</strong>
-                    </div> -->
-                </div>
-
-                <div style="margin-top: 10%;" id="paypal-button-container"></div>
-                <div style="margin-top: 30%;"><input type="hidden"></div>
-
-                <span id="nopaypal" class="badge badge-danger">Debe escribir sus datos de envio para poder continuar</span>
             </div>
+
+            <div class="tabs mt-3">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="visa-tab" data-toggle="tab" href="#visa" role="tab"
+                            aria-controls="visa" aria-selected="true">
+                            <img src="/assets/icons/credit-card.png" width="80">
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab"
+                            aria-controls="paypal" aria-selected="false">
+                            <img src="/assets/icons/paypal.png" width="80">
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="mercadopago-tab" data-toggle="tab" href="#mercadopago" role="tab"
+                            aria-controls="mercadopago" aria-selected="false">
+                            <img src="/assets/icons/mercado-pago.png" width="80">
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="visa" role="tabpanel" aria-labelledby="visa-tab">
+                        <div class="mt-4 mx-4">
+                            <div class="text-center">
+                                <h5>Tarjeta de crédito / débito</h5>
+                            </div>
+                            <div class="form mt-3">
+                                <form action="{{ route('payWithConekta') }}" method="POST" id="payment-form">
+                                    <!-- Datos de envío -->
+                                    <input type="hidden" id="id_envio" name="id_envio">
+                                    <!--Input for Token-->
+                                    <input type="hidden" id="token_id" name="token_id">
+
+                                    <!-- Datos de la tarjeta-->
+                                    <br>
+                                    Nombre del Tarjetahabiente
+                                    <br>
+                                    <input type="text" class="form-control" placeholder="Juan Pérez" class="w3-input"
+                                        maxlength="50" data-conekta="card[name]" autocomplete="off" required><br>
+                                    Número de Tarjeta
+                                    <br>
+                                    <input id="number_card" type="text" class="form-control"
+                                        placeholder="0000 0000 0000 0000" class="w3-input" maxlength="16" minlength="16"
+                                        data-conekta="card[number]" required>
+                                    <div id="msg_number_card"></div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Fecha de Vencimiento
+                                            <br>
+                                            <select class="form-control" class="w3-input"
+                                                style="width:46%; float:left; margin-right:4%"
+                                                data-conekta="card[exp_month]" required>
+                                                <option disabled selected>[Mes]</option>
+                                                <?php
+                                                $meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+                                
+                                                for ($i = 1; $i <= sizeof($meses); $i++) { ?>
+                                                <?php if ($i <= 9) : ?>
+                                                <option value="<?php echo "0" . $i ?>">
+                                                    <?php echo "0" . $i . " - " . $meses[$i - 1] ?>
+                                                </option>
+                                                <?php else : ?>
+                                                <option value="<?php echo $i ?>">
+                                                    <?php echo $i . " - " . $meses[$i - 1] ?>
+                                                </option>
+                                                <?php endif ?>
+
+                                                <?php } ?>
+                                            </select>
+
+                                            <select class="form-control" class="w3-input"
+                                                style="width:46%; float:left; margin-right:4%"
+                                                data-conekta="card[exp_year]" required>
+                                                <option disabled selected>[Año]</option>
+
+                                                <?php for ($i = 21; $i <= 30; $i++) { ?>
+                                                <option value="<?php echo $i ?>">
+                                                    <?php echo $i . " - " . "20" . $i ?>
+                                                </option>
+                                                <?php } ?>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" id="borde">
+                                        <div class="col-md-6">
+                                            <br>
+                                            <input id="number_cvv" class="form-control" type="text" class="w3-input"
+                                                maxlength="4" minlength="3" placeholder="CVV" data-conekta="card[cvc]"
+                                                required>
+                                            <div id="msg_number_cvv"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <br>
+                                            <img src="{{asset('assets/images/cvv.png')}}" alt="">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="conekta col-xl-6">
+                                            <br><br>
+                                            <label>Transacciones realizadas vía:</label>
+                                            <img style="height:40px" src="{{asset('assets/images/conekta.png')}}"
+                                                alt="">
+                                        </div>
+                                        <div class="secure col-xl-6">
+                                            <br><br>
+                                            Tus pagos se realizan de forma segura con encriptación de 256 bits
+                                            <img style="height:40px" src="{{asset('assets/images/security.png')}}"
+                                                alt="">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="text-center">
+                                        <button class="btn btn-danger px-5" id="pay-button">
+                                            Pagar productos
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+                        <div class="mt-4 mx-4">
+                            <div class="text-center">
+                                <h5>Pago con PayPal</h5>
+                            </div>
+                            <div class="my-4" id="paypal-button-container"></div>
+                            <div class="text-center">
+                                <span id="nopaypal" class="badge badge-danger">Debe escribir sus datos de envio para
+                                    poder continuar</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="mercadopago" role="tabpanel" aria-labelledby="mercadopago-tab">
+                        <div class="mt-4 mx-4">
+                            <div class="text-center">
+                                <h5>Pago con Mercado Pago</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
         </div>
     </div>
 </div>
@@ -302,11 +308,13 @@
                             <form id="form-envios" method="post">
                                 <input hidden type="text" id="dato_id" name="dato_id">
                                 <label for="">Nombre (Requerido)<sup class="supred">*</sup></label>
-                                <input required id="nombreenvio" name="nombre" type="text" class="form-control" placeholder="">
+                                <input required id="nombreenvio" name="nombre" type="text" class="form-control"
+                                    placeholder="">
                         </div>
                         <div class="col">
                             <label for="">Apellidos (Requerido)<sup>*</sup></label>
-                            <input required id="apellidosenvio" type="text" name="apellidos" class="form-control" placeholder="">
+                            <input required id="apellidosenvio" type="text" name="apellidos" class="form-control"
+                                placeholder="">
                         </div>
                     </div>
                     <label for="">Empresa (Opcional)</label>
@@ -338,10 +346,12 @@
                     <input id="emailenvio" type="text" class="form-control" name="email" placeholder="">
 
                     <label for="">RFC (Opcional)</label>
-                    <input id="rfcenvio" type="text" class="form-control" name="rfc" placeholder="*En caso de requerir factura">
+                    <input id="rfcenvio" type="text" class="form-control" name="rfc"
+                        placeholder="*En caso de requerir factura">
 
                     <label for="">Referencia (Opcional)</label>
-                    <input id="referenciaenvio" type="text" class="form-control" name="referencia" placeholder="Referencia del lugar de envío del paquete">
+                    <input id="referenciaenvio" type="text" class="form-control" name="referencia"
+                        placeholder="Referencia del lugar de envío del paquete">
 
                 </div>
             </div>
@@ -360,19 +370,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
-<!-- Paypal Sandbox -->
-<!-- <script src="https://www.paypal.com/sdk/js?currency=MXN&client-id=AXIhxntAlr0Af7BvaMN6ypVNRqE7wpOh6tFXwVpk6uayEM1cuC4Jl0k2wGlFrNVKZBmV2yyFem4STVCQ"></script> -->
-<!-- Paypal Producción -->
-<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id=AUxzHm8_N1t5ziOAVX6zO4i3seFPnBFgRvCPPfF48YaiJvCf1qv06Zg9wIZrBclbdVDkRlHcbLjUuOIs"></script>
+<!-- Paypal SDK -->
+<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id={{ env('PAYPAL_CLIENT_ID') }}" data-namespace="paypal_sdk"></script> 
 
 <script type="text/javascript">
-    var formvalidado=false;
-
     $(document).ready(function() {
-        // Conekta.setPublicKey('')
-        //producción
-        Conekta.setPublicKey('key_WtpsP5Uyz7QmMXCZxqzp8Ng');
-                        
+        Conekta.setPublicKey('{{ env('CONEKTA_PUBLIC_KEY') }}');
         Conekta.setLanguage("es");
 
         //jQuery para que genere el token después de dar click en submit
@@ -380,36 +383,70 @@
 
             event.preventDefault();
 
-            if(formvalidado){
-                $("#pay-button").prop("disabled", true);
+            if( antesdePagar() ){
                 var $form = $("#payment-form");
-                $('#metodo-pago').val("card");
                 // Previene hacer submit más de una vez
-                //$form.find("button").prop("disabled", true);
+                $("#pay-button").prop("disabled", true);
                 Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
             } else {
-                alert("No ha escrito sus datos de envío y/o facturación");
+                Swal.fire({
+                    icon: 'warning',
+                    title: '¡Atención!',
+                    text: 'No ha escrito sus datos de envío y/o facturación'
+                })
             }
         });
 
         var conektaSuccessResponseHandler = function(token) {
-            //var $form = $("#payment-form");
-            //Inserta el token_id en la forma para que se envíe al servidor
-            //$form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+
+            // Enviar al input
             $('#token_id').val(token.id);
-            $('#payment-form').submit(); //Hace submit
+            var token = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                type  : $('#payment-form').attr('method'),
+                url   : $('#payment-form').attr('action'),
+                data  : $('#payment-form').serialize(),
+                cache : false,
+                success: function(response) {
+
+                    console.log("Response the payment Card: ") ; 
+                    console.log(response);
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title:'¡Pago exitoso!',
+                            text: 'Hemos enviado un email con los detalles de su compra. Muchas gracias.'
+                        }).then((result) => {
+                            window.location.href = '/historial_pedidos';
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Error al pagar!',
+                            text: response.message
+                        })
+                        $("#pay-button").prop("disabled", false);
+                    }
+
+                },
+                error:  function (response) { 
+                    console.log( response );
+                }
+            });
+
         };
 
         var conektaErrorResponseHandler = function(response) {
-            //var $form = $("#payment-form");
-            //$form.find(".card-errors").text(response.message_to_purchaser);
-            //alert("ERROR [" + response.message_to_purchaser + "] ");
             Swal.fire({
                 icon: 'error',
                 title: 'Conekta dice...',
                 text: response.message_to_purchaser
             })
-            //$form.find("button").prop("disabled", false);
             $("#pay-button").prop("disabled", false);
         };
 
@@ -417,8 +454,33 @@
 </script>
 
 <script>
+    $(document).ready(function () {
+        //called when key is pressed in textbox
+        $("#number_card").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#msg_number_card").html("Sólo se aceptan números").show().fadeOut("slow");
+                return false;
+            }
+        });
+
+        $("#number_cvv").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#msg_number_cvv").html("Sólo se aceptan números").show().fadeOut("slow");
+                return false;
+            }
+        });
+
+    });
+</script>
+
+<script>
     function enviarData( data ){
         // console.log(data);
+        $("#id_envio").val(data.id);
         $('#dato_id').val(data.id);
         $('#nombreenvio').val(data.nombre);
         $('#apellidosenvio').val(data.apellidos);
@@ -441,8 +503,8 @@
     $envio_user = DB::table('datos_envios')
     ->where('datos_envios.id_user','=', Auth::user()->id)->latest('created_at')->first();
 
-    $data =  json_encode( $envio_user );
-    
+    $data = json_encode( $envio_user );
+
     if( $envio_user ){
         echo "<script>
             $('#paypal-button-container').show();
@@ -464,9 +526,9 @@
         $('#paypal-button-container').hide();
         $('#nopaypal').show();
 
-        if(antesdePagar()){
+        if( antesdePagar() ){
         
-            formvalidado=true;
+            formvalidado = true;
             
             $('#paypal-button-container').show();
             $('#nopaypal').hide();
@@ -541,8 +603,8 @@
                 dataType:'json',
                 success: function(resp) {
 
-                    console.log(resp) ;    
-                    $("#inp-envios").val(resp['id']);
+                    console.log(resp);    
+                    $("#id_envio").val(resp['id']);
                                 
                     // $("#resultado").html("Carrito: "+response);
                 },
@@ -558,7 +620,7 @@
 
     var cajamonto = document.getElementById('cajamonto').value;
 
-    paypal.Buttons({
+    window.paypal_sdk.Buttons({
         locale: {
             country: 'MX',
             lang: 'es'
@@ -607,64 +669,9 @@
 </script>
 
 <script>
-    
-    function alerta(mensaje){
-        Swal.fire({
-            icon: 'error',
-            title: 'Hay un error en su compra...',
-            text: mensaje
-        })
-    }
-                                        
-    function showSelected(valorF){
-        var cod = document.getElementById("msi").value;
-             
-        switch( cod ){
-            case '0':
-                if(valorF<300){
-                    alerta("El pago minímo es de 300 MXN para 3 meses sin intereses ")
-                }
-                break;
-            case '1': 
-                if( valorF < 600 ){
-                    alerta("El pago minímo es de 600 MXN para 6 meses sin intereses ")
-                }
-                break;
-            case '2':
-                if(valorF<900){
-                    alerta("El pago minímo es de 900 MXN para 9 meses sin intereses ")
-                }
-                break;
-            case '3':
-                if(valorF<1200){
-                    alerta("El pago minímo es de 1200 MXN para 12 meses sin intereses ")
-                }
-                break;    
-        }
-    }
-
-    // var checkbox = document.getElementById('mic');
-    $( document ).ready(function() {
-        if ($('#mic').prop('checked') ) {
-            var el=document.getElementById('dmsi');
-            el.style.display='block';
-        }
-    });
-         
-    //checkbox.addEventListener("change", validaCheckbox, false);
-    function validaCheckbox(){
-        var checked = checkbox.checked;
-        if(!checked){
-        
-            var el=document.getElementById('dmsi');
-            el.style.display='none';
-
-        }
-    }
-
     function savePayPalData(data){
         
-        var id_envio = $('#inp-envios').val();
+        var id_envio = $('#id_envio').val();
 
         $.ajax({
             data: {
@@ -672,18 +679,28 @@
                 "data": data,
                 "id_envio": id_envio,
             },
-            url: 'procesa-paypal',
+            url: '/payWithPaypal',
             type:  'post',
             success:  function (response) {
-                console.log( response );
-                // $("#resultado").html("Carrito: "+response);
-                Swal.fire({
-                    icon: 'success',
-                    title:'Transacción existosa',
-                    text: 'Hemos enviado un email con los detalles de su compra. Muchas gracias.'
-                }).then((result) => {
-                    window.location.href = '/historial_pedidos';
-                })
+
+                console.log("Response to save data Paypal: ") ; 
+                console.log(response);
+
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title:'¡Pago exitoso!',
+                        text: 'Hemos enviado un email con los detalles de su compra. Muchas gracias.'
+                    }).then((result) => {
+                        window.location.href = '/historial_pedidos';
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Error registrar datos!',
+                        text: 'Hubo un problema al guardar sus datos de compra'
+                    })
+                }
             },
             error:  function (response) {
                 // window.open(JSON.stringify(response));

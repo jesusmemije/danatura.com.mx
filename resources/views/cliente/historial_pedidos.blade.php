@@ -125,9 +125,8 @@
                                 @foreach ($compra as $registros)
 
                                 @php
-                                    if ($registros->status == 'paid') {
-                                        $status = 'Pagado';
-                                        $status = "<span class='badge badge-success'>$status</span>";
+                                    if ($registros->status == 'Pagado') {
+                                        $status = "<span class='badge badge-success'>$registros->status</span>";
                                     } else {
                                         $status = "<span class='badge badge-danger'>$registros->status</span>";
                                     }

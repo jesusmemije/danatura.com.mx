@@ -11,4 +11,7 @@ class Compra extends Model
     protected $table = 'compra';
 
     protected $primaryKey = 'id';
+
+    // insert automatically
+    public $timestamps = true;
 }

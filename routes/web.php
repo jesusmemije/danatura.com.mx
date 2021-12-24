@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 /* Class Front */
 use App\Http\Controllers\front\HomeController as HomeControllerFront;
 use App\Http\Controllers\front\BlogController as BlogControllerFront;
+use App\Http\Controllers\front\CkeckoutController;
 /* Class Admin */
 use App\Http\Controllers\admin\ProductosController;
 use App\Http\Controllers\admin\UserController;
@@ -11,6 +12,9 @@ use App\Http\Controllers\admin\VentasProductosController;
 use App\Http\Controllers\admin\BlogController as BlogControllerAdmin;
 use App\Http\Controllers\admin\HomeController as HomeControllerAdmin;
 use App\Http\Controllers\cliente\ClienteController;
+
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +36,11 @@ Route::get('/filtrar-puntos',[HomeControllerFront::class, 'filtrar_puntos'])->na
 Route::get('/mis-favoritos',[HomeControllerFront::class, 'misfavoritos'])->name('mis-favoritos');
 Route::get('/detalle-producto/{producto?}',[HomeControllerFront::class, 'detalle_producto'])->name('detalle-producto');
 Route::get('/carrito',[HomeControllerFront::class, 'carrito'])->name('carrito');
-Route::get('/checkout',[HomeControllerFront::class, 'checkout'])->name('checkout');
-Route::post('/payment',[HomeControllerFront::class, 'payment'])->name('payment');
+// Checkout
+Route::get('/checkout',[CkeckoutController::class, 'checkout'])->name('checkout');
+Route::post('/payWithConekta',[CkeckoutController::class, 'payWithConekta'])->name('payWithConekta');
+Route::post('/payWithPaypal',[CkeckoutController::class, 'payWithPaypal'])->name('payWithPaypal');
+
 Route::post('/datos-envio',[HomeControllerFront::class, 'datos_envio'])->name('datos-envio');
 /* Blog */
 Route::get('/blog', [BlogControllerFront::class, 'index'])->name('blog');
@@ -44,8 +51,6 @@ Route::post('/newsletter',[HomeControllerFront::class, 'newsletter'])->name('new
 Route::post('/dudas',[HomeControllerFront::class, 'dudas'])->name('dudas');
 Route::post('/load-more',[HomeControllerFront::class, 'load_more']);
 Route::post('/procesa',[HomeControllerFront::class, 'procesa']);
-
-Route::post('/procesa-paypal',[HomeControllerFront::class, 'procesa_paypal']);
 
 /* Views */
 Route::view('/quienes-somos','front/quienes-somos')->name('quienes');
