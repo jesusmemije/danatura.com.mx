@@ -47,6 +47,32 @@ Checkout
 
 @include('front.layout.partials.menu')
 
+@php
+    // SDK de Mercado Pago
+    require base_path('vendor/autoload.php');
+    // Agrega credenciales
+    MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
+
+    // Crea un objeto de preferencia
+    $preference = new MercadoPago\Preference();
+
+    $carrito  = $_SESSION['carrito'];
+
+    foreach ($carrito as $product) {
+        // Crea un ítems en la preferencia
+        $item = new MercadoPago\Item();
+        $item->title = $product['nombre'];
+        $item->quantity = floatval( $product['cantidad'] );
+        $item->unit_price = (int) $product['precio_unit'];
+
+        $products[] = $item;
+    }
+    
+    $preference->items = $products;
+    $preference->save();
+
+@endphp
+
 <div class="container pt-4 pb-4">
     <div class="container col-sm-12">
         <a class="btn btn-light pull-right" href="{{url('carrito')}}">Cancelar</a>
@@ -279,6 +305,7 @@ Checkout
                         <div class="mt-4 mx-4">
                             <div class="text-center">
                                 <h5>Pago con Mercado Pago</h5>
+                                <div class="cho-container"></div>
                             </div>
                         </div>
                     </div>
@@ -372,6 +399,29 @@ Checkout
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 <!-- Paypal SDK -->
 <script src="https://www.paypal.com/sdk/js?currency=MXN&client-id={{ env('PAYPAL_CLIENT_ID') }}" data-namespace="paypal_sdk"></script> 
+<!-- SDK MercadoPago.js V2 -->
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+
+
+<script>
+    // Agrega credenciales de SDK
+    const mp = new MercadoPago("{{ config('services.mercadopago.key') }}", {
+        locale: 'es-MX'
+    });
+
+    console.log('id_preference: ' + '{{ $preference->id }}');
+    
+    // Inicializa el checkout
+    mp.checkout({
+        preference: {
+            id: '{{ $preference->id }}'
+        },
+        render: {
+            container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
+            label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+        }
+    });
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {
