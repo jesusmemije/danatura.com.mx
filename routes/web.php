@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\front\HomeController as HomeControllerFront;
 use App\Http\Controllers\front\BlogController as BlogControllerFront;
 use App\Http\Controllers\front\CkeckoutController;
+
 /* Class Admin */
 use App\Http\Controllers\admin\ProductosController;
 use App\Http\Controllers\admin\UserController;
@@ -40,6 +41,9 @@ Route::get('/carrito',[HomeControllerFront::class, 'carrito'])->name('carrito');
 Route::get('/checkout',[CkeckoutController::class, 'checkout'])->name('checkout');
 Route::post('/payWithConekta',[CkeckoutController::class, 'payWithConekta'])->name('payWithConekta');
 Route::post('/payWithPaypal',[CkeckoutController::class, 'payWithPaypal'])->name('payWithPaypal');
+Route::post('/payWithMercadoPago', CkeckoutController::class, 'payWithMercadoPago')->name('payWithMercadoPago');
+
+Route::get('/checkout/pay',[CkeckoutController::class, 'pay'])->name('checkout.pay');
 
 Route::post('/datos-envio',[HomeControllerFront::class, 'datos_envio'])->name('datos-envio');
 /* Blog */

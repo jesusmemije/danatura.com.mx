@@ -67,6 +67,11 @@ Checkout
 
         $products[] = $item;
     }
+
+    $preference->back_urls = array(
+        "success" => route('checkout.pay')
+    );
+    $preference->auto_return = "approved";
     
     $preference->items = $products;
     $preference->save();

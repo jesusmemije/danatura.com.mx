@@ -11,6 +11,8 @@ use App\Models\Productos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Conekta\Conekta;
+use Conekta\Order;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class CkeckoutController extends Controller
@@ -30,6 +32,30 @@ class CkeckoutController extends Controller
             return redirect('/login');
         }
         return view('front/checkout');
+    }
+
+    public function pay(Request $request)
+    {
+        $payment_id = $request->get('payment_id');
+
+        $response = Http::get("https://api.mercadopago.com/v1/payments/$payment_id" . "?access_token=" . config('services.mercadopago.token'));
+        $response = json_decode($response);
+
+        if ($response->status == "approved") {
+            # code...
+        }
+    }
+
+    public function payWithMercadoPago(Request $request)
+    {
+        $payment_id = $request->get('payment_id');
+
+        $response = Http::get("https://api.mercadopago.com/v1/payments/$payment_id" . "?access_token=" . config('services.mercadopago.token'));
+        $response = json_decode($response);
+
+        if ($response->status == "approved") {
+            # code...
+        }
     }
 
     public function payWithConekta(Request $request)
