@@ -1,40 +1,35 @@
 @extends('admin.layout.app')
 
-@section('content')
+@section('page-title')
+    Listado de productos
+@endsection
 
-
+@section('styles')
 <style>
-  .table tbody {
-    color: #212529;
-  }
-
-  .breadcrumb {
-    background: #f8f9fc;
-    padding-top: 0% !important;
-  }
-
   .card {
     border: 5px solid #fff;
   }
 </style>
+@endsection
 
+@section('content')
 
 <div class="col-md-12">
-
   <div class="card shadow">
 
-    @section('pagina-actual','Listado de productos')
-    @section('breadcumb')
+    @section('pagina-actual', 'Listado de productos')
 
+    @section('breadcumb')
     <ul class="breadcrumb">
-      <li style="color:#F79860" class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i
-            class="zmdi zmdi-home"></i> Dashboard</a></li>
+      <li style="color:#F79860" class="breadcrumb-item">
+        <a href="{{ route('dashboard') }}"><i class="zmdi zmdi-home"></i> Dashboard</a>
+      </li>
       <li class="breadcrumb-item"><a href="javascript:void(0);">Productos</a></li>
       <li class="breadcrumb-item active">Listado</li>
     </ul>
-    <a href="{{route('productos.create')}}" style="background:#F79860"
-      class="d-none d-sm-inline-block btn btn-primary shadow-sm"><i class="fas fa-plus fa-sm text-white-50"></i> Añadir
-      nuevo</a>
+    <a href="{{route('productos.create')}}" style="background:#F79860" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
+      <i class="fas fa-plus fa-sm text-white-50"></i> Añadir nuevo
+    </a>
     @endsection
 
     <div class="card-body">
@@ -67,19 +62,15 @@
             @foreach($productos as $producto)
 
             @php
-
-            $foto="";
-
+            $foto = "";
             if (strpos($producto->fotografia, 'https') !== false) {
-            $foto=$producto->fotografia;
+              $foto = $producto->fotografia;
             }else{
-            $foto="../assets/productos/".$producto->fotografia;
+              $foto = "../assets/productos/".$producto->fotografia;
             }
-
             @endphp
 
             <tr>
-
               <td>{{$producto->nombre}}</td>
               <td>{{$producto->sabor}}</td>
               <td>{{$producto->descripcion}}</td>
@@ -97,30 +88,20 @@
                 <a class="btn btn-warning btn-sm redondo" href="{{route('productos.edit',$producto->id)}}">
                   <i class="fa fa-edit"></i>
                 </a>
-
                 <button class="btn btn-sm btn-danger btn-circle shadow-sm redondo" data-toggle="modal"
                   data-target="#deleteUserModal" data-id="{{ $producto->id}}" data-name="{{ $producto->nombre }}">
                   <i class="fas fa-trash fa-sm text-white-50"></i>
-
                 </button>
               </td>
-
-
             </tr>
-
 
             @endforeach
 
-
           </tbody>
         </table>
-
       </div>
     </div>
-
   </div>
-
-
 
   <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -147,20 +128,15 @@
               <i class="fas fa-trash fa-sm text-white-50"></i>
               Si, eliminar
             </button>
-
           </form>
         </div>
       </div>
     </div>
   </div>
 
-
-
   @endsection
+
   @section('scripts')
-
-
-
   <!-- Page level plugins -->
   <script src="{{asset('admin_assets/vendor/datatables/jquery.dataTables.min.js')}}"></script>
   <script src="{{asset('admin_assets/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
@@ -186,11 +162,6 @@
         modal.find('.modal-title').text('Confirmar eliminación') 
         modal.find('.name-user').text(name)
       })
-
-
-     
-
-
   </script>
 
   @endsection

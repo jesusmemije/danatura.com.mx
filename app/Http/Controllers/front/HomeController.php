@@ -667,14 +667,19 @@ class HomeController extends Controller
         $datosenvio->referencia = $request->referencia;
 
         if ($datosenvio->save()) {
-
             $data = [
+                "ok"      => true,
                 "mensaje" => $msj,
-                "id" => $datosenvio->id
+                "id"      => $datosenvio->id
             ];
-
-            echo json_encode($data);
+        } else {
+            $data = [
+                "ok" => false
+            ];
         }
+
+        echo json_encode($data);
+
     }
 
     public function logout()

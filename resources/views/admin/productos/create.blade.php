@@ -1,23 +1,12 @@
 @extends('admin.layout.app')
 
-<link type="text/css" rel="stylesheet" href="{{asset('assets/uploader/image-uploader.min.css')}}">
+@section('page-title')
+    Agregar producto
+@endsection
 
 @section('styles')
+<link type="text/css" rel="stylesheet" href="{{asset('assets/uploader/image-uploader.min.css')}}">
 <style>
-    .table tbody {
-        color: #212529;
-    }
-
-    .breadcrumb {
-        background: #f8f9fc;
-        margin-top: -3% !important;
-        font-size: 14px;
-    }
-
-    .card {
-        margin-top: -2% !important;
-    }
-
     .bootstrap-select>.dropdown-toggle {
         display: none !important;
     }
@@ -105,24 +94,21 @@
 
 <script type="text/javascript" src="{{asset('assets/uploader/image-uploader.min.js')}}"></script>
 <script>
+    $('.input-images').imageUploader({
+        imagesInputName: 'fotografia',
+        label: "Arrastra tus imagenes o da click para seleccionarlas"
+    });
 
-$('.input-images').imageUploader({
-    imagesInputName: 'fotografia',
-    label: "Arrastra tus imagenes o da click para seleccionarlas"
-});
+    $('#phase1').on('submit', function(event) {
+        event.preventDefault();
+        
+        var numItems = $('.uploaded-image').length;
 
-$('#phase1').on('submit', function(event) {
-
-    event.preventDefault();
-    var numItems = $('.uploaded-image').length;
-
-    if( numItems == 0 ){
-        alert("Debes seleccionar al menos 1 imágen.");
-    } else {
-        event.currentTarget.submit();
-    }
-
-})
-
+        if( numItems == 0 ){
+            alert("Debes seleccionar al menos 1 imágen.");
+        } else {
+            event.currentTarget.submit();
+        }
+    })
 </script>
 @endsection

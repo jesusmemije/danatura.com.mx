@@ -1,17 +1,10 @@
 @extends('admin.layout.app')
 
+@section('page-title')
+    Mensajes de contactos
+@endsection
+
 @section('content')
-
-<style>
-    .table tbody {
-        color: #212529;
-    }
-
-    .breadcrumb {
-        background: #f8f9fc;
-        padding-top: 0% !important;
-    }
-</style>
 
 <div class="card shadow">
     <div class="card-header">

@@ -69,6 +69,9 @@ Checkout
     $preference->auto_return = "approved";
     $preference->items       = $products;
 
+    $preference->binary_mode = true;
+    $preference->statement_descriptor = "Danatura - comida real";
+
     $preference->save();
 
 @endphp
@@ -296,8 +299,7 @@ Checkout
                             </div>
                             <div class="my-4" id="paypal-button-container"></div>
                             <div class="text-center">
-                                <span id="nopaypal" class="badge badge-danger">Debe escribir sus datos de envio para
-                                    poder continuar</span>
+                                <span id="noPaypal" class="badge badge-danger">Debe escribir sus datos de envio para poder continuar</span>
                             </div>
                         </div>
                     </div>
@@ -305,7 +307,10 @@ Checkout
                         <div class="mt-4 mx-4">
                             <div class="text-center">
                                 <h5>Pago con Mercado Pago</h5>
-                                <div class="cho-container"></div>
+                                <div class="cho-container" id="mercado-pago-container"></div>
+                                <div class="text-center">
+                                    <span id="noMercadoPago" class="badge badge-danger">Debe escribir sus datos de envio para poder continuar</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -384,7 +389,7 @@ Checkout
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button onclick="validarDatosEnvio()" type="button" class="btn btn-primary">Listo</button>
+                <button onclick="validarDatosEnvio()" type="button" class="btn btn-primary">Guardar</button>
                 </form>
             </div>
         </div>
@@ -420,11 +425,7 @@ Checkout
         </script>        
     @else
         <script>
-            Swal.fire({
-                icon: 'error',
-                title:'¡Pago no realizado!',
-                text: '{{ session()->get('statusPayMercadoPago') }}'
-            })
+            msg_error('{{ session()->get('statusPayMercadoPago') }}')
         </script>   
     @endif
 @endif
@@ -444,7 +445,11 @@ Checkout
         },
         render: {
             container: '.cho-container', // Indica el nombre de la clase donde se mostrará el botón de pago
-            label: 'Pagar', // Cambia el texto del botón de pago (opcional)
+            label: 'Pagar ahora', // Cambia el texto del botón de pago (opcional)
+        },
+        theme: {
+            elementsColor: '#F79860',
+            headerColor: '#D7E9C0',
         }
     });
 </script>
@@ -456,20 +461,17 @@ Checkout
 
         //jQuery para que genere el token después de dar click en submit
         $('#pay-button').on('click', function(event) {
-
             event.preventDefault();
 
-            if( antesdePagar() ){
+            var id_envio = $('#id_envio').val();
+
+            if( id_envio != "" && id_envio != null ){
                 var $form = $("#payment-form");
                 // Previene hacer submit más de una vez
                 $("#pay-button").prop("disabled", true);
                 Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
             } else {
-                Swal.fire({
-                    icon: 'warning',
-                    title: '¡Atención!',
-                    text: 'No ha escrito sus datos de envío y/o facturación'
-                })
+                msg_warning('Antes de realizar la compra debe llenar los datos de envío')
             }
         });
 
@@ -501,11 +503,7 @@ Checkout
                             window.location.href = '/historial_pedidos';
                         })
                     } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: '¡Error al pagar!',
-                            text: response.message
-                        })
+                        msg_error(response.message)
                         $("#pay-button").prop("disabled", false);
                     }
 
@@ -518,11 +516,7 @@ Checkout
         };
 
         var conektaErrorResponseHandler = function(response) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Conekta dice...',
-                text: response.message_to_purchaser
-            })
+            msg_error(response.message_to_purchaser)
             $("#pay-button").prop("disabled", false);
         };
 
@@ -584,13 +578,20 @@ Checkout
     if( $envio_user ){
         echo "<script>
             $('#paypal-button-container').show();
-            $('#nopaypal').hide();
+            $('#noPaypal').hide();
+            
+            $('#mercado-pago-container').show();
+            $('#noMercadoPago').hide();
+            
             enviarData( $data ); 
         </script>";
     } else {
         echo "<script>
             $('#paypal-button-container').hide();
-            $('#nopaypal').show();
+            $('#noPaypal').show();
+
+            $('#mercado-pago-container').hide();
+            $('#noMercadoPago').show();
         </script>";
     }
 
@@ -600,18 +601,71 @@ Checkout
     function validarDatosEnvio(){
 
         $('#paypal-button-container').hide();
-        $('#nopaypal').show();
+        $('#noPaypal').show();
 
-        if( antesdePagar() ){
-        
-            formvalidado = true;
+        $('#mercado-pago-container').hide();
+        $('#noMercadoPago').show();
+
+        if( $('#nombreenvio').val()=="" || $('#apellidosenvio').val()=="" || $('#paisenvio').val()=="" || $('#direccion1envio').val()==""
+            || $('#localidadenvio').val()=="" || $('#regionenvio').val()=="" || $('#cpenvio').val()=="" || $('#telefonoenvio').val()=="" || $('#emailenvio').val()=="" ) {
+            msg_warning('Faltan algunos datos de envío')
+            return false;
+        } else {
+
+            if ( !ValidateEmail( $('#emailenvio').val() ) ) {
+                msg_warning('El correo electrónico es inválido')
+                return false;
+            }
+
+            if ( !ValidateCP( $('#cpenvio').val() ) ) {
+                msg_warning('El Código Postal es inválido');
+                return false;
+            }
+
+            if ( !ValidatePhone( $('#telefonoenvio').val() ) ) {
+                msg_warning('El Teléfono/celular es inválido');
+                return false;
+            }
+
+            var form = $('#form-envios')[0];
+            var fileform = new FormData(form);
+            var token = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                url: "{{ route('datos-envio') }}",
+                data: fileform,
+                type: 'POST',   
+                dataType:'json',
+                success: function(resp) {
+
+                    console.log(resp);   
+                    
+                    if ( resp['ok'] ) {
+                        $("#id_envio").val(resp['id']);
             
-            $('#paypal-button-container').show();
-            $('#nopaypal').hide();
+                        $('#paypal-button-container').show();
+                        $('#noPaypal').hide();
 
-            $('#modalenvio').modal('hide');
+                        $('#mercado-pago-container').show();
+                        $('#noMercadoPago').hide();
+
+                        $('#modalenvio').modal('hide');
+                    } else {
+                        msg_error("Hemos tenido problemas al registar su dirección de envío")
+                    }
+                    
+                },
+                error:  function (response) { 
+                    console.log( response );
+                }
+            });   
         }
-
     }
 
     function ValidateEmail(mail) {
@@ -637,61 +691,29 @@ Checkout
             return false;
         }
     }
-    
-    function antesdePagar(){
 
-        if( $('#nombreenvio').val()=="" || $('#apellidosenvio').val()=="" || $('#paisenvio').val()=="" || $('#direccion1envio').val()==""
-            || $('#localidadenvio').val()=="" || $('#regionenvio').val()=="" || $('#cpenvio').val()=="" || $('#telefonoenvio').val()=="" || $('#emailenvio').val()=="" ) {
-            
-            alert("Debe escribir los datos requeridos");
-            return false;
-        } else {
+    function msg_error(mensaje) {
+        Swal.fire({
+            icon: 'error',
+            title:'¡Error!',
+            text: mensaje
+        })
+    }
 
-            if ( !ValidateEmail( $('#emailenvio').val() ) ) {
-                alert('El correo electrónico es inválido');
-                return false;
-            }
+    function msg_warning(mensaje) {
+        Swal.fire({
+            icon: 'warning',
+            title:'¡Advertencia!',
+            text: mensaje
+        })
+    }
 
-            if ( !ValidateCP( $('#cpenvio').val() ) ) {
-                alert('El Código Postal es inválido');
-                return false;
-            }
-
-            if ( !ValidatePhone( $('#telefonoenvio').val() ) ) {
-                alert('El Teléfono/celular es inválido');
-                return false;
-            }
-
-            var form = $('#form-envios')[0];
-            var fileform = new FormData(form); // <-- 'this' is your form element
-            var token = $('meta[name="csrf-token"]').attr('content');
-
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                cache: false,
-                contentType: false,
-                processData: false,
-                url: "{{ route('datos-envio') }}",
-                data: fileform,
-                type: 'POST',   
-                dataType:'json',
-                success: function(resp) {
-
-                    console.log(resp);    
-                    $("#id_envio").val(resp['id']);
-                                
-                    // $("#resultado").html("Carrito: "+response);
-                },
-                error:  function (response) { 
-                    console.log( response );
-                    // window.open(JSON.stringify(response));
-                }
-            });
-            
-            return true;
-        }
+    function msg_info(mensaje) {
+        Swal.fire({
+            icon: 'info',
+            title:'Info.',
+            text: mensaje
+        })
     }
 
     var cajamonto = document.getElementById('cajamonto').value;
@@ -712,24 +734,23 @@ Checkout
         },
         createOrder: function(data, actions) {
 
-            if ( !antesdePagar() ) {
-                Swal.fire({
-                    icon: 'warning',
-                    title:'Info',
-                    text: 'Antes de realizar la compra debe llenar los datos de envío'
-                })
+            var id_envio = $('#id_envio').val();
+
+            if ( id_envio != "" && id_envio != null ) {
+                // This function sets up the details of the transaction, including the amount and line item details.
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            "currency_code": "MXN",
+                            value: cajamonto
+                        }
+                    }]
+                });
+            } else {
+                msg_warning('Antes de realizar la compra debe llenar los datos de envío')
                 return false;
             }
-
-            // This function sets up the details of the transaction, including the amount and line item details.
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        "currency_code": "MXN",
-                        value: cajamonto
-                    }
-                }]
-            });
+            
         },
         onApprove: function(data, actions) {
             // This function captures the funds from the transaction.
@@ -771,11 +792,7 @@ Checkout
                         window.location.href = '/historial_pedidos';
                     })
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '¡Error registrar datos!',
-                        text: 'Hubo un problema al guardar sus datos de compra'
-                    })
+                    msg_error('Hubo un problema al guardar sus datos de compra')
                 }
             },
             error:  function (response) {
