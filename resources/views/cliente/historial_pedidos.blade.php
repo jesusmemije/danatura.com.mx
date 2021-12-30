@@ -68,29 +68,33 @@
                 <div class="col-lg-11 table-responsive">
                     <table class="table" style=" white-space: nowrap;">
                         <tbody>
-                            @foreach ($datosdirection as $resul)
+                            @if ($datosdirection)
                             @php
-                                $direction = $resul->direccion1.', '.$resul->localidad.', '.$resul->region.'. Código postal: '.$resul->cp;
+                                $direction = $datosdirection->direccion1.', '.$datosdirection->localidad.', '.$datosdirection->region.'. Código postal: '.$datosdirection->cp;
                             @endphp
                             <tr>
                                 <td colspan="" rowspan="" headers="">
                                     <img class="imagendireccion" src="{{asset('assets/icons/casa.png')}}">
                                 </td>
                                 <td>
-                                    <label>{{$resul->empresa}}</label>
+                                    <label>{{$datosdirection->empresa}}</label>
                                     <br>
                                     <p style="font-family: Arial, Helvetica, sans-serif;">
                                         <?php echo $direction ?>
                                       <br>
-                                    Recibe: {{$resul->nombre . ' ' . $resul->apellidos}} - {{$resul->telefono}}
+                                    Recibe: {{$datosdirection->nombre . ' ' . $datosdirection->apellidos}} - {{$datosdirection->telefono}}
                                     </p>
                                 </td>
                                 <td>
-                                    <button class="btn  btn-warning" data-nombre="{{$resul->nombre}}" data-apellidos="{{$resul->apellidos}}" data-empresa="{{$resul->empresa}}" data-pais="{{$resul->pais}}" data-direccion1="{{$resul->direccion1}}" data-direccion2="{{$resul->direccion2}}" data-localidad="{{$resul->localidad}}" data-region="{{$resul->region}}" data-cp="{{$resul->cp}}" data-telefono="{{$resul->telefono}}" data-email="{{$resul->email}}" data-rfc="{{$resul->rfc}}" data-referencia="{{$resul->referencia}}" data-id="{{$resul->id}}" data-toggle="modal" data-target="#editDirection"> <i class="fa fa-edit"></i></button>
-                                    {{-- <a class="btn  btn-sm" style="border-color: red; border-width: 2px;" href="{{ url('/destroy_historial_pedidos/'.$resul->id)}}">Eliminar <i class="fa fa-trash"></i></a> --}}
+                                    <button class="btn  btn-warning" data-nombre="{{$datosdirection->nombre}}" data-apellidos="{{$datosdirection->apellidos}}" data-empresa="{{$datosdirection->empresa}}" data-pais="{{$datosdirection->pais}}" data-direccion1="{{$datosdirection->direccion1}}" data-direccion2="{{$datosdirection->direccion2}}" data-localidad="{{$datosdirection->localidad}}" data-region="{{$datosdirection->region}}" data-cp="{{$datosdirection->cp}}" data-telefono="{{$datosdirection->telefono}}" data-email="{{$datosdirection->email}}" data-rfc="{{$datosdirection->rfc}}" data-referencia="{{$datosdirection->referencia}}" data-id="{{$datosdirection->id}}" data-toggle="modal" data-target="#editDirection"> <i class="fa fa-edit"></i></button>
+                                    {{-- <a class="btn  btn-sm" style="border-color: red; border-width: 2px;" href="{{ url('/destroy_historial_pedidos/'.$datosdirection->id)}}">Eliminar <i class="fa fa-trash"></i></a> --}}
                                 </td>
                             </tr>
-                            @endforeach
+                            @else
+                            <div class="text-center">
+                                <span>No tienes ninguna dirección de envío. Registra una al realizar tu primera compra.</span>
+                            </div>
+                            @endif
                         </tbody>
                     </table>
                     {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a> --}}

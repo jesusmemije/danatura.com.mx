@@ -41,9 +41,7 @@ Route::get('/carrito',[HomeControllerFront::class, 'carrito'])->name('carrito');
 Route::get('/checkout',[CkeckoutController::class, 'checkout'])->name('checkout');
 Route::post('/payWithConekta',[CkeckoutController::class, 'payWithConekta'])->name('payWithConekta');
 Route::post('/payWithPaypal',[CkeckoutController::class, 'payWithPaypal'])->name('payWithPaypal');
-Route::post('/payWithMercadoPago', CkeckoutController::class, 'payWithMercadoPago')->name('payWithMercadoPago');
-
-Route::get('/checkout/pay',[CkeckoutController::class, 'pay'])->name('checkout.pay');
+Route::get('/payWithMercadoPago',[CkeckoutController::class, 'payWithMercadoPago'])->name('payWithMercadoPago');
 
 Route::post('/datos-envio',[HomeControllerFront::class, 'datos_envio'])->name('datos-envio');
 /* Blog */

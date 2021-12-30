@@ -6,7 +6,6 @@ Home
 
 <link type="text/css" rel="stylesheet" href="{{asset('assets/css/lightslider.css')}}" />
 <link type="text/css" rel="stylesheet" href="{{asset('assets/css/home.css')}}" />
-<link type="text/css" rel="stylesheet" href="{{asset('assets/plugins/lity/dist/lity.min.css')}}" />
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
@@ -36,10 +35,12 @@ Home
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
       <!-- Slide One - Set the background image for this slide in the line below -->
-      <div class="carousel-item active" style="background-image: url('assets/images/Banner Principal.jpg')">
+      <div class="carousel-item active" style="background-image: url('assets/images/banner-principal/1-principal.jpg')">
         @include('front.layout.partials.menu')
         <div class="container-slider-one text-md-left text-center">
           <span class="txt-banner">DELICIOSO</span><br>
@@ -56,11 +57,19 @@ Home
           </button>
         </div>
       </div>
-      <div class="carousel-item" style="background-image: url('assets/images/Image_Ig1.jpg')">
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/2-carbon.jpg')">
         @include('front.layout.partials.menu')
         <div class="carousel-caption d-none d-md-block"> </div>
       </div>
-      <div class="carousel-item" style="background-image: url('assets/images/Image_Ig2.jpg')">
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/3-malteada-rosa.jpg')">
+        @include('front.layout.partials.menu')
+        <div class="carousel-caption d-none d-md-block"> </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/4-jugo-verde.jpg')">
+        @include('front.layout.partials.menu')
+        <div class="carousel-caption d-none d-md-block"> </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/6-capsulas.jpg')">
         @include('front.layout.partials.menu')
         <div class="carousel-caption d-none d-md-block"> </div>
       </div>
@@ -329,14 +338,6 @@ Home
 
 @section('scripts')
 <script src="{{asset('assets/js/lightslider.js')}}"></script>
-<script src="{{asset('assets/plugins/lity/dist/lity.min.js')}}"></script>
-
-<script>
-  $( window ).on( "load", function() {
-    var instance = lity("<video controls muted autoplay><source src='/files/danatura-welcome.mp4' type='video/mp4'></video>");
-    var opener = instance.opener();
-  });
-</script>
 
 <script type="text/javascript">
   $("#here").on("keyup", function() {

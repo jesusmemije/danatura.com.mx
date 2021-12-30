@@ -26,7 +26,7 @@
             href="https://www.youtube.com/channel/UCt-0ISeB7NilGmMRfs2mVKA" target="_blank" class="icon-instagram"> <i
               style="font-size:17px;" class="fab fa-youtube fa-sm ri-face ii"></i></a></li>
         <li class="nav-item" style="margin-right: 2%;"><a
-            href="https://api.whatsapp.com/send?phone=+523330238418&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos"
+            href="https://api.whatsapp.com/send?phone=+523320561776&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos"
             target="_blank" class="icon-instagram">
             <i style="" class="fab fa-whatsapp fa-sm ri-face iw"></i></a></li>
       </ul>
@@ -79,7 +79,7 @@
     </div>
     <div class="col-md-2 col-12 text-md-left pb-md-0 text-right pb-3">
       <a target="_blank"
-        href="https://api.whatsapp.com/send?phone=+523330238418&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos">
+        href="https://api.whatsapp.com/send?phone=+523320561776&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos">
         <img width="80" src="{{asset('assets/images/whastlogo.png')}}" alt="">
       </a>
     </div>

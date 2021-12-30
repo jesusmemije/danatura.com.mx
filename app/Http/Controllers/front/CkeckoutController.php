@@ -28,34 +28,73 @@ class CkeckoutController extends Controller
 
     public function checkout()
     {
+        session_start();
+        // Check session
         if (!Auth::check()) {
             return redirect('/login');
         }
-        return view('front/checkout');
-    }
 
-    public function pay(Request $request)
-    {
-        $payment_id = $request->get('payment_id');
-
-        $response = Http::get("https://api.mercadopago.com/v1/payments/$payment_id" . "?access_token=" . config('services.mercadopago.token'));
-        $response = json_decode($response);
-
-        if ($response->status == "approved") {
-            # code...
+        // Chect cart
+        if( !(isset($_SESSION['carrito'])) || !(isset($_SESSION['totalpagar'])) || sizeof($_SESSION['carrito'])==0 ){
+            return redirect('/');
         }
+
+        return view('front/checkout');
     }
 
     public function payWithMercadoPago(Request $request)
     {
+        session_start();
+
         $payment_id = $request->get('payment_id');
 
         $response = Http::get("https://api.mercadopago.com/v1/payments/$payment_id" . "?access_token=" . config('services.mercadopago.token'));
         $response = json_decode($response);
 
         if ($response->status == "approved") {
-            # code...
+
+            // Varibles
+            $user     = Auth::user();
+            $carrito  = $_SESSION['carrito'];
+
+            $datos_envio = DatosEnvio::where('id_user', $user->id)->first();
+
+            // Save order
+            $this->compra->id_user     = $user->id;
+            $this->compra->costo_envio = $_SESSION['gastoEnvio'];
+            $this->compra->subtotal    = $_SESSION['subtotal'];
+            $this->compra->preciototal = $_SESSION['totalpagar'];
+            $this->compra->status      = "Pagado";
+            $this->compra->method      = "MercadoPago";
+            $this->compra->id_datosenvio = $datos_envio->id;
+            $this->compra->chargeid    = $payment_id;
+            $this->compra->save();
+
+            /* Insertar Items */
+            for ($i = 0; $i < sizeof($carrito); $i++) {
+
+                $producto = Productos::find($carrito[$i]['producto_id']);
+                $total = $producto->precio * $carrito[$i]['cantidad'];
+
+                $compra_item = new CompraItem();
+                $compra_item->compra_id   = $this->compra->id;
+                $compra_item->id_producto = $carrito[$i]['producto_id'];
+                $compra_item->cantidad    = $carrito[$i]['cantidad'];
+                $compra_item->precio      = $producto->precio;
+                $compra_item->total       = $total;
+                $compra_item->save();
+            }
+
+            $this->sendOrderMail();
+
+            // En caso de que todo OK.
+            return redirect('/checkout')->with('statusPayMercadoPago', 'success');
+            
+        } else {
+            // Pago no aprovado
+            return redirect('/checkout')->with('statusPayMercadoPago', 'Status: ' . $response->status . '. Details: ' . $response->status_detail);
         }
+
     }
 
     public function payWithConekta(Request $request)
@@ -68,7 +107,7 @@ class CkeckoutController extends Controller
         Conekta::setLocale('es');
 
         if (!Auth::check()) {
-            return response()->json(['ok' => 'false', 'message' => 'No hay sessión iniciada']);
+            return response()->json(['ok' => false, 'message' => 'No hay sessión iniciada']);
         }
 
         // User
@@ -88,21 +127,6 @@ class CkeckoutController extends Controller
         $this->compra->method      = "Conekta";
         $this->compra->id_datosenvio = $id_envio;
         $this->compra->save();
-
-        /* Insertar Items */
-        for ($i = 0; $i < sizeof($carrito); $i++) {
-
-            $producto = Productos::find($carrito[$i]['producto_id']);
-            $total = $producto->precio * $carrito[$i]['cantidad'];
-
-            $compra_item = new CompraItem();
-            $compra_item->compra_id   = $this->compra->id;
-            $compra_item->id_producto = $carrito[$i]['producto_id'];
-            $compra_item->cantidad    = $carrito[$i]['cantidad'];
-            $compra_item->precio      = $producto->precio;
-            $compra_item->total       = $total;
-            $compra_item->save();
-        }
 
         $datos_envio = DatosEnvio::find($request->id_envio);
 
@@ -176,17 +200,33 @@ class CkeckoutController extends Controller
                 $this->compra->chargeid = $charge->id;
                 $this->compra->payment_error = '';
                 $this->compra->save();
+
+                /* Insertar Items */
+                for ($i = 0; $i < sizeof($carrito); $i++) {
+
+                    $producto = Productos::find($carrito[$i]['producto_id']);
+                    $total = $producto->precio * $carrito[$i]['cantidad'];
+
+                    $compra_item = new CompraItem();
+                    $compra_item->compra_id   = $this->compra->id;
+                    $compra_item->id_producto = $carrito[$i]['producto_id'];
+                    $compra_item->cantidad    = $carrito[$i]['cantidad'];
+                    $compra_item->precio      = $producto->precio;
+                    $compra_item->total       = $total;
+                    $compra_item->save();
+                }
+
                 $this->sendOrderMail();
 
                 unset($_SESSION['carrito']);
                 unset($_SESSION['totalpagar']);
 
-                return response()->json(['ok' => 'true', 'message' => "success"]);
+                return response()->json(['ok' => true, 'message' => "success"]);
             } else {
                 $this->compra->status = $charge->status;
                 $this->compra->payment_error = $charge->failure_code . ': ' . $charge->failure_message;
                 $this->compra->save();
-                return response()->json(['ok' => 'false', 'message' => $charge->failure_code . ': ' . $charge->failure_message]);
+                return response()->json(['ok' => false, 'message' => $charge->failure_code . ': ' . $charge->failure_message]);
             }
         } catch (\Conekta\ProcessingError $error) {
             $this->compra->payment_error = $error->getMessage();
@@ -199,7 +239,7 @@ class CkeckoutController extends Controller
         // Si atrapa un error
         $this->compra->status = 'Fallido';
         $this->compra->save();
-        return response()->json(['ok' => 'false', 'message' => $this->compra->payment_error]);
+        return response()->json(['ok' => false, 'message' => $this->compra->payment_error]);
     }
 
     public function payWithPaypal()
@@ -245,7 +285,7 @@ class CkeckoutController extends Controller
         unset($_SESSION['carrito']);
         unset($_SESSION['totalpagar']);
 
-        return response()->json(['ok' => 'true', 'message' => 'success']);
+        return response()->json(['ok' => true, 'message' => 'success']);
     }
 
     public function sendOrderMail()

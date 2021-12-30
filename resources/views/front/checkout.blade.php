@@ -35,16 +35,6 @@ Checkout
 
 @section('content')
 
-<?php
-    session_start();
-
-    if(!(isset($_SESSION['carrito'])) || !(isset($_SESSION['totalpagar'])) || sizeof($_SESSION['carrito'])==0){
-        header("/");
-        die();
-    }
- 
-?>
-
 @include('front.layout.partials.menu')
 
 @php
@@ -56,24 +46,29 @@ Checkout
     // Crea un objeto de preferencia
     $preference = new MercadoPago\Preference();
 
-    $carrito  = $_SESSION['carrito'];
+    $shipments = new MercadoPago\Shipments();
+    $shipments->cost = 170;
+    $shipments->mode = "not_specified";
 
+    $preference->shipments = $shipments;
+
+    $carrito  = $_SESSION['carrito'];
     foreach ($carrito as $product) {
         // Crea un ítems en la preferencia
         $item = new MercadoPago\Item();
-        $item->title = $product['nombre'];
-        $item->quantity = floatval( $product['cantidad'] );
+        $item->title      = $product['nombre'];
+        $item->quantity   = floatval( $product['cantidad'] );
         $item->unit_price = (int) $product['precio_unit'];
 
         $products[] = $item;
     }
 
     $preference->back_urls = array(
-        "success" => route('checkout.pay')
+        "success" => route('payWithMercadoPago')
     );
     $preference->auto_return = "approved";
-    
-    $preference->items = $products;
+    $preference->items       = $products;
+
     $preference->save();
 
 @endphp
@@ -407,6 +402,32 @@ Checkout
 <!-- SDK MercadoPago.js V2 -->
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 
+<!-- Validate pago MercadoPago -->
+@if (session()->has('statusPayMercadoPago'))
+    @if ( session()->get('statusPayMercadoPago') == "success" )
+        @php
+            unset($_SESSION['carrito']);
+            unset($_SESSION['totalpagar']);
+        @endphp
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title:'¡Pago exitoso!',
+                text: 'Hemos enviado un email con los detalles de su compra. Muchas gracias.'
+            }).then((result) => {
+                window.location.href = '/historial_pedidos';
+            })
+        </script>        
+    @else
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title:'¡Pago no realizado!',
+                text: '{{ session()->get('statusPayMercadoPago') }}'
+            })
+        </script>   
+    @endif
+@endif
 
 <script>
     // Agrega credenciales de SDK

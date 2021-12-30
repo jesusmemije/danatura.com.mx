@@ -29,15 +29,10 @@ class ClienteController extends Controller
      */
     public function index()
     {
-            $datosdirection = DB::table('datos_envios')
-                ->join('users','datos_envios.id_user','=','users.id')
-                ->select('datos_envios.*')
-                ->where('datos_envios.id_user','=',auth()->user()->id)
-                ->distinct('datos_envios.direccion1')
-                ->get();
-            
+
+            $datosdirection = DatosEnvio::where('id_user', auth()->user()->id )->first();
+
             // Historial de compras
-            
             $compra = DB::table('compra')
                 // ->join('compra_item','compra.id','=','compra_item.compra_id')
                 // ->join('productos','compra_item.id_producto','=','productos.id')

@@ -280,8 +280,8 @@
     <div class="row">
         <div class="col-md-3 col-12 text-center pt-md-4 pt-3">
             <span class="pl-md-4 pl-0" style="color:#4c5444; font-weight:bold">
-                <a href="tel:+523330238418">
-                    Contáctanos(33) 30238418
+                <a href="tel:+523320561776">
+                    Contáctanos(33) 20561776
                 </a>
             </span>
         </div>
@@ -305,7 +305,7 @@
                         class="icon-instagram">
                         <i style="" class="fab fa-youtube fa-sm ri-face ii"></i></a></li>
                 <li class="nav-item" style="margin-right: 2%;"><a
-                        href="https://api.whatsapp.com/send?phone=+523330238418&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos"
+                        href="https://api.whatsapp.com/send?phone=+523320561776&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos"
                         target="_blank" class="icon-instagram">
                         <i style="" class="fab fa-whatsapp fa-sm ri-face iw"></i></a></li>
             </ul>

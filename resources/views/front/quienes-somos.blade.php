@@ -34,7 +34,7 @@
 
 @include('front.layout.partials.menu')
 
-<div class="row row-principal" style="background:#FFEFD6;padding-left:6%; padding-right:6%;">
+<div class="row row-principal" style="background:#FFEFD6;padding-left:6%; padding-right:6%;background-image: url('/assets/images/background.png');">
   <div class="quienes-somos-align" style="padding-top:5%; padding-bottom:5%;">
     <span class="info-text-size" style="color:#73482C; font-family:COSMOPOLITAN SCRIPT MEDIUM;">Información de la empresa</span>
     <div class="row-contenido">

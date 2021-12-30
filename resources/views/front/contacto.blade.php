@@ -42,7 +42,7 @@ Contacto
 
 @include('front.layout.partials.menu')
 
-<div class="row therow">
+<div class="row therow" style="background-image: url('/assets/images/background.png');">
 
   <div class="col-md-12 d-flex justify-content-center pb-4">
     <h3 style="color:#F79860; font-weight:bold;">Contacto</h3>
@@ -50,7 +50,7 @@ Contacto
 
   <div class="col-md-6 caja" style="padding-left:4%">
     <p style=" font-family:'AmasisMTStd-Bold'">
-      Teléfono: <span class="hh">+52 3330238418</span>
+      Teléfono: <span class="hh">+52 3320561776</span>
     </p>
     <p>Dirección: <span class="hh">Zapopan Jalisco</span> </p>
     <p>Correo electrónico: <span class="hh">contacto@danatura.com.mx</span> </p>
@@ -66,8 +66,8 @@ Contacto
 
     <p>Whatsapp <i class="fab fa-whatsapp-square"></i><br>
       <a class="hh" target="_blank"
-        href="https://api.whatsapp.com/send?phone=+523330238418&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos">
-        +52 3330238418
+        href="https://api.whatsapp.com/send?phone=+523320561776&text=Hola%2C%20deseo%20adquirir%20información%20acerca%20de%20sus%20productos">
+        +52 3320561776
       </a>
     </p>
   </div>

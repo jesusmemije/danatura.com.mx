@@ -127,7 +127,7 @@
 </style>
 
 
-<div style="background: #f5e6cd;">
+<div style="background-image: url('/assets/images/background.png');">
 
 	<div class="container py-5">
 		<div class="row">
@@ -153,7 +153,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12 d-flex justify-content-center">
-				<img class="img-fluid" src="{{asset('assets/img/mapa5.png')}}" alt="">
+				<img class="img-fluid" src="{{asset('assets/img/mapa6.png')}}" alt="">
 			</div>
 		</div>
 	</div>
