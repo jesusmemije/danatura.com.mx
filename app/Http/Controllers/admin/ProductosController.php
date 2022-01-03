@@ -202,8 +202,8 @@ class ProductosController extends Controller
 
         $domain='http://';
         $galeria="";
-        $asset=$_SERVER['DOCUMENT_ROOT'].'/pruebas/danatura/public/assets/productos/';
-        $asset_bd="$domain{$_SERVER['HTTP_HOST']}/pruebas/danatura/public/assets/productos/";
+        $asset=$_SERVER['DOCUMENT_ROOT'].'/assets/productos/';
+        $asset_bd="$domain{$_SERVER['HTTP_HOST']}/assets/productos/";
      
 
         //Para la imagen.

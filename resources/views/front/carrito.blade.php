@@ -32,7 +32,8 @@
                 foreach ($carrito as $key=>$value) {
                    // $aux_cantidad_total=$aux_cantidad_total+
                 }
-
+                $_SESSION['gastoEnvio'] = 170;
+                $_SESSION['subtotal'] = 0;
                 $totalPagar = 0;
 
             } else {
@@ -114,11 +115,11 @@
                                                 <h5><?php echo $producto->nombre; ?></h5>
                                             </td>
                                             <td class="phone-hide"><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
-                                            <td id="<?php echo $producto->id ?>"><?php echo $producto->precio;  ?></td>
+                                            <td id="<?php echo $producto->id ?>"><?php echo '$' . number_format($producto->precio, 2, '.', ',')  ?></td>
                                             <td><?php echo $key['cantidad'] ?></td>
                                             <td>
                                                 <?php  $totalPagar = $key['cantidad'] * $producto->precio + $totalPagar;
-                                                echo $key['cantidad'] * $producto->precio;  ?>
+                                                echo '$' . number_format($key['cantidad'] * $producto->precio, 2, '.', ',');  ?>
                                             </td>
                                             <td>
                                                 <a onclick="remove('{{$producto->id}}')" class="btn btn-danger waves-effect waves-float btn-sm waves-red">
@@ -137,7 +138,7 @@
                     </table>
                 </div>
             </div>
-            <div class="card pt-3">
+            <div class="card pt-3 pb-1">
                 <div class="body">
 
                     <div class="col-md-12">
@@ -151,13 +152,19 @@
                                     $totalPagar = $totalPagar . ".00";
                                 }
                             @endphp
-                            <div class="col-md-3"><b>Total de productos: </b><?php echo sizeof($carrito); ?></div>
-                            <div class="col-md-3"><b>Total pago: </b>$<label id="totalPagar"><?php echo $totalPagar . " MXN"; ?></label></div>
-                            <div class="col-md-3">
-                                <?php $_SESSION['totalpagar'] = $totalPagar;   ?>
+                            <div class="col-md-2"><b>Total de productos: </b><?php echo sizeof($carrito); ?></div>
+                            <div class="col-md-2"><b>Gastos de envio: </b>$<?php echo number_format($_SESSION['gastoEnvio'], 2, '.', ',') ?></div>
+                            <div class="col-md-2"><b>Total pago: </b><br>$<label id="totalPagar"><?php echo number_format($totalPagar + $_SESSION['gastoEnvio'], 2, '.', ',') ?></label></div>
+                            <div class="col-md-2">
+                                <?php $_SESSION['totalpagar'] = $totalPagar  + $_SESSION['gastoEnvio'];   ?>
                                 <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora 
                                     <i style="color:white" class="fas fa-credit-card"></i>
                                 </a>
+                            </div>
+                            <div hidden>
+                                <b>
+                                <?php echo $_SESSION['subtotal'] = $totalPagar ?>
+                                </b>
                             </div>
                         </div>
                     </div>

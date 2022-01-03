@@ -12,6 +12,18 @@ Home
   .bg-header-gris {
     background: unset!important;
   }
+  .btn-video-youtube {
+    font-size: 40px;
+    position: absolute;
+    left: 70%;
+    top: 52%;
+  }
+
+  @media screen and (max-width: 480px) {
+    .btn-video-youtube {
+      top: -12%;
+    }
+  }
 </style>
 
 @section('content')
@@ -23,10 +35,12 @@ Home
       <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
       <!-- Slide One - Set the background image for this slide in the line below -->
-      <div class="carousel-item active" style="background-image: url('assets/images/Banner Principal.jpg')">
+      <div class="carousel-item active" style="background-image: url('assets/images/banner-principal/1-principal.jpg')">
         @include('front.layout.partials.menu')
         <div class="container-slider-one text-md-left text-center">
           <span class="txt-banner">DELICIOSO</span><br>
@@ -43,11 +57,19 @@ Home
           </button>
         </div>
       </div>
-      <div class="carousel-item" style="background-image: url('assets/images/Image_Ig1.jpg')">
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/2-carbon.jpg')">
         @include('front.layout.partials.menu')
         <div class="carousel-caption d-none d-md-block"> </div>
       </div>
-      <div class="carousel-item" style="background-image: url('assets/images/Image_Ig2.jpg')">
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/3-malteada-rosa.jpg')">
+        @include('front.layout.partials.menu')
+        <div class="carousel-caption d-none d-md-block"> </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/4-jugo-verde.jpg')">
+        @include('front.layout.partials.menu')
+        <div class="carousel-caption d-none d-md-block"> </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('assets/images/banner-principal/6-capsulas.jpg')">
         @include('front.layout.partials.menu')
         <div class="carousel-caption d-none d-md-block"> </div>
       </div>
@@ -56,10 +78,11 @@ Home
 </div>
 <div class="container-fluid">
   <div class="row pt-5">
-    <div class="col-md-12 ">
-      <div class="row d-flex justify-content-center" style="color:#73472b;font-size: 2em;">PRODUCTOS</div>
-      <div class="row d-flex justify-content-center"
-        style="color:#fb985f; font-size:3em; font-family:AmasisMTStd-Bold; ">MÁS VENDIDOS</div>
+    <div class="col-md-12">
+      <div class="text-center">
+        <div style="color:#73472b; font-size:4em; font-family: COSMOPOLITAN SCRIPT MEDIUM; line-height:1;">Productos</div>
+        <div style="color:#fb985f; font-size:3em; font-family:AmasisMTStd-Bold; line-height:1;">MÁS VENDIDOS</div>
+      </div>
     </div>
     <div class="col-md-12">
       <ul id="lightSlider">
@@ -226,26 +249,31 @@ Home
       <span class='span-delicioso'>¡Es delicioso!</span> </div>
   </div>
   <div class="col-md-6 " style="">
-    <div class="row"> <a target="_blank" href="https://youtube.com/channel/UCt-0ISeB7NilGmMRfs2mVKA"><i
-          style="font-size:40px; position:absolute; left:70%; top:30%;"
-          class="fab fa-youtube fa-sm circle-insta"></i></a> </div>
+    <div class="row">
+      <a target="_blank" href="https://youtube.com/channel/UCt-0ISeB7NilGmMRfs2mVKA">
+        <i class="fab fa-youtube circle-insta btn-video-youtube"></i>
+      </a>
+    </div>
     <div class="text-md-left text-center" style="margin-top: 10%;">
       <div class="pr-md-5 pr-0"> <span style="font-size: 1.8em;color:#73482C">Preparar platillos y menús
-          saludables puede ser muy facil.</span> </div> <span
+          saludables puede ser muy fácil.</span> </div> <span
         style="font-size:240%; font-family:AmasisMTStd-Bold; color:#73482C">¡Sigue nuestras recetas!</span>
     </div>
   </div>
 </div>
 <div class="row py-0 px-0 py-md-5 px-md-0" style="background:#FFE4B8;">
-  <div class="col-md-3 col-6 mb-1" style="display:inline-block;"> <img
-      style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/Image_Ig1.jpg')}}"
-      alt=""> </div>
-  <div class="col-md-3 col-6 mb-1"> <img style='max-height: 100%; max-width: 113%; object-fit: cover'
-      src="{{asset('assets/images/Image_Ig2.jpg')}}" alt=""> </div>
-  <div class="col-md-3 col-6"> <img style='max-height: 100%; max-width: 113%; object-fit: cover'
-      src="{{asset('assets/images/Image_Ig3.jpg')}}" alt=""> </div>
-  <div class="col-md-3 col-6"> <img style='max-height: 100%; max-width: 113%; object-fit: cover'
-      src="{{asset('assets/images/Image_Ig4.jpg')}}" alt=""> </div>
+  <div class="col-md-3 col-6 mb-1" style="display:inline-block;">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_03.png')}}">
+  </div>
+  <div class="col-md-3 col-6 mb-1">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_01.png')}}">
+  </div>
+  <div class="col-md-3 col-6">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_02.png')}}">
+  </div>
+  <div class="col-md-3 col-6">
+    <img style='max-height: 100%; max-width: 113%; object-fit: cover' src="{{asset('assets/images/web_04.png')}}">
+  </div>
 </div>
 <div class="row" style="height:300px; background:#F79860">
   <div class="col-md-12" style="padding-top: 4%;">

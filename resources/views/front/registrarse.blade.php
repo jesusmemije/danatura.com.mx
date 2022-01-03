@@ -1,22 +1,25 @@
-@extends('layouts.app')
+@extends('front.layout.app')
+
+@section('title')
+    Crear una cuenta
+@endsection
 
 @section('content')
 
+@include('front.layout.partials.menu')
 
-
-<div class="container">
+<div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Registro') }}</div>
+                <div class="card-header text-center" style="font-size: 32px; font-weight: bold;">{{ __('Crear cuenta') }}</div>
              
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nombrex') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
 
                             <input type="text" hidden value="" name="id_usuario">
 
@@ -71,9 +74,14 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-block">
                                     {{ __('Registrar') }}
                                 </button>
+                                <div class="mt-3">
+                                    {{ __('Ya tengo una cuenta') }} <a class="btn-link" href="{{ route('login') }}">
+                                        {{ __('Iniciar sesión') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </form>

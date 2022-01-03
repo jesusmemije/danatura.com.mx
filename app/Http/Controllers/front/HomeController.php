@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Productos;
-use App\Models\DatosEnvio;
-use Illuminate\Support\Facades\DB;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Models\DatosEnvio;
+use App\Models\Productos;
+use App\Models\Compra;
+use App\Models\User;
+use App\Models\Contacto;
 
 // Send mail
 use App\Mail\CompraExitosa;
+use App\Mail\MensajeContacto;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -20,12 +23,12 @@ class HomeController extends Controller
     function index()
     {
         $masvendidos =
-            DB::table('venta_productos')
-            ->join('productos', 'venta_productos.id_producto', '=', 'productos.id')
+            DB::table('compra_item')
+            ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
 
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
-            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'precio', 'fotografia', "galeria")
+            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
             ->limit(6)
             ->get();
 
@@ -36,14 +39,15 @@ class HomeController extends Controller
 
     function registrar_contacto(Request $request)
     {
-        $hecho = DB::table('contacto')->insert([
-            'nombre' => $request->nombre,
-            'email' => $request->email,
-            'asunto' => $request->asunto,
-            'mensaje' => $request->mensaje,
-        ]);
+        $contacto = new Contacto();
+        $contacto->nombre  = $request->nombre;
+        $contacto->email   = $request->email;
+        $contacto->asunto  = $request->asunto;
+        $contacto->mensaje = $request->mensaje;
 
-        if ($hecho) {
+        Mail::to('contacto@danatura.com.mx')->send(new MensajeContacto($contacto));
+
+        if ($contacto->save()) {
             return redirect()->back()->with('mensaje', 'Su información se ha enviado a nuestro equipo de trabajo.');
         } else {
             return redirect()->back()->with('error', 'Su información no ha podido ser enviada, intentelo de nuevo.');
@@ -68,12 +72,12 @@ class HomeController extends Controller
     function detalle_producto(Request $request)
     {
         $masvendidos =
-            DB::table('venta_productos')
-            ->join('productos', 'venta_productos.id_producto', '=', 'productos.id')
+            DB::table('compra_item')
+            ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
 
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
-            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'precio', 'fotografia', "galeria")
+            ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
             ->limit(6)
             ->get();
 
@@ -476,10 +480,24 @@ class HomeController extends Controller
                     <span>MOSTRANDO ' . $aux_seg . ' de ' . $count . ' productos</span>
                 </div>';
 
+                if ($aux_seg == 9) {
+                    $progress_with = 'width: 16.5%;';
+                } elseif ($aux_seg == 18) {
+                    $progress_with = 'width: 33%;';
+                } elseif ($aux_seg == 27) {
+                    $progress_with = 'width: 49.5%;';
+                } elseif ($aux_seg == 36) {
+                    $progress_with = 'width: 66%;';
+                } elseif ($aux_seg == 45) {
+                    $progress_with = 'width: 82.5%;';
+                } else {
+                    $progress_with = 'width: 100%;';
+                }
+
                 $output .=
                     '<div id="showpro" class="col-md-3 divbar" style="margin-left: 38%;">
                     <div id="progressbar">
-                        <div></div>
+                        <div style="' . $progress_with . '"></div>
                     </div>
                 </div>';
 
@@ -511,13 +529,13 @@ class HomeController extends Controller
         } else {
 
             $masvendidos =
-                DB::table('venta_productos')
-                ->join('productos', 'venta_productos.id_producto', '=', 'productos.id')
+                DB::table('compra_item')
+                ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
 
-                ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia')
+                ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
                 ->orderByRaw('sum(cantidad) desc ')
-                ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'precio', 'fotografia')
-                ->limit(3)
+                ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
+                ->limit(6)
                 ->get();
 
             return redirect()->route('home', ['masvendidos' => $masvendidos]);
@@ -526,23 +544,7 @@ class HomeController extends Controller
 
     public function carrito()
     {
-        if (auth()->user() == null) {
-            return redirect('/login');
-        }
-
-        // echo 'User IP - ' . $_SERVER['REMOTE_ADDR'];
-        $carrito = DB::table('carrito');
-
         return view('front/carrito');
-    }
-
-    public function checkout(Request $request)
-    {
-        if (auth()->user() == null) {
-            return redirect('/login');
-        }
-        
-        return view('front/checkout');
     }
 
     public function procesa()
@@ -634,7 +636,6 @@ class HomeController extends Controller
                     }
                 }
                 $_SESSION['carrito'] = $auxCarrito;
-
             }
         }
     }
@@ -642,21 +643,15 @@ class HomeController extends Controller
     public function datos_envio(Request $request)
     {
         //Para verificar que el usuario solamente está cambiando su dirección de envio y "proteger" los otros datos.
-        if ( !empty($request->dato_id) ) {
-
-            $ver = DB::table('venta_productos as vp')
-                ->select('id_user')
-                ->where('vp.id_datosenvio', '=', $request->dato_id)
-                ->first();
-
-            if ($ver->id_user == Auth::user()->id) {
-                $datosenvio = DatosEnvio::find($request->dato_id);
-            }
-
+        if (!empty($request->dato_id)) {
+            $msj = 'Los datos se actualizaron correctamente';
+            $datosenvio = DatosEnvio::find($request->dato_id);
         } else {
+            $msj = 'Los datos se guardaron correctamente';
             $datosenvio = new DatosEnvio();
         }
 
+        $datosenvio->id_user = Auth::user()->id;
         $datosenvio->nombre = $request->nombre;
         $datosenvio->apellidos = $request->apellidos;
         $datosenvio->empresa = $request->empresa;
@@ -671,100 +666,20 @@ class HomeController extends Controller
         $datosenvio->rfc = $request->rfc;
         $datosenvio->referencia = $request->referencia;
 
-        $hecho = $datosenvio->save();
-
-        if ($hecho) {
-
+        if ($datosenvio->save()) {
             $data = [
-                "mensaje" => "Los datos se guardaron correctamente",
-                    "id" => $datosenvio->id
+                "ok"      => true,
+                "mensaje" => $msj,
+                "id"      => $datosenvio->id
             ];
-
-            echo json_encode($data);
-        }
-
-    }
-
-    public function payment(Request $request)
-    {
-        print_r($request->metodopago);
-    }
-
-    public function procesa_paypal()
-    {
-        session_start();
-
-        $data = $_POST['data'];
-        $id_envio = $_POST['id_envio'];
-
-        # $auxdata = json_encode($data);
-
-        $user = auth()->user();
-        $usuario_id = $user->id;
-
-        $nombre = $user->name;
-        $email  = $user->email;
-
-        # $cantidadCursos = sizeof($_SESSION['carrito']);
-        $totalpagar = $_SESSION['totalpagar'];
-        $carrito = $_SESSION['carrito'];
-        
-        $idPaypal = $data['purchase_units'][0]['payments']['captures'][0]['id'];
-        $status         = "paid";
-        $fecha_creacion = date("Y-m-d", strtotime($data['create_time']));
-        $fecha_update   = date_create();
-        $method = 'PayPal';
-
-        #Para el pago individual de modulos.
-        // $cursos_id = [];
-
-        for ($i = 0; $i < sizeof($carrito); $i++) {
-            $save_payment = DB::table('venta_productos')->insert([
-                'id_user'     => $usuario_id,
-                'id_producto' => $carrito[$i]['producto_id'],
-                'cantidad'    => $carrito[$i]['cantidad'],
-                'preciototal' => $totalpagar,
-                'status'      => $status,
-                'chargeid'    => $idPaypal,
-                'method'      => $method,
-                'id_datosenvio' => $id_envio,
-                'created_at'  => $fecha_creacion,
-                'updated_at'  => $fecha_update
-            ]);
-        }
-
-        $datos_envio = DatosEnvio::find( $id_envio );
-
-        $direccion1 = $datos_envio->direccion1;
-        $direccion2 = $datos_envio->direccion2;
-        $cp         = $datos_envio->cp;
-        $localidad  = $datos_envio->localidad;
-        $region     = $datos_envio->region;
-        $pais       = $datos_envio->pais;
-        $telefono   = $datos_envio->telefono;
-        $referencia = $datos_envio->referencia;
-
-        if ( !empty($direccion2) ) {
-            $direccion_envio = $direccion1 . ', ' . $direccion2 . ', ' . $cp . ', ' . $localidad . ', ' . $region . ', ' . $pais;
         } else {
-            $direccion_envio = $direccion1 . ', ' . $cp . ', ' . $localidad . ', ' . $region . ', ' . $pais;
+            $data = [
+                "ok" => false
+            ];
         }
 
-        $data_mail = array(
-            'nombre'  => $nombre,
-            'total'   => $totalpagar,
-            'method'  => $method,
-            'status'  => $status,
-            'direccion_envio' => $direccion_envio,
-            'carrito' => $carrito
-        );
-    
-        Mail::to( $email )->send( new CompraExitosa( $data_mail ) );
+        echo json_encode($data);
 
-        unset( $_SESSION['carrito'] );
-        unset( $_SESSION['totalpagar'] );
-
-        return "hecho";
     }
 
     public function logout()

@@ -206,6 +206,12 @@ Detalle producto
       padding-top: 6%;
     }
   }
+
+  .corazon {
+    top: 66px;
+    left: 88%;
+  }
+
 </style>
 @endsection
 
@@ -249,6 +255,7 @@ Detalle producto
         $foto_principal=$array_galeria[0];
         @endphp
 
+        <i id="fav{{ $producto->id }}" onclick="fav(this,{{ $producto->id }})" class="fas fa-heart fa-lg corazon" aria-hidden="true"></i>
         <img id="img-principal" src="{{$foto_principal}}" alt="...">
       </div>
 
@@ -295,9 +302,11 @@ Detalle producto
               <!-- Your share button code -->
               <div class="fb-share-button" data-href="{{$url}}" data-layout="button_count">
               </div>
-              <li class="nav-item" style="margin-top:-1%; margin-left: 2%;"><a href="" target="_blank"
-                  class="icon-instagram">
-                  <i style="font-size:20px;" class="far fa-envelope fa-sm ri-face"></i></a></li>
+              <li class="nav-item" style="margin-top:-1%; margin-left: 2%;">
+                <a href="mailto:contacto@danatura.com.mx?subject=Danatura%20-%20Productos" target="_blank" class="icon-instagram">
+                  <i style="font-size:20px;" class="far fa-envelope fa-sm ri-face"></i>
+                </a>
+              </li>
             </ul>
           </div>
           <div>
@@ -509,7 +518,7 @@ function fav(dato, id){
       }
 
       if(response['operacion']=="bien"){
-        window.location="{{route('carrito')}}"; 
+        window.location="{{route('productos')}}"; 
       }
                      
     },

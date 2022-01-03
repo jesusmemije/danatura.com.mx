@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Compra;
 use App\Models\DatosEnvio;
 
 class ClienteController extends Controller
@@ -28,47 +29,38 @@ class ClienteController extends Controller
      */
     public function index()
     {
-            $datosdirection = DB::table('datos_envios')
-                // ->join('venta_productos','datos_envios.id','=','venta_productos.id_datosenvio')
-                ->join('users','datos_envios.email','=','users.email')
-                ->select('datos_envios.*')
-                // ->where('venta_productos.id_user','=',auth()->user()->id)
-                ->where('datos_envios.email','=',auth()->user()->email)
-                ->distinct('datos_envios.direccion1')
-                ->get();
-            // dd($datosdirection);
-            // Historial de compras
-            
-            $historialPedido = DB::table('venta_productos')
-            ->join('users','venta_productos.id_user','=','users.id')
-            ->join('productos','venta_productos.id_producto','=','productos.id')
-            ->join('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
-            ->select('venta_productos.*','users.name', 'productos.nombre AS Producto', 'datos_envios.direccion1')
-            ->where('venta_productos.id_user','=',auth()->user()->id)
-            ->distinct('datos_envios.direccion1')->paginate(10);
 
-        return view('cliente.historial_pedidos',compact(['historialPedido',$historialPedido,'datosdirection',$datosdirection]));
+            $datosdirection = DatosEnvio::where('id_user', auth()->user()->id )->first();
+
+            // Historial de compras
+            $compra = DB::table('compra')
+                // ->join('compra_item','compra.id','=','compra_item.compra_id')
+                // ->join('productos','compra_item.id_producto','=','productos.id')
+                ->join('users','compra.id_user','=','users.id')
+                // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+                ->select('compra.*')
+                ->where('compra.id_user','=',auth()->user()->id)
+                ->distinct('compra.id')
+                ->get();
+
+            $compra_item = DB::table('compra_item')
+                ->join('compra','compra_item.compra_id','=','compra.id')
+                ->join('productos','compra_item.id_producto','=','productos.id')
+                // ->join('users','compra.id_user','=','users.id')
+                // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+                ->select('compra_item.*','productos.nombre AS Producto')
+                // ->where('compra.id_user','=',auth()->user()->id)
+                ->distinct('compra_item.id')
+                ->get();
+
+        return view('cliente.historial_pedidos',compact(['compra',$compra,'compra_item',$compra_item,'datosdirection',$datosdirection]));
     }
 
     public function store(Request $request)
     {
-        $validacion = $this->validate($request, [
-            'nombre'    => 'required|string',
-            'apellidos' => 'required|string',
-            'empresa'   => 'string',
-            'pais'      => 'required|string',
-            'direccion1'=> 'required',
-            'direccion2'=> 'string',
-            'localidad' => 'required|string',
-            'region'    => 'required|string',
-            'cp'        => 'required',
-            'telefono'  => 'required|numeric',
-            'email'     => 'required|email',
-            'rfc'       => 'string',
-            'referencia'=> 'string',
-        ]);
 
         $newDirection = new DatosEnvio();
+        $newDirection->id_user = Auth::user()->id;
         $newDirection->nombre = $request->input('nombre');
         $newDirection->apellidos = $request->input('apellidos');
         $newDirection->empresa = $request->input('empresa');
@@ -82,9 +74,10 @@ class ClienteController extends Controller
         $newDirection->email = $request->input('email');
         $newDirection->rfc = $request->input('rfc');
         $newDirection->referencia = $request->input('referencia');
+        
         $newDirection->save();
 
-        return redirect()->route('historial_pedidos.index')->with('mensaje', 'Dirección registrada con exito.');
+        return redirect()->back()->with('mensaje', 'Dirección registrada con exito.');
     }
 
     public function update(Request $request)

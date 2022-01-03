@@ -5,7 +5,6 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\VentaProductos;
 
 class VentasProductosController extends Controller
 {
@@ -16,13 +15,26 @@ class VentasProductosController extends Controller
      */
     public function index()
     {
-        //
-        $ventas=VentaProductos::leftJoin('datos_envios','venta_productos.id_datosenvio','=','datos_envios.id')
-        ->get(['datos_envios.*', 'venta_productos.*','venta_productos.id as idventa']);
+        $datosdirection = DB::table('datos_envios')
+                ->select('datos_envios.*')
+                ->get();
+            
+        $compra = DB::table('compra')
+                ->join('users','compra.id_user','=','users.id')
+                ->join('tiposuario','users.tipo','=','tiposuario.id')
+                ->select('compra.*','users.name','tiposuario.tipo','compra.id as idventa')
 
-       
+                ->distinct('compra.id')
+                ->get();
 
-        return view('admin.ventas.index',['ventas'=> $ventas]);
+        $compra_item = DB::table('compra_item')
+                ->join('compra','compra_item.compra_id','=','compra.id')
+                ->join('productos','compra_item.id_producto','=','productos.id')
+                ->select('compra_item.*','productos.*')
+                ->distinct('compra_item.id')
+                ->get();
+
+        return view('admin.ventas.index',compact(['compra',$compra,'compra_item',$compra_item,'datosdirection',$datosdirection]));
     }
 
     /**
@@ -95,7 +107,7 @@ class VentasProductosController extends Controller
     public function cambiarEstadoEntrega(Request $request){
 
 
-        $cambio_venta=DB::table('venta_productos')
+        $cambio_venta=DB::table('compra')
         ->where('id','=',$request->id_venta)
         ->update([
 

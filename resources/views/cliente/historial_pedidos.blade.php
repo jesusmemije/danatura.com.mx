@@ -5,18 +5,17 @@
 @endsection
 
 @section('styles')
-    <link type="text/css" rel="stylesheet" href="{{asset('assets/css/lightslider.css')}}" />
-    <link type="text/css" rel="stylesheet" href="{{asset('assets/css/home.css')}}" />
-
+    
+    <link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}"/>
     <style>
 
       .principal{
-        background:#FFEFD6;
+        background: #C0C0C0;
         padding-left:6%;
         padding-right:6%;
       }
       .contenido{
-        color: #73482C;
+        /*color: #73482C;*/
         font-family:AmasisMTStd-Bold;
       }
       .card{
@@ -25,85 +24,200 @@
       .card-header{
         border: 0px !important;
       }
+      .bottonEditar{
+        border-color: yellow;
+        border-width: 2px;
+      }
       .direccines{
+        background: #fafafa;
+        border-radius: 18px;
         position: relative;
       }
-
+      .imagendireccion{
+        height: 45px;
+        border-radius: 18px;
+      }
+      .historial{
+        background: #fafafa;
+        border-radius: 18px;
+      }
+      .pull-left {
+          float: left !important;
+        }
+        .pull-right {
+            float: right !important;
+        }
     </style>
 @endsection
 
 @section('content')
 
     <div class="principal col-sm-12 align-content-center">
-        <div class="contenido container-fluid" style="padding-top:5%; padding-bottom:5%; text-align:justify;">
+        <div class="contenido container-fluid" style="padding-top:5%; padding-bottom:5%;">
             @if ( session('mensaje') )
                 <div class="alert alert-success" role="alert">
                     {{ session('mensaje') }}
                 </div>
             @endif
-            <div class="col-lg-11" style="background: #fafafa;">
-                <h2>Mis Direcciones</h2>
+
+            <div class="direccines col-sm-12">
+                <br>
+                    <a class="pull-right btn btn-success" href="{{ url('/') }}">Ir al inicio</a>
+                <h4>Mi dirección de envío</h4>
                 <hr>
-                <div class="col-lg-11">
-                    <table class="table table-responsive">
+                <div class="col-lg-11 table-responsive">
+                    <table class="table" style=" white-space: nowrap;">
                         <tbody>
-                            @foreach ($datosdirection as $resul)
+                            @if ($datosdirection)
+                            @php
+                                $direction = $datosdirection->direccion1.', '.$datosdirection->localidad.', '.$datosdirection->region.'. Código postal: '.$datosdirection->cp;
+                            @endphp
                             <tr>
                                 <td colspan="" rowspan="" headers="">
-                                    <img height="45" src="{{asset('assets/icons/ICON7-13.png')}}">
+                                    <img class="imagendireccion" src="{{asset('assets/icons/casa.png')}}">
                                 </td>
-                                <td style="width: 650px;">
-                                    <label>{{$resul->empresa}}</label>
+                                <td>
+                                    <label>{{$datosdirection->empresa}}</label>
                                     <br>
-                                    <p style="font-family: arial;">
-                                    {{$resul->direccion1}}, {{$resul->localidad}}, {{$resul->region}}. Código postal: {{$resul->cp}}  
+                                    <p style="font-family: Arial, Helvetica, sans-serif;">
+                                        <?php echo $direction ?>
+                                      <br>
+                                    Recibe: {{$datosdirection->nombre . ' ' . $datosdirection->apellidos}} - {{$datosdirection->telefono}}
                                     </p>
                                 </td>
                                 <td>
-                                    <button class="btn  btn-sm" style="border-color: yellow; border-width: 2px;" data-nombre="{{$resul->nombre}}" data-apellidos="{{$resul->apellidos}}" data-empresa="{{$resul->empresa}}" data-pais="{{$resul->pais}}" data-direccion1="{{$resul->direccion1}}" data-direccion2="{{$resul->direccion2}}" data-localidad="{{$resul->localidad}}" data-region="{{$resul->region}}" data-cp="{{$resul->cp}}" data-telefono="{{$resul->telefono}}" data-email="{{$resul->email}}" data-rfc="{{$resul->rfc}}" data-referencia="{{$resul->referencia}}" data-id="{{$resul->id}}" data-toggle="modal" data-target="#editDirection">Editar <i class="fa fa-edit"></i></button>
-                                    <a class="btn  btn-sm" style="border-color: red; border-width: 2px;" href="{{ url('/destroy_historial_pedidos/'.$resul->id)}}">Eliminar <i class="fa fa-trash"></i></a>
+                                    <button class="btn  btn-warning" data-nombre="{{$datosdirection->nombre}}" data-apellidos="{{$datosdirection->apellidos}}" data-empresa="{{$datosdirection->empresa}}" data-pais="{{$datosdirection->pais}}" data-direccion1="{{$datosdirection->direccion1}}" data-direccion2="{{$datosdirection->direccion2}}" data-localidad="{{$datosdirection->localidad}}" data-region="{{$datosdirection->region}}" data-cp="{{$datosdirection->cp}}" data-telefono="{{$datosdirection->telefono}}" data-email="{{$datosdirection->email}}" data-rfc="{{$datosdirection->rfc}}" data-referencia="{{$datosdirection->referencia}}" data-id="{{$datosdirection->id}}" data-toggle="modal" data-target="#editDirection"> <i class="fa fa-edit"></i></button>
+                                    {{-- <a class="btn  btn-sm" style="border-color: red; border-width: 2px;" href="{{ url('/destroy_historial_pedidos/'.$datosdirection->id)}}">Eliminar <i class="fa fa-trash"></i></a> --}}
                                 </td>
                             </tr>
-                            @endforeach
+                            @else
+                            <div class="text-center">
+                                <span>No tienes ninguna dirección de envío. Registra una al realizar tu primera compra.</span>
+                            </div>
+                            @endif
                         </tbody>
                     </table>
-                    <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a>
+                    {{-- <a data-toggle="modal" data-target="#addModal" href="#" style="color: green; text-decoration: underline;">Agregar nueva dirección</a> --}}
+                    <br>
+                    <br>
                 </div>
+                <br>
             </div>
             <br>
-            <div class="col-lg-11" style="background: #fafafa;">
-                <h2>Historial de Pedidos</h2>
-                <hr>
+            <div class="historial col-sm-12">
+                <br>
                 <div>
-                    <table class="table table-hover">
-                        <thead>
-                            <th>
-                                <td>Cantidad</td>
-                                <td>Total</td>
-                                <td>Metodo</td>
-                            </th>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($historialPedido as $registros){
-                            ?>
-                            <tr>
-                                <td><?php echo $registros->Producto ?></td>
-                                <td><?php echo $registros->cantidad ?></td>
-                                <td>$<?php echo $registros->preciototal ?> MXN</td>
-                                <td><?php echo $registros->method ?></td>
-                            </tr>
-                            <?php
-                            }
-                        ?>
-                        </tbody>
-                    </table>
+                    <h4>Mi historial de compras</h4>
+                    <hr>
+                    <div class="table-responsive">
+                        @if (!empty($compra))
+                        <table class="table js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Folio</th>
+                                    <th>Costo envío</th>
+                                    <th>Subtotal</th>
+                                    <th>Total</th>
+                                    <th>Método pago</th>
+                                    <th>Estatus</th>
+                                    <th>Estatus entrega</th>
+                                    <th>Productos</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-family: Arial, Helvetica, sans-serif;">
+                                @foreach ($compra as $registros)
+
+                                @php
+                                    if ($registros->status == 'Pagado') {
+                                        $status = "<span class='badge badge-success'>$registros->status</span>";
+                                    } else {
+                                        $status = "<span class='badge badge-danger'>$registros->status</span>";
+                                    }
+                                @endphp
+
+                                    <tr>
+                                        <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
+                                        <td>#00{{$registros->id}}</td>
+                                        <td>${{$registros->costo_envio}} MXN</td>
+                                        <td>${{$registros->subtotal}} MXN</td>
+                                        <td>${{$registros->preciototal}} MXN</td>
+                                        <td class="text-center"><span class="badge badge-primary">{{$registros->method}}</span></td>
+                                        <td>@php echo $status; @endphp</td>
+                                        <td class="text-center">{{$registros->estado_entrega}}</td>
+                                        <td class="text-center">
+                                            <a class='btn btn-warning btn-sm redondo ie' data-toggle="modal" data-target="#idModal-{{$registros->id}}">
+                                                <i class='fa fa-eye'></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @else
+                            <p>No hay registro en la base de datos</p>
+                        @endif
+                    </div>
                 </div>
-                    {{ $historialPedido->links() }}
+                <br>
             </div>
         </div>
     </div>
 
+    @foreach ($compra as $registros)
+    <!-- Modal -->
+    <div class="modal fade" id="idModal-{{$registros->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Folio #00{{$registros->id}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="background: #fafafa;">
+                    <div class="col-md-12 table-responsive">
+                        @if (!empty($compra_item))
+                        <table class="table js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($compra_item as $item){
+                                    if($item->compra_id == $registros->id){
+                                ?>
+                                    <tr>
+                                        <td><img height="30" src="{{asset('assets/icons/Carrito.png')}}"></td>
+                                        <td>{{$item->Producto}}</td>
+                                        <td>{{$item->cantidad}} pzas.</td>
+                                        <td>${{$item->precio}} MXN</td>
+                                        <td>${{$item->total}} MXN</td>
+                                    </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                        @else
+                            <p>No hay registro en la base de datos</p>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
 
     <div id="addModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -176,12 +290,15 @@
     </div>
 
 
-<div id="editDirection" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+    <div id="editDirection" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agrega la nueva dirección</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Editar dirección de envío <br>
+                        <span style="font-size: 10px">Si ya realizó su compra y quiere cambiar la dirección de envío, llame al <a href="tel:+523339566141">(33) 39566141</a></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -252,7 +369,11 @@
 @endsection
 
 @section('scripts')
+    <script src="{{asset('assets/bundles/datatablescripts.bundle.js')}}"></script>
+    <script src="{{asset('assets/js/pages/tables/jquery-datatable.js')}}"></script>
+        
     <script type="text/javascript">
+
         $('#editDirection').on('show.bs.modal', function(event){
                 console.log('Model editar Materia funcionando');
                 var button = $(event.relatedTarget)

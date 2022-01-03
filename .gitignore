@@ -1,11 +1,12 @@
 /node_modules
-/public/aero
-/public/assets/fotosreales
-/public/assets/productos
-/public/admin_assets
+# /public/aero
+# /public/assets/fotosreales
+# /public/assets/productos
+# /public/admin_assets
 # /public/admin_assets/vendor
 # /public/hot
 # /public/storage
+/public/assets/blogs
 /storage/*.key
 /vendor
 .env

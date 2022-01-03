@@ -6,6 +6,12 @@
 
 @section('styles')
 <link rel="stylesheet" href="{{asset('assets/css/productos.css')}}">
+<style>
+  .mybadge {
+    line-height: 1.3;
+    padding: 10px;
+  }
+</style>
 @endsection
 
 @section('content')
