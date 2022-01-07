@@ -31,8 +31,9 @@
             <i style="" class="fab fa-whatsapp fa-sm ri-face iw"></i></a></li>
       </ul>
       <div class="row d-flex justify-content-center" style="margin-top:8%; font-family:AmasisMTStd-Bold;">
-        <div class="text-center">¿Quieres ser distribuidor?  <br>
-          <a href="mailto:distribuidores@danatura.com.mx?subject=Quiero%20ser%20distribuidor">
+        <div class="text-center" onclick="location.href='/distribuidor'" style="cursor: pointer">
+          ¿Quieres ser distribuidor?  <br>
+          <a href="{{ route('distribuidor') }}">
             <i class="far fa-id-card fa-sm ri-face id"></i>
           </a>
         </div>

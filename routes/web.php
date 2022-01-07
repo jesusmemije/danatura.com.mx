@@ -60,6 +60,7 @@ Route::view('/politicas','front/politicas')->name('politicas');
 Route::view('/fqa','front/FQA')->name('FQA');
 Route::view('/dudas-comentarios','front/dudas-comentarios')->name('dudas-comentarios');
 Route::view('/contacto','front/contacto')->name('contacto');
+Route::view('/distribuidor', 'front/distribuidor')->name('distribuidor');
 
 // Auth
 Route::view('/registrarse','front/registrarse')->name('registrarse');
