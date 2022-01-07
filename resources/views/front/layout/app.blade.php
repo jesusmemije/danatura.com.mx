@@ -1,32 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPQ9Y78PW7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-CPQ9Y78PW7');
-    </script>
-
-    @yield('headers')
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- <meta name="description" content=""> -->
-    <meta name="author" content="PICE Software">
-    <link rel="shortcut icon" type="image/png" href="{{asset('favicon.ico')}}">
-    <link rel="icon" type="image/png" href="{{asset('favicon.ico')}}"/>
-    <title>Danatura - @yield('title', 'Comida real')</title>
-    <!-- Bootstrap CSS -->
-    <link href="{{asset("assets/css/bootstrap.min.css")}}" rel="stylesheet">
-    <!-- Main CSS -->
-    <link href="{{asset("assets/css/styles.css")}}" rel="stylesheet">
-    <link href="{{asset('assets/css/app.css')}}" rel="stylesheet" />
-
     @if ( env('APP_DEBUG') == false )
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPQ9Y78PW7"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CPQ9Y78PW7');
+        </script>
+        
         <!-- Facebook Pixel Code -->
         <script>
         !function(f,b,e,v,n,t,s)
@@ -45,6 +29,22 @@
         /></noscript>
         <!-- End Facebook Pixel Code -->
     @endif
+
+    @yield('headers')
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- <meta name="description" content=""> -->
+    <meta name="author" content="PICE Software">
+    <link rel="shortcut icon" type="image/png" href="{{asset('favicon.ico')}}">
+    <link rel="icon" type="image/png" href="{{asset('favicon.ico')}}"/>
+    <title>Danatura - @yield('title', 'Comida real')</title>
+    <!-- Bootstrap CSS -->
+    <link href="{{asset("assets/css/bootstrap.min.css")}}" rel="stylesheet">
+    <!-- Main CSS -->
+    <link href="{{asset("assets/css/styles.css")}}" rel="stylesheet">
+    <link href="{{asset('assets/css/app.css')}}" rel="stylesheet" />
 
     @yield('styles')
 </head>
