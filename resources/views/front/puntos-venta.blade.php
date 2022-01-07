@@ -95,7 +95,29 @@ Puntos de venta
 		color: white !important;
 	}
 
+	.stores {
+		position: absolute;
+		top: 140px;
+		right: 180px;
+		z-index: 1;
+
+		margin-left: unset;
+		margin-right: unset;
+		text-align: unset;
+	}
+
 	@media(max-width:768px) {
+
+		.stores {
+			position: unset;
+			top: unset;
+			right: unset;
+
+			margin-left: auto;
+			margin-right: auto;
+			text-align: center;
+		}
+
 		.caja-resultados {
 			font-family: "AmasisMTStd-Bold";
 			border-radius: 10px;
@@ -123,15 +145,20 @@ Puntos de venta
 
 	<div class="container py-5">
 		<div class="row">
-			<div class="col-md-12 text-center" style="display: ruby;">
-				<img src="{{asset('assets/img/marcador.png')}}" width="100" alt="">
+			<div class="col-md-12 text-center">
+				<img src="{{asset('assets/img/marcador.png')}}">
 				<a href="{{route('puntos-venta')}}">
 					<h3 style="color:#F79860; font-weight:bold; font-family:'AmasisMTStd-Bold'">
 						PUNTOS DE VENTA
 					</h3>
 				</a>
 			</div>
-			<div class="col-md-6" style="margin-top: 30px">
+		</div>
+		<div class="row" style="position: relative;">
+			<div class="col-md-12 d-flex justify-content-center">
+				<img class="img-fluid" src="{{asset('assets/img/mapa6.png')}}" alt="">
+			</div>
+			<div class="stores">
 				<h6 style="color:#7B4828; font-weight:bold; font-family:'AmasisMTStd-Bold'">
 					Encuéntranos también en:
 				</h6>
@@ -141,11 +168,6 @@ Puntos de venta
 				<a href="https://listado.mercadolibre.com.mx/_CustId_705718792" target="_BLANK">
 					<img src="{{asset('assets/img/marcadolibre-logo.png')}}" width="150" alt="">
 				</a>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 d-flex justify-content-center">
-				<img class="img-fluid" src="{{asset('assets/img/mapa6.png')}}" alt="">
 			</div>
 		</div>
 	</div>
