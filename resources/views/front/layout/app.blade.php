@@ -3,12 +3,13 @@
 <head>
     @if ( env('APP_DEBUG') == false )
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPQ9Y78PW7"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2EEVSGCB6T"></script>
         <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-CPQ9Y78PW7');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-2EEVSGCB6T');
         </script>
         
         <!-- Facebook Pixel Code -->
@@ -35,6 +36,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="facebook-domain-verify" content="msv7h229i24u3vcpu6u8htlm25rqh9" />
     <!-- <meta name="description" content=""> -->
     <meta name="author" content="PICE Software">
     <link rel="shortcut icon" type="image/png" href="{{asset('favicon.ico')}}">

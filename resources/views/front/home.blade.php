@@ -19,9 +19,22 @@ Home
     top: 52%;
   }
 
+  .hide-phone {
+    display: block;
+  }
+
   @media screen and (max-width: 480px) {
     .btn-video-youtube {
       top: -12%;
+    }
+    .carousel-item {
+      height: unset;
+    }
+    .hide-phone {
+      display: none;
+    }
+    .carousel-div {
+      height: unset;
     }
   }
 </style>
@@ -42,7 +55,7 @@ Home
       <!-- Slide One - Set the background image for this slide in the line below -->
       <div class="carousel-item active" style="background-image: url('assets/images/banner-principal/1-principal.jpg')">
         @include('front.layout.partials.menu')
-        <div class="container-slider-one text-md-left text-center">
+        <div class="container-slider-one text-md-left text-center hide-phone">
           <span class="txt-banner">DELICIOSO</span><br>
           <span class="txt-banner2">SALUDABLE</span>
           <span class="txt-nutritivo">NUTRITIVO</span>
@@ -51,7 +64,7 @@ Home
             <span class="txt-banner3">El match perfecto!</span><br>
           </div>
         </div>
-        <div class="btn-slider-comprar">
+        <div class="btn-slider-comprar hide-phone">
           <button type="button" class="col-xl-3 col-lg-4 col-md-3 col-sm-4 btn btn-primary comprar" data-toggle="modal" data-target="#exampleModal">
             COMPRAR
           </button>
