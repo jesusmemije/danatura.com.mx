@@ -11,78 +11,140 @@
 
   .card {
     border: 0px !important;
+    background-color: transparent !important;
   }
 
   .card-header {
     border: 0px !important;
+    background: #D7E9C0 !important;
+    text-align: center;
   }
 
-  .info-text-size {
-    font-size: 4em;
+  .card-body {
+    text-align: justify;
+  }
+
+  .subtitle-quienes-somos {
+    font-size: 1.4em;
+    color: #F79860;
+    font-family: 'AmasisMTStd-Bold';
+  }
+
+  .topics-quienes-somos {
+    font-size: 28px;
+    font-family: 'AmasisMTStd-Bold';
+  }
+
+  .with-video {
+    width: unset;
+  }
+
+  .with-logo {
+    width: 50%;
   }
 
   @media screen and (max-width: 480px) {
-    .info-text-size {
-      font-size: 3em;
+    .subtitle-quienes-somos {
+      font-size: 1.2em;
+    }
+
+    .with-video {
+      width: 100%;
+    }
+
+    .with-logo {
+      width: 80%;
     }
   }
-
 </style>
-
 
 @section('content')
 
 @include('front.layout.partials.menu')
 
-<div class="row row-principal" style="background:#FFEFD6;padding-left:6%; padding-right:6%;background-image: url('/assets/images/background.png');">
-  <div class="quienes-somos-align" style="padding-top:5%; padding-bottom:5%;">
-    <span class="info-text-size" style="color:#73482C; font-family:COSMOPOLITAN SCRIPT MEDIUM;">Información de la empresa</span>
-    <div class="row-contenido">
-      <div class="card">
-        <div class="card-header" style="background:#FFE4BB;">
-          <h3 style="color:#fb985f; font-family:AmasisMTStd-Bold">¿Quiénes somos?</h3>
-        </div>
-        <div class="card-body" style="background:#FFEFD6">
+<div style="background-image: url('/assets/images/background.png');">
+  <div class="container">
+    <div class="row row-principal">
 
-          <p>
-            Somos una empresa mexicana que nace de la búsqueda de ofrecer alimentos reales, simples y nutritivos, libres
-            de azúcar añadido, libres de conservadores y aditivos químicos, alimentos que realmente van a contribuir un
-            estado de bienestar general de todas las personas que los consuman.
-            Nuestro sueño es contribuir a través de nuestros alimentos a la prevención de estados de enfermedad y a
-            fortalecer la salud de todos nuestros clientes.
-          </p>
+      <div class="col-md-12 text-center my-4">
+        <img src="{{ asset('assets/images/quienes-somos/danatura.png') }}" class="img-fluid with-logo">
+        <div class="subtitle-quienes-somos my-3">INFORMACIÓN DE LA EMPRESA</div>
+      </div>
 
-          <p>En DaNatura creemos en el bienestar humano y natural. Es por eso que cada proceso se elabora con cuidado y
-            tomando en cuenta las recomendaciones de un equipo de Nutriólogos y Health Coaches para alcanzar este
-            propósito.
-          </p>
-
-          <p>Nuestros consumidores pueden tener la confianza de que nuestros productos sean basados en insumos
-            naturales, libres de azúcar refinada y libres de químicos dañinos para el cuerpo. Ese es nuestro objetivo y
-            estamos comprometidos al 100% para lograrlo. </p>
-        </div>
-      </div>
-      <div class="card mt-4">
-        <div class="card-header" style="background:#FFE4BB;">
-          <h3 id="mision" style="color:#fb985f;">Misión</h3>
-        </div>
-        <div class="card-body" style="background:#FFEFD6">
-          <p>Inspirar a las personas y familias a alimentarse de una manera más natural y deliciosa, promoviendo un
-            estilo de vida saludable a través de alimentos innovadores y de calidad que sean la base para que cocinen en
-            casa de una forma práctica y fácil, siempre ofreciendo alimentos libres de azúcar añadida, libres de
-            aditivos y colorantes químicos y totalmente veganos que van a fortalecer su salud y sistema inmune.</p>
-        </div>
-      </div>
-      <div class="card mt-4">
-        <div class="card-header" style="background:#FFE4BB;">
-          <h3 id="vision" style="color:#fb985f">Visión</h3>
-        </div>
-        <div class="card-body" style="background:#FFEFD6">
-          <p>Contribuir en la preservación y conservación de un estado de bienestar y salud en las personas, siendo
-            referentes a nivel global en alimentación sana, nutritiva y natural, una alimentación real.</p>
-        </div>
-      </div>
     </div>
+
+    <div class="row row-contenido">
+      <div class="col-md-6 px-md-5 px-3">
+        <div class="card">
+          <div class="card-header">
+            <div class="topics-quienes-somos">¿QUIÉNES SOMOS?</div>
+          </div>
+          <div class="card-body px-0">
+            <p>
+              Somos una empresa mexicana que nace de la búsqueda de ofrecer alimentos reales, simples y nutritivos,
+              libres
+              de azúcar añadido, libres de conservadores y aditivos químicos, alimentos que realmente van a contribuir
+              un
+              estado de bienestar general de todas las personas que los consuman.
+              Nuestro sueño es contribuir a través de nuestros alimentos a la prevención de estados de enfermedad y a
+              fortalecer la salud de todos nuestros clientes.
+            </p>
+            <p>En DaNatura creemos en el bienestar humano y natural. Es por eso que cada proceso se elabora con
+              cuidado y
+              tomando en cuenta las recomendaciones de un equipo de Nutriólogos y Health Coaches para alcanzar este
+              propósito.
+            </p>
+            <p>Nuestros consumidores pueden tener la confianza de que nuestros productos sean basados en insumos
+              naturales, libres de azúcar refinada y libres de químicos dañinos para el cuerpo. Ese es nuestro
+              objetivo y
+              estamos comprometidos al 100% para lograrlo.
+            </p>
+            <img src="{{ asset('assets/images/quienes-somos/darinka.jpg') }}" class="img-fluid mt-4">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 px-md-5 px-3">
+        <div class="card">
+          <div class="card-header">
+            <div class="topics-quienes-somos">MISIÓN</div>
+          </div>
+          <div class="card-body px-0">
+            <p>
+              Inspirar a las personas y familias a alimentarse de una manera más natural y deliciosa, promoviendo un
+              estilo de vida saludable a través de alimentos innovadores y de calidad que sean la base para que
+              cocinen en
+              casa de una forma práctica y fácil, siempre ofreciendo alimentos libres de azúcar añadida, libres de
+              aditivos y colorantes químicos y totalmente veganos que van a fortalecer su salud y sistema inmune.
+            </p>
+            <img src="{{ asset('assets/images/quienes-somos/img-1.jpg') }}" class="img-fluid mt-4">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="topics-quienes-somos">VISIÓN</div>
+          </div>
+          <div class="card-body px-0">
+            <p>
+              Contribuir en la preservación y conservación de un estado de bienestar y salud en las personas, siendo
+              referentes a nivel global en alimentación sana, nutritiva y natural, una alimentación real.
+            </p>
+            <img src="{{ asset('assets/images/quienes-somos/img-2.jpg') }}" class="img-fluid mt-4">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 px-md-5 px-3 text-center my-5">
+        <video class="with-video" src="{{ asset('assets/images/quienes-somos/danatura-presentacion.mp4') }}" controls>
+          Lo sentimos. Este vídeo no puede ser reproducido en tu navegador.<br>
+          La versión descargable está disponible en <a
+            href="{{ asset('assets/images/quienes-somos/danatura-presentacion.mp4') }}">Enlace</a>.
+        </video>
+      </div>
+      <br>
+
+    </div>
+
   </div>
 </div>
 

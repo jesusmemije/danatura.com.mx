@@ -333,9 +333,10 @@ Detalle producto
 
   <div class="row pt-5" style="">
     <div class="col-md-12 ">
-      <div class="row d-flex justify-content-center" style="color:#73472b;font-size: 2em;">PRODUCTOS</div>
-      <div class="row d-flex justify-content-center"
-        style="color:#fb985f; font-size:3em; font-family:AmasisMTStd-Bold; ">MÁ S VENDIDOS</div>
+      <div class="text-center">
+        <div style="color:#73472b; font-size:4em; font-family: COSMOPOLITAN SCRIPT MEDIUM; line-height:1;">Productos</div>
+        <div style="color:#fb985f; font-size:2.8em; font-family:AmasisMTStd-Bold; line-height:1;">MÁS VENDIDOS</div>
+      </div>
     </div>
     <style>
       .cls2 {
