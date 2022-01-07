@@ -12,7 +12,7 @@ Distribuidor mayorista
         padding: 60px 150px;
     }
 
-    ul {
+    .ul-list {
         padding: unset;
         padding-left: 14px!important;
     }
