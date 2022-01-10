@@ -316,7 +316,9 @@
           @else
           <p>No hay registro en la base de datos</p>
           @endif
-        </div>
+        </div><br>
+        <div>Precio de envío: $170 MXN</div>
+        <h5>Total de la compra: <strong>${{ $registros->preciototal }} MXN</strong></h5>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
