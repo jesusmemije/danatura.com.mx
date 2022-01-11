@@ -76,6 +76,13 @@ class CkeckoutController extends Controller
                 $producto = Productos::find($carrito[$i]['producto_id']);
                 $total = $producto->precio * $carrito[$i]['cantidad'];
 
+                // Quitar del Stock
+                $stock = (int) $producto->stock;
+                $dismiss_quantity = (int) $carrito[$i]['cantidad'];
+
+                $producto->stock = $stock - $dismiss_quantity;
+                $producto->save();
+
                 $compra_item = new CompraItem();
                 $compra_item->compra_id   = $this->compra->id;
                 $compra_item->id_producto = $carrito[$i]['producto_id'];
@@ -207,6 +214,13 @@ class CkeckoutController extends Controller
                     $producto = Productos::find($carrito[$i]['producto_id']);
                     $total = $producto->precio * $carrito[$i]['cantidad'];
 
+                    // Quitar del Stock
+                    $stock = (int) $producto->stock;
+                    $dismiss_quantity = (int) $carrito[$i]['cantidad'];
+
+                    $producto->stock = $stock - $dismiss_quantity;
+                    $producto->save();
+
                     $compra_item = new CompraItem();
                     $compra_item->compra_id   = $this->compra->id;
                     $compra_item->id_producto = $carrito[$i]['producto_id'];
@@ -270,6 +284,13 @@ class CkeckoutController extends Controller
 
             $producto = Productos::find($carrito[$i]['producto_id']);
             $total = $producto->precio * $carrito[$i]['cantidad'];
+
+            // Quitar del Stock
+            $stock = (int) $producto->stock;
+            $dismiss_quantity = (int) $carrito[$i]['cantidad'];
+
+            $producto->stock = $stock - $dismiss_quantity;
+            $producto->save();
 
             $compra_item = new CompraItem();
             $compra_item->compra_id   = $this->compra->id;

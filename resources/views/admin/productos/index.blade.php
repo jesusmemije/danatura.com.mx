@@ -42,6 +42,7 @@
               <th>Descripcion</th>
               <th>Gramos</th>
               <th>Precio</th>
+              <th>Stock</th>
               <th>Fotografía</th>
               <th>Acciones</th>
             </tr>
@@ -53,6 +54,7 @@
               <th>Descripcion</th>
               <th>Gramos</th>
               <th>Precio</th>
+              <th>Stock</th>
               <th>Fotografía</th>
               <th>Acciones</th>
             </tr>
@@ -76,6 +78,13 @@
               <td>{{$producto->descripcion}}</td>
               <td>{{$producto->gramos}}</td>
               <td>{{$producto->precio}}</td>
+              <td class="text-center">
+                @if ( $producto->stock > 0 )
+                  <span class="badge badge-primary">{{$producto->stock}}</span>
+                @else
+                  <span class="badge badge-danger">Agotado</span>
+                @endif
+              </td>
               <td>
                 <center>
                   <a class='btn btn-success btn-sm  redondo ie' target="_blank" href="{{$foto}}">

@@ -586,7 +586,7 @@ class HomeController extends Controller
                 foreach ($auxCarrito as $key => $value) {
                     $aux_cantidad_total = $aux_cantidad_total + $value['cantidad'];
 
-                    if ($producto_id == $key) {
+                    if ($producto_id == $value['producto_id']) {
                         $existe = true;
                     }
                 }

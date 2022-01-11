@@ -211,23 +211,20 @@ Detalle producto
     top: 66px;
     left: 88%;
   }
-
 </style>
 @endsection
 
 @section('content')
-
 @include('front.layout.partials.menu')
-
 <div class="container-fluid">
   <div class="card mb-12" style="padding-top: 8%; padding-bottom:8%;">
     <div class="row g-0">
       <div id="principal-img" class="col-md-6 img-detail" style="padding-left: 6%;">
 
         @php
-        $fotografia=$producto->fotografia;
-        $source="assets/productos/".$fotografia;
-        $source= $source=$fotografia;
+        $fotografia = $producto->fotografia;
+        $source = "assets/productos/" . $fotografia;
+        $source = $source = $fotografia;
 
         if ($fotografia=="") {
 
@@ -255,7 +252,8 @@ Detalle producto
         $foto_principal=$array_galeria[0];
         @endphp
 
-        <i id="fav{{ $producto->id }}" onclick="fav(this,{{ $producto->id }})" class="fas fa-heart fa-lg corazon" aria-hidden="true"></i>
+        <i id="fav{{ $producto->id }}" onclick="fav(this,{{ $producto->id }})" class="fas fa-heart fa-lg corazon"
+          aria-hidden="true"></i>
         <img id="img-principal" src="{{$foto_principal}}" alt="...">
       </div>
 
@@ -303,7 +301,8 @@ Detalle producto
               <div class="fb-share-button" data-href="{{$url}}" data-layout="button_count">
               </div>
               <li class="nav-item" style="margin-top:-1%; margin-left: 2%;">
-                <a href="mailto:contacto@danatura.com.mx?subject=Danatura%20-%20Productos" target="_blank" class="icon-instagram">
+                <a href="mailto:contacto@danatura.com.mx?subject=Danatura%20-%20Productos" target="_blank"
+                  class="icon-instagram">
                   <i style="font-size:20px;" class="far fa-envelope fa-sm ri-face"></i>
                 </a>
               </li>
@@ -334,7 +333,8 @@ Detalle producto
   <div class="row pt-5" style="">
     <div class="col-md-12 ">
       <div class="text-center">
-        <div style="color:#73472b; font-size:4em; font-family: COSMOPOLITAN SCRIPT MEDIUM; line-height:1;">Productos</div>
+        <div style="color:#73472b; font-size:4em; font-family: COSMOPOLITAN SCRIPT MEDIUM; line-height:1;">Productos
+        </div>
         <div style="color:#fb985f; font-size:2.8em; font-family:AmasisMTStd-Bold; line-height:1;">MÁS VENDIDOS</div>
       </div>
     </div>
@@ -405,12 +405,13 @@ Detalle producto
   </div>
 
 </div>
+@endsection
 
 @section("scripts")
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="{{asset('assets/js/lightslider.js')}}"></script>
 <script>
-  //script para el el scroll de las imagenes.
+//script para el el scroll de las imagenes.
 window.smoothScroll = function(target) {
   var scrollContainer = target;
   do { //find scroll container
@@ -436,7 +437,7 @@ window.smoothScroll = function(target) {
 }
 
 //script para almacenar productos favoritos: se repite en, home, productos y detalle producto.
-var misfav=[];
+var misfav = [];
 
 var cookieValor = document.cookie.replace(/(?:(?:^|.*;\s*)thecookie\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
@@ -451,12 +452,10 @@ function getallcookies(){
 
   if(cookieValor!=null || cookieValor!=""){
     ckie= cookieValor.split(',');
-
     ckie.forEach(element => {
      $('#fav'+element).addClass("press");
-     
     });
-    //console.log(ckie);
+
   }
 }
 
@@ -467,9 +466,8 @@ function fav(dato, id){
 
   if($(dato).hasClass('press')){
     misfav.push(id);
-    //console.log(misfav);
     document.cookie="thecookie="+misfav;
-  }else{
+  } else {
   
    for (let index = 0; index < misfav.length; index++) {
       if(misfav[index]==id){
@@ -482,10 +480,9 @@ function fav(dato, id){
 }
 
 //script para añadir un producto al carrito, se utiliza en : detalle producto.
+ function add( id ){
 
- function add(id){
-
-  cantidad= $("#cantidad").val();
+  cantidad = $("#cantidad").val();
 
   $.ajax({
     data: {
@@ -496,30 +493,46 @@ function fav(dato, id){
     url: 'procesa',
     type: 'post',
     success:  function (response) {
-      console.log(response);  
-      response=JSON.parse(response);
-      if(response['operacion']=="excede"){
 
-        alert("La cantidad de productos supera el stock!");
+      response = JSON.parse(response);
+      if(response['operacion'] == "excede"){
 
-        if(response['cantidad']<=0){
+        msg_warning('La cantidad de productos supera el stock!')
+
+        if(response['cantidad'] <= 0){
           $("#cantidad").val(0);
-        }else{
+        } else {
           $("#cantidad").val(response["cantidad"]);
         }
-
       }
 
-      if(response['operacion']=="zero"){
-        alert("ZERO");
+      if(response['operacion'] == "zero"){
+        msg_warning('La cantidad de producto agregada no puede ser igual o menor a cero')
       }
 
-      if(response['operacion']=="doble"){
-        alert("El producto ya se encuentra añadido al carrito");
+      if(response['operacion'] == "doble"){
+        msg_warning('El producto ya se encuentra añadido al carrito')
       }
 
-      if(response['operacion']=="bien"){
-        window.location="{{route('productos')}}"; 
+      if(response['operacion'] == "bien"){
+        
+        Swal.fire({
+          title: '¡Bien!',
+          text: "El producto se ha agregado correctamente al carrito",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#B5C7A1',
+          cancelButtonColor: '#F79860',
+          confirmButtonText: 'Seguir comprando',
+          cancelButtonText: 'Ir al carrito'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location="{{route('productos')}}"; 
+          } else {
+            window.location="{{route('carrito')}}"; 
+          }
+        })
+
       }
                      
     },
@@ -530,26 +543,27 @@ function fav(dato, id){
 
 }
 
+function msg_warning(mensaje) {
+  Swal.fire({
+    icon: 'warning',
+    title:'¡Advertencia!',
+    text: mensaje
+  })
+}
+
  //script para cambiar de imagen "principal" a las demás que utiliza el producto.
 function changeimg(ruta){
-  
   smoothScroll(document.getElementById('principal-img'));
-  principal=document.getElementById('img-principal');
-  aux_principal=principal.src;
-  principal.src=ruta.src;
-  ruta.src=aux_principal;
-  console.log(nuevo);
-
+  principal = document.getElementById('img-principal');
+  aux_principal = principal.src;
+  principal.src = ruta.src;
+  ruta.src = aux_principal;
 }
 
 //scritp que inicializa el carrusel de productos más vendidos.
-
 $(document).ready(function() {
 
-  let fb=document.getElementsByClassName('inlineBlock')
-
-  console.log(fb);
-
+  let fb = document.getElementsByClassName('inlineBlock')
   getallcookies();
 
   $(".lightSlider").lightSlider({
@@ -566,7 +580,6 @@ $(document).ready(function() {
     controls: true,
     pager: false,
     addClass: 'heightsldier',
-      
     loop:false,
     responsive : [
       {
@@ -588,7 +601,4 @@ $(document).ready(function() {
 });
 
 </script>
-
-@endsection
-
 @endsection
