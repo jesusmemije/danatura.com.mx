@@ -1,6 +1,10 @@
 @extends('admin.layout.app')
 
-@section('content')
+@section('page-title')
+    Todos los pedidos
+@endsection
+
+@section('styles')
 <link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}" />
 <style>
   .table tbody {
@@ -33,23 +37,23 @@
   }
 
 </style>
+@endsection
 
+@section('content')
 
 <div class="col-md-12">
-
   <div class="card shadow">
-
     @section('pagina-actual','Listado de pedidos')
     @section('breadcumb')
-
     <ul class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
       <li class="breadcrumb-item"><a href="javascript:void(0);">Pedidos</a></li>
       <li class="breadcrumb-item active">Listado</li>
     </ul>
-
+    <a href="{{ route('pedidos.create') }}" class="btn btn-primary mt-3">
+      <i class="zmdi zmdi-plus"></i> Agregar pedido
+    </a>
     @endsection
-
     @if (session('status'))
     <div class="alert alert-success">
       {{ session('status') }}
@@ -58,14 +62,14 @@
       </button>
     </div>
     @endif
-
     @if (session('error'))
     <div class="alert alert-danger">
       {{ session('error') }}
     </div>
     @endif
-
+    
     <div class="card-body">
+      
       <div class="table-responsive">
         <table class="table table-bordered table-hover" id="dataTable">
           <thead class="">

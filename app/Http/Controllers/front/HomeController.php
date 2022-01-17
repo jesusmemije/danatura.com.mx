@@ -651,7 +651,14 @@ class HomeController extends Controller
             $datosenvio = new DatosEnvio();
         }
 
-        $datosenvio->id_user = Auth::user()->id;
+        $id_user = 0;
+        if (!empty($request->id_user)) {
+            $id_user = $request->id_user;
+        } else {
+            $id_user = Auth::user()->id;
+        }
+
+        $datosenvio->id_user = $id_user;
         $datosenvio->nombre = $request->nombre;
         $datosenvio->apellidos = $request->apellidos;
         $datosenvio->empresa = $request->empresa;

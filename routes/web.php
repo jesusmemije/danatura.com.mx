@@ -12,9 +12,8 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VentasProductosController;
 use App\Http\Controllers\admin\BlogController as BlogControllerAdmin;
 use App\Http\Controllers\admin\HomeController as HomeControllerAdmin;
+use App\Http\Controllers\admin\ReportesController;
 use App\Http\Controllers\cliente\ClienteController;
-
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -68,9 +67,6 @@ Route::post('/registro-normal',[HomeControllerFront::class, 'registro_normal'])-
 Route::post('/registrar-contacto',[HomeControllerFront::class, 'registrar_contacto'])->name('registrar-contacto');
 Route::get('/logout',[HomeControllerFront::class, 'logout'])->name('milogout');
 
-// Test
-Route::view('/ejemplog','front/ejemplo_graficos')->name('ejemplog');
-
 // Admin routes
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], function(){
     Route::get('/', [HomeControllerAdmin::class,'index'])->name('dashboard');
@@ -90,8 +86,19 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], functio
     Route::post('/destroy_categoria',[ProductosController::class, 'destroy_categoria'])->name('destroy_categoria');
     Route::resource('/usuario', UserController::class);
     Route::post('/update_usuario',[UserController::class, 'update_usuario'])->name('update_usuario');
+    //Pedidos
     Route::resource('/pedidos', VentasProductosController::class);
+    Route::post('/pedidos/get-direccion-customer', [VentasProductosController::class, 'getDireccionCustomer']);
+    Route::post('/pedidos/saveOrderManually', [VentasProductosController::class, 'saveOrderManually']);
+    Route::post('/pedidos/saveUserManually', [VentasProductosController::class, 'saveUserManually']);
+
     Route::post('/cambiarEstadoEntrega',[VentasProductosController::class, 'cambiarEstadoEntrega'])->name('cambiarEstadoEntrega');
+
+    Route::get('/reportes', [ReportesController::class, 'index'])->name('reportes.index');
+    Route::get('/reportes/informe-ventas', [ReportesController::class, 'informe_ventas'])->name('informe-ventas');
+
+    Route::post('/ventas/by_anio', [ReportesController::class, 'ventas_by_anio']);
+    Route::get('/ventas/mas_vendidos', [ReportesController::class, 'mas_vendidos']);
 
     //Blog.
     Route::resource('/blogs', BlogControllerAdmin::class);
@@ -106,10 +113,3 @@ Route::group(['middleware'=>['auth']], function(){
 });
 
 Auth::routes();
-
-Route::get('/clear-cache', function () {
-    echo Artisan::call('config:clear');
-    echo Artisan::call('config:cache');
-    echo Artisan::call('cache:clear');
-    echo Artisan::call('route:clear');
-});
