@@ -6,33 +6,8 @@
             </a>
         </div>
         <div class="danatura-content col-md-7">
-            <div class="row d-flex justify-content-end pr-md-3 pr-0">
-                <div class="col-md-5 mt-5">
-                    <div class="input-group justify-content-center">
-                        <div class="buscador">
-                            <input id="here" class="form-control btn-slider-search px-2 py-2 rounded-pill mr-1 pr-md-5 pr-0"
-                                type="search" placeholder="Buscar mi producto" id="">
-                            <div class="dropdown-buscador">
-                                <table class="contenido-buscador">
-                                    <tbody id="myTable">
-                                        @foreach ($productos as $producto)
-                                        @php $nombre = $producto->nombre; @endphp
-                                        <tr>
-                                            <td>
-                                                <a href="detalle-producto?producto={{$nombre}}">
-                                                    {{$producto->nombre}}
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-top:8%;">
+            <!-- Search old -->
+            <div class="row" style="margin-top: 20%;">
                 <div class="col-md-12">
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <a class="navbar-brand" href="#"></a>

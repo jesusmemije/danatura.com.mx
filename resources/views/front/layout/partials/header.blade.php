@@ -79,10 +79,10 @@
     }
 
     /* buscador */
-    .buscador {
+    /* .buscador {
         position: relative;
         display: inline-block;
-    }
+    } */
 
     .buscador:hover .dropdown-buscador {
         display: block;

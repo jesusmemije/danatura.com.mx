@@ -12,6 +12,7 @@ Home
   .bg-header-gris {
     background: unset!important;
   }
+  
   .btn-video-youtube {
     font-size: 40px;
     position: absolute;
@@ -23,19 +24,41 @@ Home
     display: block;
   }
 
+  .buscador {
+    position: absolute;
+    display: inline-block;
+    top: 5%;
+    right: 5%;
+    left: unset;
+    transform: unset;
+    z-index: 10;
+  }
+
   @media screen and (max-width: 480px) {
+
     .btn-video-youtube {
       top: -12%;
     }
+
     .carousel-item {
       height: unset;
     }
+
     .hide-phone {
       display: none;
     }
+
     .carousel-div {
       height: unset;
     }
+
+    .buscador {
+      top: 45%;
+      right: unset;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
   }
 </style>
 
@@ -52,6 +75,24 @@ Home
       <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
+
+      <!-- Search superpocisión-->
+      <div class="buscador">
+        <input id="here" class="form-control btn-slider-search px-2 py-2 rounded-pill mr-1 pr-md-5 pr-0" type="search" placeholder="Buscar mi producto">
+        <div class="dropdown-buscador">
+          <table class="contenido-buscador">
+            <tbody id="myTable">
+              @foreach ($productos as $producto)
+                @php $nombre = $producto->nombre; @endphp
+                <tr>
+                  <td><a href="detalle-producto?producto={{$nombre}}">{{$producto->nombre}}</a></td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- Slide One - Set the background image for this slide in the line below -->
       <div class="carousel-item active" style="background-image: url('assets/images/banner-principal/1-principal.jpg')">
         @include('front.layout.partials.menu')
@@ -353,9 +394,10 @@ Home
 <script src="{{asset('assets/js/lightslider.js')}}"></script>
 
 <script type="text/javascript">
+
   $("#here").on("keyup", function() {
     var value = $(this).val().toLowerCase();
-      $("#myTable tr").filter(function() {
+    $("#myTable tr").filter(function() {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
