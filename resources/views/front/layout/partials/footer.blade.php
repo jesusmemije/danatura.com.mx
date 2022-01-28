@@ -84,8 +84,20 @@
         <img width="80" src="{{asset('assets/images/whastlogo.png')}}" alt="">
       </a>
     </div>
+    <style>
+      .contenedor-imagenes {
+        display: flex;
+      }
+
+      .contenedor-imagenes img:first-child {
+        margin-right: 10px;
+      }
+    </style>
     <div class="col-md-12 d-flex justify-content-end">
-      <img src="{{asset('assets/images/capmedios.png')}}" class="img-fluid" alt="">
+      <div class="contenedor-imagenes">
+        <img src="{{asset('assets/images/mercadopago.png')}}" class="img-fluid" style="height: 46px">
+        <img src="{{asset('assets/images/capmedios.png')}}" class="img-fluid w-100">
+      </div>
     </div>
     <div class="col-md-12 text-center" style="margin-top:4%; height:70px; background:#b3c6a0; display:flex; justify-content:center;">
       <span style="padding-top:2%; color:#4c5444; font-family:AmasisMTStd-Bold; ">
