@@ -394,6 +394,7 @@ Detalle producto
               </a>
               <br>
               <span class="cls2">{{$vendido->sabor}}</span><br>
+              <span style="color:#73472b; font-weight: bold;">${{$precio}} MXN</span>
             </div>
           </div>
         </li>

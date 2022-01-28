@@ -22,14 +22,16 @@ class HomeController extends Controller
 {
     function index()
     {
-        $masvendidos =
-            DB::table('compra_item')
+        /* $masvendidos = DB::table('compra_item')
             ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
-
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
             ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
             ->limit(6)
+            ->get(); */
+        
+        $masvendidos = DB::table('productos')
+            ->whereIn('productos.id', [45, 4, 17, 18, 22, 47])
             ->get();
 
         $productos = Productos::all();
@@ -71,14 +73,16 @@ class HomeController extends Controller
 
     function detalle_producto(Request $request)
     {
-        $masvendidos =
-            DB::table('compra_item')
+        /* $masvendidos = DB::table('compra_item')
             ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
-
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
             ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
             ->limit(6)
+            ->get(); */
+        
+        $masvendidos = DB::table('productos')
+            ->whereIn('productos.id', [45, 4, 17, 18, 22, 47])
             ->get();
 
         $producto = Productos::where('nombre', $request->producto)->first();

@@ -30,12 +30,51 @@ class ReportesController extends Controller
 
     public function ventas_by_anio( Request $request )
     {
-        $compras = Compra::select('preciototal', 'created_at')
+        $month = 0;
+        if ($request->month == 'enero') {
+            $month = 1;
+        } elseif ($request->month == 'febrero'){
+            $month = 2;
+        } elseif ($request->month == 'marzo'){
+            $month = 3;
+        } elseif ($request->month == 'abril'){
+            $month = 4;
+        } elseif ($request->month == 'mayo'){
+            $month = 5;
+        } elseif ($request->month == 'junio'){
+            $month = 6;
+        } elseif ($request->month == 'julio'){
+            $month = 7;
+        } elseif ($request->month == 'agosto'){
+            $month = 8;
+        } elseif ($request->month == 'septiembre'){
+            $month = 9;
+        } elseif ($request->month == 'octubre'){
+            $month = 10;
+        } elseif ($request->month == 'noviembre'){
+            $month = 11;
+        } elseif ($request->month == 'diciembre'){
+            $month = 12;
+        } else {
+            $month = 0;
+        }
+
+        if ($month != 0) {
+            $compras = Compra::select('preciototal', 'created_at')
+            ->whereYear('created_at', '=', $request->anio)
+            ->whereMonth('created_at', '=', $month)
+            ->get()
+            ->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m');
+            });
+        } else {
+            $compras = Compra::select('preciototal', 'created_at')
             ->whereYear('created_at', '=', $request->anio)
             ->get()
             ->groupBy(function($date) {
                 return Carbon::parse($date->created_at)->format('m');
             });
+        }
 
         $total_01 = 0;
         $total_02 = 0;

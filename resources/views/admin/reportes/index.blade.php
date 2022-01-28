@@ -30,10 +30,27 @@ Reportes de ventas
                 <div class="header">
                     <div class="row">
                         <div class="col-md-6">
-                            <h2><strong>Ventas</strong> totales del año <select id="year">
+                            <h2><strong>Ventas</strong> totales del año 
+                                <select id="year">
                                     <option value="2022">2022</option>
                                     <?php  for($i=2020; $i<=2022; $i++) { echo "<option value='".$i."'>".$i."</option>"; } ?>
-                                </select></h2>
+                                </select>
+                                <select id="month">
+                                    <option value="" selected>Ningún mes</option>
+                                    <option value="enero">Enero</option>
+                                    <option value="febrero">Febrero</option>
+                                    <option value="marzo">Marzo</option>
+                                    <option value="abril">Abril</option>
+                                    <option value="mayo">Mayo</option>
+                                    <option value="junio">Junio</option>
+                                    <option value="julio">Julio</option>
+                                    <option value="agosto">Agosto</option>
+                                    <option value="septiembre">Septiembre</option>
+                                    <option value="octubre">Octubre</option>
+                                    <option value="noviembre">Noviembre</option>
+                                    <option value="diciembre">Diciembre</option>
+                                </select>
+                            </h2>
                             <span style="font-size: 34px" id="total">NaN</span>
                         </div>
                         <div class="col-md-6 text-right">
@@ -86,14 +103,26 @@ $(document).ready(function(){
         location.reload();
     });
 
+    $('#month').on('change', function() {
+        location.reload();
+    });
+
 })
 
 function getDataVentas() {
-    var e = document.getElementById("year");
-    var year = e.value;
+    var year = document.getElementById("year");
+    var month = document.getElementById("month");
+    
+    var year = year.value;
+    var month = month.value;
 
-    label = "Año " + year;
-    title = "VENTAS DEL AÑO " + year;
+    if ( month == '') {
+        label = "Año " + year;
+        title = "Ventas del año " + year;
+    } else {
+        label = 'Mes de ' + month + " del " + year;
+        title = "Ventas de " + month + ' del ' + year;
+    }
 
     $.ajax({
         url: '/admin/ventas/by_anio',
@@ -101,6 +130,7 @@ function getDataVentas() {
         dataType: 'json',
         data: {
             anio   : year,
+            month  : month,
             _token : $('input[name="_token"]').val()
         }
     }).then(function(data){
@@ -138,22 +168,21 @@ function crearChartVentas() {
     
     const data = {
         labels: meses,
-        datasets: [
-            {
-                label: label,
-                data: valores,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)'  
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)'
-                ],
-            }
-        ]
+        datasets: [{
+            label: label,
+            data: valores,
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.2)'
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 2
+        }]
     };
 
     const config = {
-        type: 'line',
+        type: 'bar',
         data: data,
         options: {
             responsive: true,
@@ -193,7 +222,7 @@ function crearChartMasVendidos() {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
             ],
-            borderWidth: 1
+            borderWidth: 2
         }]
     };
 
