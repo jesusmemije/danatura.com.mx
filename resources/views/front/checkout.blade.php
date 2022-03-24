@@ -369,7 +369,7 @@ Checkout
                     <input id="regionenvio" type="text" class="form-control" name="region">
 
                     <label for="">Código Postal (Requerido)<sup>*</sup></label>
-                    <input id="cpenvio" type="text" class="form-control" name="cp">
+                    <input id="cpenvio" maxlength="5" type="text" class="form-control" name="cp">
 
                     <label for="">Teléfono/Celular (Requerido)<sup>*</sup></label>
                     <input id="telefonoenvio" type="text" class="form-control" name="telefono">
@@ -598,6 +598,12 @@ Checkout
 @endphp
 
 <script>
+
+    // Valida que solo se ingresen números en el CP
+    $('#cpenvio').on('input', function () { 
+        this.value = this.value.replace(/[^0-9]/g,'');
+    });
+
     function validarDatosEnvio(){
 
         $('#paypal-button-container').hide();
@@ -614,11 +620,6 @@ Checkout
 
             if ( !ValidateEmail( $('#emailenvio').val() ) ) {
                 msg_warning('El correo electrónico es inválido')
-                return false;
-            }
-
-            if ( !ValidateCP( $('#cpenvio').val() ) ) {
-                msg_warning('El Código Postal es inválido');
                 return false;
             }
 
@@ -670,14 +671,6 @@ Checkout
 
     function ValidateEmail(mail) {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function ValidateCP(cp) {
-        if (/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/.test(cp)){
             return true;
         } else {
             return false;
