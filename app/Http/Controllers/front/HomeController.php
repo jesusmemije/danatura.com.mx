@@ -22,19 +22,18 @@ class HomeController extends Controller
 {
     function index()
     {
-        /* $masvendidos = DB::table('compra_item')
+        $masvendidos =
+            DB::table('compra_item')
             ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
+
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
             ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
+            ->where('productos.status', 1)
             ->limit(6)
-            ->get(); */
-        
-        $masvendidos = DB::table('productos')
-            ->whereIn('productos.id', [45, 4, 17, 18, 22, 47])
             ->get();
 
-        $productos = Productos::all();
+        $productos = Productos::where('status', 1)->get();
 
         return view('front/home', ['masvendidos' => $masvendidos, 'productos' => $productos]);
     }
@@ -59,30 +58,26 @@ class HomeController extends Controller
     function productos()
     {
         session_start();
-        $user = Auth::user();
-        $total_productos = Productos::all()->count();
-
         $_SESSION['thetotal'] = 0;
 
+        $user = Auth::user();
         $categorias = DB::table('categorias')->get();
+        $productos = Productos::where('status', 1)->paginate(9);
 
-        $productos = Productos::paginate(9);
-        //$productos= Productos::all();
         return view('front/productos', ["productos" => $productos, 'user' => $user, 'categorias' => $categorias]);
     }
 
     function detalle_producto(Request $request)
     {
-        /* $masvendidos = DB::table('compra_item')
+        $masvendidos =
+            DB::table('compra_item')
             ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
+
             ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
             ->orderByRaw('sum(cantidad) desc ')
             ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
+            ->where('productos.status', 1)
             ->limit(6)
-            ->get(); */
-        
-        $masvendidos = DB::table('productos')
-            ->whereIn('productos.id', [45, 4, 17, 18, 22, 47])
             ->get();
 
         $producto = Productos::where('nombre', $request->producto)->first();
@@ -92,7 +87,7 @@ class HomeController extends Controller
 
     public function puntos_venta(Request $request)
     {
-        $productos = Productos::all();
+        $productos = Productos::where('status', 1)->get();
 
         $estado = $request->estado;
         $ciudad = $request->ciudad;
@@ -342,7 +337,7 @@ class HomeController extends Controller
 
         $aux_seg = 0;
 
-        $count = Productos::all()->count();
+        $count = Productos::where('status', 1)->get()->count();
 
         $tipo_precio = 'normal';
         $precio_normal = '';
@@ -366,11 +361,13 @@ class HomeController extends Controller
             if ($request->id > 0) {
                 $data = DB::table('productos')
                     ->where('id', '<', $request->id)
+                    ->where('status', 1)
                     ->orderBy('id', 'DESC')
                     ->limit(9)
                     ->get();
             } else {
                 $data = DB::table('productos')
+                    ->where('status', 1)
                     ->orderBy('id', 'DESC')
                     ->limit(9)
                     ->get();
@@ -539,6 +536,7 @@ class HomeController extends Controller
                 ->groupByRaw('id,nombre,sabor,descripcion,gramos,precio,fotografia,galeria')
                 ->orderByRaw('sum(cantidad) desc ')
                 ->select('productos.id', 'productos.nombre', 'sabor', 'descripcion', 'gramos', 'productos.precio', 'fotografia', "galeria")
+                ->where('productos.status', 1)
                 ->limit(6)
                 ->get();
 
