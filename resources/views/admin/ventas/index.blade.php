@@ -67,9 +67,9 @@
       {{ session('error') }}
     </div>
     @endif
-    
+
     <div class="card-body">
-      
+
       <div class="table-responsive">
         <table class="table table-bordered table-hover" id="dataTable">
           <thead class="">
@@ -133,10 +133,19 @@
                   </div>
 
                   <div class="col-md-6 px-0 text-left">
-                    <a class='btn btn-warning btn-sm btn-circle ie' data-toggle="modal"
-                      data-target="#verProductos-{{$venta->id}}">
+                    <a class='btn btn-success btn-sm btn-circle' data-toggle="modal" data-target="#verProductos-{{$venta->id}}">
                       <i class='fa fa-eye'></i>
                     </a>
+                  </div>
+
+                  <div class="col text-center px-0">
+                    <form action="{{ route('pedidos.destroy', $venta->id) }}" method="POST">
+                        @method("DELETE")
+                        @csrf
+                        <button type="submit" id="button-delete" class="btnDelet btn btn-danger btn-sm btn-circle my-0" data-id="{{ $venta->id }}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </form>
                   </div>
 
                 </div>
@@ -150,7 +159,6 @@
   </div>
 </div>
 </div>
-
 <div class="modal fade" id="detallesPedidoModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div id="contenidomodal" class="modal-content">
@@ -350,7 +358,7 @@ $('#deleteUserModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
 
   var control = button.data('control')
-      
+
   var id = button.data('id') // Extract info from data-* attributes
   var name = button.data('nombre')
   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
@@ -363,9 +371,9 @@ $('#deleteUserModal').on('show.bs.modal', function (event) {
   $('#formDelete').attr('action', action)
 
   var modal = $(this)
-  modal.find('.modal-title').text('Confirmar eliminación') 
+  modal.find('.modal-title').text('Confirmar eliminación')
   modal.find('.name-user').text(name)
-     
+
 })
 
 $('#detallesModal').on('show.bs.modal', function (event) {
@@ -386,12 +394,22 @@ $('#detallesModal').on('show.bs.modal', function (event) {
 
 $('#detallesPedidoModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)
-    
+
   $('#id_venta').val( button.data('id_venta'));
   $('#estadoentregaventa').val( button.data('estadoentregaventa'));
-     
+
 })
 
+$('.btnDelet').on('click', function(event) {
+    event.preventDefault();
+    var parent = $(this).data('id');
+    var form = $(this).parent();
+
+    var result = confirm("¿Confirma eliminar este elemento y su contenido?");
+    if (result) {
+        form.submit();
+    }
+});
 
 </script>
 

@@ -1,21 +1,59 @@
+Redirect 301 "/en" "/"
 <IfModule mod_rewrite.c>
+
     <IfModule mod_negotiation.c>
+
         Options -MultiViews -Indexes
+
     </IfModule>
+
+
 
     RewriteEngine On
 
+
+
     # Handle Authorization Header
+
     RewriteCond %{HTTP:Authorization} .
+
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+
+
     # Redirect Trailing Slashes If Not A Folder...
+
     RewriteCond %{REQUEST_FILENAME} !-d
+
     RewriteCond %{REQUEST_URI} (.+)/$
+
     RewriteRule ^ %1 [L,R=301]
 
+
+
     # Send Requests To Front Controller...
+
     RewriteCond %{REQUEST_FILENAME} !-d
+
     RewriteCond %{REQUEST_FILENAME} !-f
+
     RewriteRule ^ index.php [L]
+
 </IfModule>
+
+# If we receive a forwarded http request from a proxy...
+RewriteCond %{HTTP:X-Forwarded-Proto} =http [OR]
+
+# ...or just a plain old http request directly from the client
+RewriteCond %{HTTP:X-Forwarded-Proto} =""
+RewriteCond %{HTTPS} !=on
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST}  !^www\.danatura\.com.mx$ [NC]
+RewriteRule ^(.*) https://www.danatura.com.mx/$1 [L,R]
+
+RewriteEngine On 
+RewriteCond %{SERVER_PORT} 80 
+RewriteRule ^(.*)$ https://www.danatura.com.mx/$1 [R=301,L,NE]
+Header always set Content-Security-Policy "upgrade-insecure-requests;"
+

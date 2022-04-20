@@ -20,7 +20,7 @@ class VentasProductosController extends Controller
         $datosdirection = DB::table('datos_envios')
                 ->select('datos_envios.*')
                 ->get();
-            
+
         $compra = DB::table('compra')
                 ->join('users','compra.id_user','=','users.id')
                 ->join('tiposuario','users.tipo','=','tiposuario.id')
@@ -36,7 +36,7 @@ class VentasProductosController extends Controller
                 ->distinct('compra_item.id')
                 ->get();
 
-        return view('admin.ventas.index',compact(['compra', $compra, 'compra_item', $compra_item, 'datosdirection', $datosdirection]));
+        return view('admin.ventas.index',compact(['compra', 'compra_item', 'datosdirection']));
     }
 
     public function getDireccionCustomer( Request $request )
@@ -106,7 +106,7 @@ class VentasProductosController extends Controller
         $user = User::where('email', $request->email)->first();
         if ($user) {
             return response()->json([
-                'ok' => false, 
+                'ok' => false,
                 'message' => 'Ya existe un usuario registrado con este E-mail de nombre: ' . $user->name
             ]);
         }
@@ -145,7 +145,7 @@ class VentasProductosController extends Controller
 
     public function edit($id)
     {
-        //
+        return "Hola Edit" . $id;
     }
 
     public function update(Request $request, $id)
@@ -155,9 +155,10 @@ class VentasProductosController extends Controller
 
     public function destroy($id)
     {
-        //
+        CompraItem::where('compra_id', $id)->delete();
+        Compra::destroy($id);
+        return redirect('admin/pedidos/')->with('status', 'La orden se ha eliminado con éxito');
     }
-
 
     public function cambiarEstadoEntrega(Request $request)
     {

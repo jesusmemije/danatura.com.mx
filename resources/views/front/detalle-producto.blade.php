@@ -3,8 +3,6 @@
 @php
 $host = "http:";
 $url = $host."//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-$array_galeria=explode('|',$producto->galeria);
-$foto_principal=$array_galeria[0];
 @endphp
 
 @section('title')
@@ -291,7 +289,7 @@ Detalle producto
                   var js, fjs = d.getElementsByTagName(s)[0];
                   if (d.getElementById(id)) return;
                   js = d.createElement(s); js.id = id;
-                  
+
                   js.src = "https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v3.0";
                   fjs.parentNode.insertBefore(js, fjs);
                 }(document, 'script', 'facebook-jssdk'));
@@ -420,14 +418,14 @@ window.smoothScroll = function(target) {
       if (!scrollContainer) return;
       scrollContainer.scrollTop += 1;
   } while (scrollContainer.scrollTop == 0);
-  
+
   var targetY = 0;
   do {
       //find the top of target relatively to the container
       if (target == scrollContainer) break;
       targetY += target.offsetTop;
   } while (target = target.offsetParent);
-  
+
   scroll = function(c, a, b, i) {
       i++; if (i > 30) return;
       c.scrollTop = a + (b - a) / 30 * i;
@@ -469,7 +467,7 @@ function fav(dato, id){
     misfav.push(id);
     document.cookie="thecookie="+misfav;
   } else {
-  
+
    for (let index = 0; index < misfav.length; index++) {
       if(misfav[index]==id){
         misfav.splice(index,1);
@@ -477,7 +475,7 @@ function fav(dato, id){
    }
    document.cookie="thecookie="+misfav;
   }
- 
+
 }
 
 //script para añadir un producto al carrito, se utiliza en : detalle producto.
@@ -516,7 +514,7 @@ function fav(dato, id){
       }
 
       if(response['operacion'] == "bien"){
-        
+
         Swal.fire({
           title: '¡Bien!',
           text: "El producto se ha agregado correctamente al carrito",
@@ -528,16 +526,16 @@ function fav(dato, id){
           cancelButtonText: 'Ir al carrito'
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location="{{route('productos')}}"; 
+            window.location="{{route('productos')}}";
           } else {
-            window.location="{{route('carrito')}}"; 
+            window.location="{{route('carrito')}}";
           }
         })
 
       }
-                     
+
     },
-    error:  function (response) { 
+    error:  function (response) {
       window.open(JSON.stringify(response));
     }
   });

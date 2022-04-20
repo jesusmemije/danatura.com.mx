@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Compra;
 use App\Models\DatosEnvio;
 
 class ClienteController extends Controller
@@ -29,36 +27,34 @@ class ClienteController extends Controller
      */
     public function index()
     {
+        $datosdirection = DatosEnvio::where('id_user', auth()->user()->id)->first();
 
-            $datosdirection = DatosEnvio::where('id_user', auth()->user()->id )->first();
+        // Historial de compras
+        $compra = DB::table('compra')
+            // ->join('compra_item','compra.id','=','compra_item.compra_id')
+            // ->join('productos','compra_item.id_producto','=','productos.id')
+            ->join('users', 'compra.id_user', '=', 'users.id')
+            // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+            ->select('compra.*')
+            ->where('compra.id_user', '=', auth()->user()->id)
+            ->distinct('compra.id')
+            ->get();
 
-            // Historial de compras
-            $compra = DB::table('compra')
-                // ->join('compra_item','compra.id','=','compra_item.compra_id')
-                // ->join('productos','compra_item.id_producto','=','productos.id')
-                ->join('users','compra.id_user','=','users.id')
-                // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
-                ->select('compra.*')
-                ->where('compra.id_user','=',auth()->user()->id)
-                ->distinct('compra.id')
-                ->get();
+        $compra_item = DB::table('compra_item')
+            ->join('compra', 'compra_item.compra_id', '=', 'compra.id')
+            ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
+            // ->join('users','compra.id_user','=','users.id')
+            // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
+            ->select('compra_item.*', 'productos.nombre AS Producto')
+            // ->where('compra.id_user','=',auth()->user()->id)
+            ->distinct('compra_item.id')
+            ->get();
 
-            $compra_item = DB::table('compra_item')
-                ->join('compra','compra_item.compra_id','=','compra.id')
-                ->join('productos','compra_item.id_producto','=','productos.id')
-                // ->join('users','compra.id_user','=','users.id')
-                // ->join('datos_envios','compra.id_datosenvio','=','datos_envios.id')
-                ->select('compra_item.*','productos.nombre AS Producto')
-                // ->where('compra.id_user','=',auth()->user()->id)
-                ->distinct('compra_item.id')
-                ->get();
-
-        return view('cliente.historial_pedidos',compact(['compra',$compra,'compra_item',$compra_item,'datosdirection',$datosdirection]));
+        return view('cliente.historial_pedidos', compact(['compra', 'compra_item', 'datosdirection']));
     }
 
     public function store(Request $request)
     {
-
         $newDirection = new DatosEnvio();
         $newDirection->id_user = Auth::user()->id;
         $newDirection->nombre = $request->input('nombre');
@@ -74,7 +70,7 @@ class ClienteController extends Controller
         $newDirection->email = $request->input('email');
         $newDirection->rfc = $request->input('rfc');
         $newDirection->referencia = $request->input('referencia');
-        
+
         $newDirection->save();
 
         return redirect()->back()->with('mensaje', 'Dirección registrada con exito.');
@@ -99,7 +95,7 @@ class ClienteController extends Controller
         ]);
 
         $id = $request->edit_id;
-        $updateDirection = request()->except(['_token','_method']);
+        $updateDirection = request()->except(['_token', '_method']);
         $updateDirection = DatosEnvio::find($id);
 
         $updateDirection->nombre     = $request->input('edit_nombre');
@@ -123,8 +119,8 @@ class ClienteController extends Controller
 
     public function destroy($id)
     {
-        $direccion=DatosEnvio::find($id);
+        $direccion = DatosEnvio::find($id);
         $direccion->delete();
-        return redirect()->route('historial_pedidos.index')->with('mensaje','Dirección Eliminada con Exito.');
+        return redirect()->route('historial_pedidos.index')->with('mensaje', 'Dirección Eliminada con Exito.');
     }
 }
