@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\CompraExitosa;
 use App\Models\Compra;
 use App\Models\CompraItem;
+use App\Models\Coupon;
 use App\Models\DatosEnvio;
 use App\Models\Productos;
 use Illuminate\Http\Request;
@@ -96,7 +97,7 @@ class CkeckoutController extends Controller
 
             // En caso de que todo OK.
             return redirect('/checkout')->with('statusPayMercadoPago', 'success');
-            
+
         } else {
             // Pago no aprovado
             return redirect('/checkout')->with('statusPayMercadoPago', 'Status: ' . $response->status . '. Details: ' . $response->status_detail);
@@ -233,6 +234,9 @@ class CkeckoutController extends Controller
                 $this->sendOrderMail();
 
                 unset($_SESSION['carrito']);
+                unset($_SESSION['gastoEnvio']);
+                unset($_SESSION['descuentoCupon']);
+                unset($_SESSION['subtotal']);
                 unset($_SESSION['totalpagar']);
 
                 return response()->json(['ok' => true, 'message' => "success"]);
@@ -304,6 +308,9 @@ class CkeckoutController extends Controller
         $this->sendOrderMail();
 
         unset($_SESSION['carrito']);
+        unset($_SESSION['gastoEnvio']);
+        unset($_SESSION['descuentoCupon']);
+        unset($_SESSION['subtotal']);
         unset($_SESSION['totalpagar']);
 
         return response()->json(['ok' => true, 'message' => 'success']);
@@ -345,5 +352,34 @@ class CkeckoutController extends Controller
         );
 
         Mail::to($user->email)->cc('contacto@danatura.com.mx')->send(new CompraExitosa($data_mail));
+    }
+
+    public function applyCoupon(Request $request)
+    {
+        session_start();
+
+        $codigo = $request->codigo;
+        $coupon = Coupon::where('codigo', $codigo)->where('status', 'Activo')->first();
+
+        if ($coupon) {
+            $totalpagar = $_SESSION['totalpagar'];
+            $tipo = $coupon->tipo;
+            $cantidad = $coupon->cantidad;
+
+            if ($tipo == 'Porcentaje') {
+                // Descuento por porcentaje
+                $descuento = $totalpagar * $cantidad;
+                $descuento = $descuento / 100;
+                $_SESSION['descuentoCupon'] = $descuento;
+                $_SESSION['totalpagar'] = $_SESSION['totalpagar'] - $_SESSION['descuentoCupon'];
+            } else {
+                // Descuento por cantidad
+                $_SESSION['descuentoCupon'] = $cantidad;
+                $_SESSION['totalpagar'] = $_SESSION['totalpagar'] - $cantidad;
+            }
+            return back()->with('success_cupon', 'El descuento del cupón se ha aplicado con éxito');
+        } else {
+            return back()->with('error_cupon', 'El cupón ingresado no existe o está inactivo');
+        }
     }
 }

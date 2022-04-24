@@ -28,7 +28,7 @@
         a {
             color: #F79860;
         }
-    
+
         .redondo {
             justify-content: center;
             border-radius: 50%;
@@ -37,9 +37,16 @@
             padding-top: 8px !important;
             padding-left: 10px !important;
         }
-    
+
         .ie {
             padding-left: 8px !important;
+        }
+
+        .msg-error {
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
         }
     </style>
 

@@ -22,6 +22,10 @@ Checkout
         float: right !important;
     }
 
+    p {
+        margin-bottom: 0.5rem;
+    }
+
     @media screen and (max-width: 480px) {
         .text-center-items {
             text-align: center;
@@ -47,7 +51,7 @@ Checkout
     $preference = new MercadoPago\Preference();
 
     $shipments = new MercadoPago\Shipments();
-    $shipments->cost = 170;
+    $shipments->cost = $_SESSION['gastoEnvio'];
     $shipments->mode = "not_specified";
 
     $preference->shipments = $shipments;
@@ -85,7 +89,7 @@ Checkout
     <hr>
     <div class="row clearfix">
         <div class="col-md-6 col-12 text-center-items">
-            <?php 
+            <?php
                 $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','fotografia')->get();
 
                 $carrito = $_SESSION['carrito'];
@@ -103,9 +107,34 @@ Checkout
             <br>
             <p class="font-weight-bold h5">Resumen:</p>
             <p>Cantidad total de productos: {{$cantidad_carrito}} </p>
-            <p>Costo por envio: ${{ number_format($_SESSION['gastoEnvio'], 2, '.', ',') }}</p>
-            <p>Monto total: ${{ number_format($_SESSION['totalpagar'], 2, '.', ',') }}</p>
+            <p>Costo por envio: <strong>${{ number_format($_SESSION['gastoEnvio'], 2, '.', ',') }}</strong></p>
+            @isset($_SESSION['descuentoCupon'])
+            <p>Descuento: <strong>${{ number_format($_SESSION['descuentoCupon'], 2, '.', ',') }}</strong></p>
+            @endisset
+            <p>Monto total: <strong>${{ number_format($_SESSION['totalpagar'], 2, '.', ',') }}</strong></p>
             <p hidden>SubTotal: ${{ number_format($_SESSION['subtotal'], 2, '.', ',') }}</p>
+            @if (!isset($_SESSION['descuentoCupon']))
+            <form action="{{ route('applyCoupon') }}" method="POST" class="form-inline">
+                @csrf
+                <div class="form-group mb-2">
+                    <label for="codigo">¿Tienes un cupón? Ingrésalo</label>
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" name="codigo" class="form-control" id="codigo" maxlength="20" onkeyup="mayusculas(this);" required>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Enviar</button>
+            </form>
+            @endif
+            @if (session('success_cupon'))
+                <div class="alert alert-success">
+                    {{ session('success_cupon') }}
+                </div>
+            @endif
+            @if (session('error_cupon'))
+                <div class="alert alert-danger">
+                    {{ session('error_cupon') }}
+                </div>
+            @endif
             <br>
             <br>
             <input id="cajamonto" type="hidden" value="{{($_SESSION['totalpagar'])}}">
@@ -222,7 +251,7 @@ Checkout
                                                 <option disabled selected>[Mes]</option>
                                                 <?php
                                                 $meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-                                
+
                                                 for ($i = 1; $i <= sizeof($meses); $i++) { ?>
                                                 <?php if ($i <= 9) : ?>
                                                 <option value="<?php echo "0" . $i ?>">
@@ -403,7 +432,7 @@ Checkout
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 <!-- Paypal SDK -->
-<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id={{ env('PAYPAL_CLIENT_ID') }}" data-namespace="paypal_sdk"></script> 
+<script src="https://www.paypal.com/sdk/js?currency=MXN&client-id={{ env('PAYPAL_CLIENT_ID') }}" data-namespace="paypal_sdk"></script>
 <!-- SDK MercadoPago.js V2 -->
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 
@@ -412,6 +441,9 @@ Checkout
     @if ( session()->get('statusPayMercadoPago') == "success" )
         @php
             unset($_SESSION['carrito']);
+            unset($_SESSION['gastoEnvio']);
+            unset($_SESSION['descuentoCupon']);
+            unset($_SESSION['subtotal']);
             unset($_SESSION['totalpagar']);
         @endphp
         <script>
@@ -422,11 +454,11 @@ Checkout
             }).then((result) => {
                 window.location.href = '/historial_pedidos';
             })
-        </script>        
+        </script>
     @else
         <script>
             msg_error('{{ session()->get('statusPayMercadoPago') }}')
-        </script>   
+        </script>
     @endif
 @endif
 
@@ -437,7 +469,7 @@ Checkout
     });
 
     console.log('id_preference: ' + '{{ $preference->id }}');
-    
+
     // Inicializa el checkout
     mp.checkout({
         preference: {
@@ -491,7 +523,7 @@ Checkout
                 cache : false,
                 success: function(response) {
 
-                    console.log("Response the payment Card: ") ; 
+                    console.log("Response the payment Card: ") ;
                     console.log(response);
 
                     if (response.ok) {
@@ -508,7 +540,7 @@ Checkout
                     }
 
                 },
-                error:  function (response) { 
+                error:  function (response) {
                     console.log( response );
                 }
             });
@@ -565,7 +597,7 @@ Checkout
         $('#emailenvio').val(data.email)
         $('#rfcenvio').val(data.rfc)
         $('#referenciaenvio').val(data.referencia)
-    }    
+    }
 </script>
 
 @php
@@ -579,11 +611,11 @@ Checkout
         echo "<script>
             $('#paypal-button-container').show();
             $('#noPaypal').hide();
-            
+
             $('#mercado-pago-container').show();
             $('#noMercadoPago').hide();
-            
-            enviarData( $data ); 
+
+            enviarData( $data );
         </script>";
     } else {
         echo "<script>
@@ -598,9 +630,18 @@ Checkout
 @endphp
 
 <script>
+    // Funcion JavaScript para la conversion a mayusculas
+    function mayusculas(e) {
+        e.value = e.value.toUpperCase();
+    }
+    $("#codigo").keyup(function(){
+        var ta  =  $("#codigo");
+        letras  =  ta.val().replace(/ /g, "");
+        ta.val(letras)
+    });
 
     // Valida que solo se ingresen números en el CP
-    $('#cpenvio').on('input', function () { 
+    $('#cpenvio').on('input', function () {
         this.value = this.value.replace(/[^0-9]/g,'');
     });
 
@@ -641,15 +682,15 @@ Checkout
                 processData: false,
                 url: "{{ route('datos-envio') }}",
                 data: fileform,
-                type: 'POST',   
+                type: 'POST',
                 dataType:'json',
                 success: function(resp) {
 
-                    console.log(resp);   
-                    
+                    console.log(resp);
+
                     if ( resp['ok'] ) {
                         $("#id_envio").val(resp['id']);
-            
+
                         $('#paypal-button-container').show();
                         $('#noPaypal').hide();
 
@@ -660,12 +701,12 @@ Checkout
                     } else {
                         msg_error("Hemos tenido problemas al registar su dirección de envío")
                     }
-                    
+
                 },
-                error:  function (response) { 
+                error:  function (response) {
                     console.log( response );
                 }
-            });   
+            });
         }
     }
 
@@ -743,7 +784,7 @@ Checkout
                 msg_warning('Antes de realizar la compra debe llenar los datos de envío')
                 return false;
             }
-            
+
         },
         onApprove: function(data, actions) {
             // This function captures the funds from the transaction.
@@ -760,7 +801,7 @@ Checkout
 
 <script>
     function savePayPalData(data){
-        
+
         var id_envio = $('#id_envio').val();
 
         $.ajax({
@@ -773,7 +814,7 @@ Checkout
             type:  'post',
             success:  function (response) {
 
-                console.log("Response to save data Paypal: ") ; 
+                console.log("Response to save data Paypal: ") ;
                 console.log(response);
 
                 if (response.ok) {

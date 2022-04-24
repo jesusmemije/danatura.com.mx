@@ -28,6 +28,7 @@
             </li>
             <li><a href="{{route('dashboard')}}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
             <li><a href="{{route('pedidos.index')}}"><i class="zmdi zmdi-money"></i><span>Pedidos</span></a></li>
+            <li><a href="{{route('discounts.index')}}"><i class="zmdi zmdi-labels"></i><span>Promo. y cupones</span></a></li>
             <li><a href="{{route('reportes.index')}}"><i class="zmdi zmdi-chart"></i><span>Reportes</span></a></li>
             <li>
                 <a href="javascript:void(0);" class="menu-toggle">

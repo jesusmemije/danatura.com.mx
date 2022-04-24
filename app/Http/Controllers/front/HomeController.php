@@ -315,13 +315,13 @@ class HomeController extends Controller
                             <br>
                             <div style="padding:4%;">
                             <a  href="detalle-producto?producto=' . $nombre . '">
-                                <span style="color:#73472b; font-family:AmasisMTStd-Bold;">' . $row->nombre . '</span><br> 
+                                <span style="color:#73472b; font-family:AmasisMTStd-Bold;">' . $row->nombre . '</span><br>
                                 </a>
-                                <span style="color:#73472b; class="cls2" >' . $row->sabor . '</span><br> 
+                                <span style="color:#73472b; class="cls2" >' . $row->sabor . '</span><br>
                                 ' . $thespan . '
                                 <br>
                                 ' . $hayono . '
-                            </div> 
+                            </div>
                             </div>
                         </li>
                     </div>';
@@ -462,13 +462,13 @@ class HomeController extends Controller
                             <div style="padding:4%;">
                                 <a  href="detalle-producto?producto=' . $nombre . '">
                                     <span style="color:#73472b; font-family:AmasisMTStd-Bold;">' . $row->nombre . '</span><br> </a>
-                                    <span style="color:#73472b; class="cls2" >' . $row->sabor . '</span><br> 
+                                    <span style="color:#73472b; class="cls2" >' . $row->sabor . '</span><br>
                                     ' . $thespan . '
                                     <br>
 
                                     ' . $hayono . '
-                                    
-                                </div> 
+
+                                </div>
                             </div>
                         </li>
                     </div>';
@@ -559,6 +559,11 @@ class HomeController extends Controller
                 echo json_encode($respuesta);
                 die();
             }
+        }
+
+        if (isset($_SESSION['totalpagar']) && isset($_SESSION['descuentoCupon'])) {
+            $_SESSION['totalpagar'] = $_SESSION['totalpagar'] + $_SESSION['descuentoCupon'];
+            unset($_SESSION['descuentoCupon']);
         }
 
         if (isset($_POST['id'])) {

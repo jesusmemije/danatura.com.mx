@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\ProductosController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\VentasProductosController;
 use App\Http\Controllers\admin\BlogController as BlogControllerAdmin;
+use App\Http\Controllers\admin\DiscountController;
 use App\Http\Controllers\admin\HomeController as HomeControllerAdmin;
 use App\Http\Controllers\admin\ReportesController;
 use App\Http\Controllers\cliente\ClienteController;
@@ -36,11 +37,14 @@ Route::get('/filtrar-puntos',[HomeControllerFront::class, 'filtrar_puntos'])->na
 Route::get('/mis-favoritos',[HomeControllerFront::class, 'misfavoritos'])->name('mis-favoritos');
 Route::get('/detalle-producto/{producto?}',[HomeControllerFront::class, 'detalle_producto'])->name('detalle-producto');
 Route::get('/carrito',[HomeControllerFront::class, 'carrito'])->name('carrito');
+
 // Checkout
 Route::get('/checkout',[CkeckoutController::class, 'checkout'])->name('checkout');
 Route::post('/payWithConekta',[CkeckoutController::class, 'payWithConekta'])->name('payWithConekta');
 Route::post('/payWithPaypal',[CkeckoutController::class, 'payWithPaypal'])->name('payWithPaypal');
 Route::get('/payWithMercadoPago',[CkeckoutController::class, 'payWithMercadoPago'])->name('payWithMercadoPago');
+// Cupon discount
+Route::post('/applyCoupon', [CkeckoutController::class, 'applyCoupon'])->name('applyCoupon');
 
 Route::post('/datos-envio',[HomeControllerFront::class, 'datos_envio'])->name('datos-envio');
 /* Blog */
@@ -103,6 +107,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], functio
     //Blog.
     Route::resource('/blogs', BlogControllerAdmin::class);
     Route::post('/blogs/upload',[BlogControllerAdmin::class, 'upload'])->name('upload_cke');
+
+    // Discounts
+    Route::get('/descuentos', [DiscountController::class, 'index'])->name('discounts.index');
+    Route::get('/descuentos/crear-cupon', [DiscountController::class, 'createCoupon'])->name('coupons.create');
+    Route::post('/descuentos/crear-cupon', [DiscountController::class, 'storeCoupon'])->name('coupons.store');
+    Route::delete('/descuentos/eliminar-cupon/{id}', [DiscountController::class, 'destroyCoupon'])->name('coupons.destroy');
+    Route::get('/descuentos/editar-cupon/{coupon}', [DiscountController::class, 'edit'])->name('coupons.edit');
+    Route::put('/descuentos/editar-cupon/{coupon}', [DiscountController::class, 'update'])->name('coupons.update');
 });
 
 Route::group(['middleware'=>['auth']], function(){

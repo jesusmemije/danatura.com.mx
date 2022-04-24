@@ -23,6 +23,12 @@
             <?php
             session_start();
 
+            // Reset cambios cupón
+            if (isset($_SESSION['totalpagar']) && isset($_SESSION['descuentoCupon'])) {
+                $_SESSION['totalpagar'] = $_SESSION['totalpagar'] + $_SESSION['descuentoCupon'];
+                unset($_SESSION['descuentoCupon']);
+            }
+
             if (isset($_SESSION['carrito'])) {
 
                 $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','fotografia','galeria')->get();
@@ -32,7 +38,6 @@
                 foreach ($carrito as $key=>$value) {
                    // $aux_cantidad_total=$aux_cantidad_total+
                 }
-                $_SESSION['gastoEnvio'] = 170;
                 $_SESSION['subtotal'] = 0;
                 $totalPagar = 0;
 
@@ -49,13 +54,13 @@
                         if (sizeof($carrito) == 0) {
                             return redirect()->to('/')->send();
                         }
-    
+
                         if (sizeof($carrito) > 1 || sizeof($carrito) == 0) {
                             echo sizeof($carrito) . " PRODUCTOS AL CARRITO";
                         } else {
                             echo sizeof($carrito) . " PRODUCTO AL CARRITO";
                         }
-    
+
                         ?></b>
                     </h3>
                 </div>
@@ -84,21 +89,21 @@
 
                             <?php
                             $i = 0;
-                              
+
                             foreach ($productos as $producto) {
-                               
+
                                 foreach ($carrito as $key) {
-                                   
+
                                     if ($producto->id == $key['producto_id']) {
 
                                         $fotografia = $producto->fotografia;
                                         $source     = "assets/productos/".$fotografia;
                                         $source     = $fotografia;
-                        
+
                                         if ( $fotografia == "" ) {
                                             $source = asset("assets/productos/goldenmilk.png");
                                         }
-                                
+
                                         if ( strpos($source, 'https') !== false ) {
                                             $source = $source;
                                         } else {
@@ -130,7 +135,7 @@
 
                                         <?php
 
-                                        $i++;   
+                                        $i++;
                                     }
                                 }
                             } ?>
@@ -146,6 +151,11 @@
                             <div class="col-md-3">
                             </div>
                             @php
+                                if($totalPagar > 595){
+                                    $_SESSION['gastoEnvio'] = 0;
+                                } else {
+                                    $_SESSION['gastoEnvio'] = 170;
+                                }
                                 if ( strpos($totalPagar, '.') !== false ) {
                                     $totalPagar = $totalPagar;
                                 } else {
@@ -157,7 +167,7 @@
                             <div class="col-md-2"><b>Total pago: </b><br>$<label id="totalPagar"><?php echo number_format($totalPagar + $_SESSION['gastoEnvio'], 2, '.', ',') ?></label></div>
                             <div class="col-md-2">
                                 <?php $_SESSION['totalpagar'] = $totalPagar  + $_SESSION['gastoEnvio'];   ?>
-                                <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora 
+                                <a href="{{route('checkout')}}" class="btn btn-success"> Pagar ahora
                                     <i style="color:white" class="fas fa-credit-card"></i>
                                 </a>
                             </div>
@@ -185,22 +195,22 @@
     function cambio(idmodulo, costo, tdtotalcostocurso) {
 
         var x= document.getElementById(idmodulo).checked;
-    
+
         var tp=$("#totalPagar").html();
-       
+
         if (x){
             actualizarModulos(idmodulo,costo,"agregar");
             var final=$("#"+tdtotalcostocurso).html();
-           
+
            final=parseInt(final,10)
            final=final+costo;
-          
+
            $("#"+tdtotalcostocurso).html(final+".00");
            tp=parseInt(tp,10);
             tp=tp+costo;
-           
+
            $("#totalPagar").html(tp+".00");
-       
+
         } else {
             actualizarModulos(idmodulo,costo,"quitar");
             var final=$("#"+tdtotalcostocurso).html();
@@ -211,7 +221,7 @@
             tp=tp-costo;
             $("#totalPagar").html(tp+".00");
         }
-        
+
     }
 
     function actualizarModulos(idmodulo,costo,operacion){
@@ -226,8 +236,8 @@
             url: 'actualizarModulos',
             type: 'post',
 
-            success: function(response) { 
-                // window.location="{{ url('contenido-carrito') }}"; 
+            success: function(response) {
+                // window.location="{{ url('contenido-carrito') }}";
                 // $("#resultado").html("Carrito: " + response);
                 // alert(response);
             },
