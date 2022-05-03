@@ -115,6 +115,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','checkrol']], functio
     Route::delete('/descuentos/eliminar-cupon/{id}', [DiscountController::class, 'destroyCoupon'])->name('coupons.destroy');
     Route::get('/descuentos/editar-cupon/{coupon}', [DiscountController::class, 'edit'])->name('coupons.edit');
     Route::put('/descuentos/editar-cupon/{coupon}', [DiscountController::class, 'update'])->name('coupons.update');
+
+    Route::put('/descuentos/editar-rule/{rule}', [DiscountController::class, 'updateRuleEnvio'])->name('rule.update');
 });
 
 Route::group(['middleware'=>['auth']], function(){

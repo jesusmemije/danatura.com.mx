@@ -151,7 +151,8 @@
                             <div class="col-md-3">
                             </div>
                             @php
-                                if($totalPagar > 595){
+                                // Cantidad previamente registrada para el descuento del envío
+                                if($totalPagar > $rule->cantidad){
                                     $_SESSION['gastoEnvio'] = 0;
                                 } else {
                                     $_SESSION['gastoEnvio'] = 170;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
+use App\Models\Rule;
 use Illuminate\Http\Request;
 
 class DiscountController extends Controller
@@ -26,7 +27,9 @@ class DiscountController extends Controller
     public function index()
     {
         $coupons = Coupon::all();
-        return view('admin.discounts.index', compact('coupons'));
+        $rule = Rule::find(1);
+
+        return view('admin.discounts.index', compact('coupons', 'rule'));
     }
 
     public function createCoupon()
@@ -70,6 +73,14 @@ class DiscountController extends Controller
     {
         Coupon::destroy($id);
         return redirect()->route('discounts.index')->with('status', 'El cupón se ha eliminado con éxito');
+    }
+
+    public function updateRuleEnvio(Request $request, Rule $rule)
+    {
+        $rule->cantidad = $request->cantidad;
+        $rule->save();
+
+        return redirect()->route('discounts.index')->with('status_rule', 'La regla de envío se ha editado con éxito');
     }
 
 }

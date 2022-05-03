@@ -16,6 +16,7 @@ use App\Models\Contacto;
 // Send mail
 use App\Mail\CompraExitosa;
 use App\Mail\MensajeContacto;
+use App\Models\Rule;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -546,7 +547,9 @@ class HomeController extends Controller
 
     public function carrito()
     {
-        return view('front/carrito');
+        $rule = Rule::find(1);
+
+        return view('front.carrito', compact('rule'));
     }
 
     public function procesa()
