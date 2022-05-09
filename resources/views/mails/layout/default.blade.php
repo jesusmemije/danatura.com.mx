@@ -270,7 +270,7 @@
                                 <tr>
                                     <td align="center" class="container-footer">
                                         <p class="font-aviso-privacidad">
-                                            Aviso de privacidad | Términos y condiciones © 2021, Todos los derechos reservados.
+                                            Aviso de privacidad | Términos y condiciones © 2022, Todos los derechos reservados.
                                         </p>
                                     </td>
                                 </tr>

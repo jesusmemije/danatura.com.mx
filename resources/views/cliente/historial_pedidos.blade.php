@@ -5,7 +5,7 @@
 @endsection
 
 @section('styles')
-    
+
     <link rel="stylesheet" href="{{asset('assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}"/>
     <style>
 
@@ -120,7 +120,7 @@
                                     <th>Subtotal</th>
                                     <th>Total</th>
                                     <th>Método pago</th>
-                                    <th>Estatus</th>
+                                    <th>Estatus pago</th>
                                     <th>Estatus entrega</th>
                                     <th>Productos</th>
                                 </tr>
@@ -131,6 +131,8 @@
                                 @php
                                     if ($registros->status == 'Pagado') {
                                         $status = "<span class='badge badge-success'>$registros->status</span>";
+                                    } elseif ($registros->status == 'Pendiente') {
+                                        $status = "<span class='badge badge-warning'>$registros->status</span>";
                                     } else {
                                         $status = "<span class='badge badge-danger'>$registros->status</span>";
                                     }
@@ -143,7 +145,7 @@
                                         <td>${{$registros->subtotal}} MXN</td>
                                         <td>${{$registros->preciototal}} MXN</td>
                                         <td class="text-center"><span class="badge badge-primary">{{$registros->method}}</span></td>
-                                        <td>@php echo $status; @endphp</td>
+                                        <td class="text-center">@php echo $status; @endphp</td>
                                         <td class="text-center">{{$registros->estado_entrega}}</td>
                                         <td class="text-center">
                                             <a class='btn btn-warning btn-sm redondo ie' data-toggle="modal" data-target="#idModal-{{$registros->id}}">
@@ -373,7 +375,7 @@
 @section('scripts')
     <script src="{{asset('assets/bundles/datatablescripts.bundle.js')}}"></script>
     <script src="{{asset('assets/js/pages/tables/jquery-datatable.js')}}"></script>
-        
+
     <script type="text/javascript">
 
         $('#editDirection').on('show.bs.modal', function(event){

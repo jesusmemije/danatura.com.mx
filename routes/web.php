@@ -43,6 +43,13 @@ Route::get('/checkout',[CkeckoutController::class, 'checkout'])->name('checkout'
 Route::post('/payWithConekta',[CkeckoutController::class, 'payWithConekta'])->name('payWithConekta');
 Route::post('/payWithPaypal',[CkeckoutController::class, 'payWithPaypal'])->name('payWithPaypal');
 Route::get('/payWithMercadoPago',[CkeckoutController::class, 'payWithMercadoPago'])->name('payWithMercadoPago');
+Route::post('/payWithOxxoPay',[CkeckoutController::class, 'payWithOxxoPay'])->name('payWithOxxoPay');
+Route::post('/webhookOxxoPay',[CkeckoutController::class, 'webhookOxxoPay'])->name('webhookOxxoPay');
+
+Route::get('/reference-oxxopay', function() {
+    return view('mails.reference-oxxopay');
+});
+
 // Cupon discount
 Route::post('/applyCoupon', [CkeckoutController::class, 'applyCoupon'])->name('applyCoupon');
 

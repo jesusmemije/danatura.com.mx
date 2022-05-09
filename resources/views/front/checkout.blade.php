@@ -39,6 +39,10 @@ Checkout
 
 @section('content')
 
+<!-- <div id="loading" class="text-center d-none" style="position: absolute; z-index: 3; margin-top: 25vh; margin-left: 68vh;">
+    <div class="spinner-border"></div>
+</div> -->
+
 @include('front.layout.partials.menu')
 
 @php
@@ -213,6 +217,12 @@ Checkout
                             <img src="/assets/icons/mercado-pago.png" width="80">
                         </a>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="oxxopay-tab" data-toggle="tab" href="#oxxopay" role="tab"
+                            aria-controls="mercadopago" aria-selected="false">
+                            <img src="/assets/icons/oxxopay.png" width="80">
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="visa" role="tabpanel" aria-labelledby="visa-tab">
@@ -343,12 +353,37 @@ Checkout
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="oxxopay" role="tabpanel" aria-labelledby="oxxopay-tab">
+                        <div class="mt-4 mx-4">
+                            <div class="text-center">
+                                <h5 class="my-0">Pago con OxxoPay</h5>
+                                <button id="btnPayWithOxxoPay" class="btn btn-dark my-3">Generar referencia</button>
+                                <!-- <div class="text-center">
+                                    <span id="noOxxoPay" class="badge badge-danger">Debe escribir sus datos de envio para poder continuar</span>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br><br>
         </div>
     </div>
 </div>
+
+  <!-- Modal Reference oxxopay-->
+  <div class="modal fade" id="modalReferenceOxxo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body p-0">
+          @include('mails.reference-oxxopay')
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok, cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!-- modal para los datos de envío -->
 <!-- Modal -->
@@ -435,6 +470,64 @@ Checkout
 <script src="https://www.paypal.com/sdk/js?currency=MXN&client-id={{ env('PAYPAL_CLIENT_ID') }}" data-namespace="paypal_sdk"></script>
 <!-- SDK MercadoPago.js V2 -->
 <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#btnPayWithOxxoPay").on( "click", function(event) {
+
+            // Id de la dirección de envío
+            var id_envio = $('#id_envio').val();
+
+            if( id_envio == "" || id_envio == null ){
+                msg_warning('Antes de realizar la compra debe llenar los datos de envío')
+                return false;
+            }
+
+            var token = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                type  : 'POST',
+                url   : '/payWithOxxoPay',
+                data  : { id_envio : id_envio },
+                success: function(response) {
+
+                    if (response.ok) {
+                        // Preparamos el modal con los datos
+                        $('#modalReferenceOxxo').on('show.bs.modal', function (event) {
+                            var modal = $(this)
+                            modal.find('.modal-total').text(response.amount)
+                            modal.find('.modal-reference').text(response.reference)
+                        })
+                        // Mostramos el modal (reference)
+                        $('#modalReferenceOxxo').modal({
+                            keyboard: false
+                        })
+                        // Evento que aparecerá depues de cerrar el modal
+                        $('#modalReferenceOxxo').on('hidden.bs.modal', function (e) {
+                            Swal.fire({
+                                icon: 'success',
+                                title:'¡Referencia enviada!',
+                                text: 'Hemos enviado su referencia a su email, nos quedamos a la espera de su pago.'
+                            }).then((result) => {
+                                window.location.href = '/historial_pedidos';
+                            })
+                        })
+
+                    } else {
+                        msg_error(response.message)
+                    }
+                },
+                error:  function (response) {
+                    console.log( response );
+                }
+            });
+
+        });
+    });
+</script>
 
 <!-- Validate pago MercadoPago -->
 @if (session()->has('statusPayMercadoPago'))

@@ -15,7 +15,7 @@
             <tr>
                 <td align="left" style="font-weight: 400; line-height: 24px; padding-top: 10px;">
                     <p style="font-weight: 400; line-height: 24px; color: #777777;">
-                        Estimado <strong>{{ $data['nombre'] }}</strong>, 
+                        Estimado <strong>{{ $data['nombre'] }}</strong>,
                         a continuación le detallamos la compra que acaba de realizar en nuestra página eCommerce
                     </p>
                 </td>
@@ -85,8 +85,11 @@
                                         <div><span style="font-weight: 600;">Teléfono: </span>{{ $data['telefono_envio'] }}</div>
                                         <div><span style="font-weight: 600;">Email: </span>{{ $data['email_envio'] }}</div>
                                     </p>
-                                    <p style="font-weight: 800;">Método de pago: <span></span></p>
-                                    <p>{{ $data['method'] }}</p>
+                                    <p style="font-weight: 800;">Datos del pago: <span></span></p>
+                                    <p>
+                                        <div><span style="font-weight: 600;">Método: </span>{{ $data['method'] }}</div>
+                                        <div><span style="font-weight: 600;">Status: </span>{{ $data['status'] }}</div>
+                                    </p>
                                 </td>
                             </tr>
                         </table>

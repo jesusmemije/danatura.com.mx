@@ -4,16 +4,20 @@ namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
 use App\Mail\CompraExitosa;
+use App\Mail\OrderPaidOxxoPay;
+use App\Mail\ReferenceOxxoPay;
 use App\Models\Compra;
 use App\Models\CompraItem;
 use App\Models\Coupon;
 use App\Models\DatosEnvio;
 use App\Models\Productos;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Conekta\Conekta;
 use Conekta\Order;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class CkeckoutController extends Controller
@@ -40,7 +44,7 @@ class CkeckoutController extends Controller
             return redirect('/');
         }
 
-        return view('front/checkout');
+        return view('front.checkout');
     }
 
     public function payWithMercadoPago(Request $request)
@@ -316,6 +320,155 @@ class CkeckoutController extends Controller
         return response()->json(['ok' => true, 'message' => 'success']);
     }
 
+    public function payWithOxxoPay(Request $request)
+    {
+        session_start();
+
+        // Config conekta
+        Conekta::setApiKey(env('CONEKTA_PRIVATE_KEY'));
+        Conekta::setApiVersion('2.0.0');
+        Conekta::setLocale('es');
+
+        if (!Auth::check()) {
+            return response()->json(['ok' => false, 'message' => 'No hay sessión iniciada']);
+        }
+
+        // User
+        $user = Auth::user();
+
+        // Varibles
+        $id_envio = $request->id_envio;
+        $carrito  = $_SESSION['carrito'];
+
+        // Save order
+        $this->compra->id_user     = $user->id;
+        $this->compra->costo_envio = $_SESSION['gastoEnvio'];
+        $this->compra->subtotal    = $_SESSION['subtotal'];
+        $this->compra->preciototal = $_SESSION['totalpagar'];
+        $this->compra->status      = "Procesando";
+        $this->compra->method      = "OxxoPay";
+        $this->compra->id_datosenvio = $id_envio;
+        $this->compra->save();
+
+        // Set total in cents
+        $total = (int) ($_SESSION['totalpagar'] * 100);
+
+        // Create order array
+        $charge = [
+            'line_items' => [
+                [
+                    'name' => 'Pago de orden NO. ' . $this->compra->id,
+                    'unit_price' => $total,
+                    'quantity' => 1
+                ]
+            ],
+            'currency' => 'MXN',
+            'customer_info' => [],
+            "charges" => [
+                [
+                  "payment_method" => [
+                    "type" => "oxxo_cash",
+                  ]
+                ]
+            ],
+        ];
+
+        // Execute charge
+        try {
+            $customer = \Conekta\Customer::create([
+                'name' => $user->name,
+                'email' => $user->email,
+            ]);
+
+            $charge['customer_info']['customer_id'] = $customer->id;
+
+            // Create order
+            $order = \Conekta\Order::create($charge);
+
+            if ($order->payment_status == 'pending_payment') {
+
+                $reference = $order->charges[0]->payment_method->reference;
+                $amount = $order->amount/100;
+
+                $this->compra->status = 'Pendiente';
+                $this->compra->chargeid = $order->id;
+                $this->compra->save();
+
+                /* Insertar Items */
+                for ($i = 0; $i < sizeof($carrito); $i++) {
+
+                    $producto = Productos::find($carrito[$i]['producto_id']);
+                    $total = $producto->precio * $carrito[$i]['cantidad'];
+
+                    // Quitar del Stock
+                    $stock = (int) $producto->stock;
+                    $dismiss_quantity = (int) $carrito[$i]['cantidad'];
+
+                    $producto->stock = $stock - $dismiss_quantity;
+                    $producto->save();
+
+                    $compra_item = new CompraItem();
+                    $compra_item->compra_id   = $this->compra->id;
+                    $compra_item->id_producto = $carrito[$i]['producto_id'];
+                    $compra_item->cantidad    = $carrito[$i]['cantidad'];
+                    $compra_item->precio      = $producto->precio;
+                    $compra_item->total       = $total;
+                    $compra_item->save();
+                }
+
+                $this->sendOrderMail();
+                $this->sendReferenceOxxoPay($reference, $amount);
+
+                unset($_SESSION['carrito']);
+                unset($_SESSION['gastoEnvio']);
+                unset($_SESSION['descuentoCupon']);
+                unset($_SESSION['subtotal']);
+                unset($_SESSION['totalpagar']);
+
+                return response()->json(['ok' => true, 'reference' => $reference, 'amount' => $amount]);
+            } else {
+                return response()->json(['ok' => false, 'message' => 'Hubo un problema al generar la referencia, intente nuevamente porfavor']);
+            }
+        } catch (\Conekta\ParameterValidationError $error) {
+            $this->compra->payment_error = $error->getMessage();
+        } catch (\Conekta\Handler $error) {
+            $this->compra->payment_error = $error->getMessage();
+        }
+
+        // Si atrapa un error
+        $this->compra->status = 'Fallido';
+        $this->compra->save();
+        return response()->json(['ok' => false, 'message' => $this->compra->payment_error]);
+    }
+
+    public function webhookOxxoPay(Request $request)
+    {
+        if($request->type == 'order.paid') {
+            if ($request->data['object']['payment_status'] == 'paid' ) {
+                $compra = Compra::where('chargeid', $request->data['object']['id'])->first();
+                if ($compra) {
+                    $user = User::find($compra->id_user);
+                    $compra->status = 'Pagado';
+                    $compra->save();
+                    // Notifications mail
+                    Mail::to($user->email)->send(new OrderPaidOxxoPay);
+                }
+            }
+        }
+    }
+
+    public function sendReferenceOxxoPay($reference, $amount)
+    {
+        $user = Auth::user();
+
+        $data = array(
+            'reference'  => $reference,
+            'total' => $amount,
+        );
+
+        Mail::to($user->email)->send(new ReferenceOxxoPay($data));
+    }
+
     public function sendOrderMail()
     {
         $user = Auth::user();
@@ -343,7 +496,7 @@ class CkeckoutController extends Controller
             'email'   => $user->email,
             'total'   => $_SESSION['totalpagar'],
             'method'  => $this->compra->method,
-            'status'  => 'Pagado',
+            'status'  => $this->compra->status,
             'nombre_envio'    => $nombre_envio,
             'direccion_envio' => $direccion_envio,
             'telefono_envio'  => $telefono_envio,
