@@ -107,17 +107,32 @@
             </div>
             @endif
             <div class="card-body">
-                <form class="form-inline" action="{{ route('rule.update', $rule) }}" method="post">
+                <form class="form-inline" action="{{ route('rule.update', $rule_1) }}" method="post">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" name="idioma" value="es">
                     <div class="form-group mb-2">
-                        <div>No se cobrará el costo de envío a partir de ($):</div>
+                        <div>No se cobrará el costo de envío a partir de MXN($):</div>
                     </div>
                     <div class="form-group mx-sm-3 mb-2">
                       <label for="inputPassword2" class="sr-only">Password</label>
-                      <input type="text" class="form-control input-number" maxlength="4" name="cantidad" value="{{ old('cantidad') !== null ? old('cantidad') : $rule->cantidad }}">
+                      <input type="text" class="form-control input-number" maxlength="4" name="cantidad" value="{{ old('cantidad') !== null ? old('cantidad') : $rule_1->cantidad }}">
                     </div>
                     <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
+                </form>
+
+                <form class="form-inline" action="{{ route('rule.update', $rule_2) }}" method="post">
+                    @method('PUT')
+                    @csrf
+                    <input type="hidden" name="idioma" value="en">
+                    <div class="form-group mb-2">
+                        <div>The shipping cost will not be charged from USD($):</div>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Password</label>
+                      <input type="text" class="form-control input-number" maxlength="4" name="cantidad" value="{{ old('cantidad') !== null ? old('cantidad') : $rule_2->cantidad }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3">Update</button>
                 </form>
             </div>
         </div>

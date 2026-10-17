@@ -50,6 +50,9 @@ auth.json
 /public/assets/blogs/
 /public/assets/productos/
 /public/assets/fotosreales/
+/public/assets/images/
+/public/assets/img/
+/public/images/
 
 # MANTENER EN GIT (Descomentados para que sí se suban las plantillas del panel de administración)
 !/public/admin_assets/

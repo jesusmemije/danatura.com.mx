@@ -3,34 +3,40 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CheckRol
 {
     /**
      * Handle an incoming request.
+
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+
+     * @param  Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if(auth()->user()!=null){
 
-        
-        $tipo=auth()->user()->tipo;
+        if (auth()->user() != null) {
 
-        $tipos=DB::table('tiposuario')->where('id','=',$tipo)->first();
+            $tipo = auth()->user()->tipo;
 
-        $thetipo=$tipos->tipo;
+            $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
 
-        if($thetipo == 'Administrador' || $thetipo == 'Nutriologo' || $thetipo == 'Mayorista') {
-            return $next($request);
+            $thetipo = $tipos->tipo;
+
+            if ($thetipo == 'Administrador' || $thetipo == 'Nutriologo' || $thetipo == 'Mayorista') {
+
+                return $next($request);
+
+            }
+
         }
-    }
+
         return redirect('/');
 
-    
     }
+
 }

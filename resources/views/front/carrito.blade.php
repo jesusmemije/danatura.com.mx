@@ -31,7 +31,7 @@
 
             if (isset($_SESSION['carrito'])) {
 
-                $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','fotografia','galeria')->get();
+                $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','precio_mayorista','precio_nutriologo','fotografia','galeria')->get();
 
                 $carrito = $_SESSION['carrito'];
 
@@ -100,6 +100,56 @@
                                         $source     = "assets/productos/".$fotografia;
                                         $source     = $fotografia;
 
+
+                                        // Comparacón de precios 
+
+                                        $tipo_precio = 'normal';
+                                        $precio = '';
+
+                                        if (auth()->user() != null) {
+
+                                            $tipo = auth()->user()->tipo;
+                                            $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
+
+                                            $thetipo = $tipos->tipo;
+
+                                            if ($thetipo == "Mayorista") {
+                                                $tipo_precio = 'mayorista';
+                                            }
+                                            if ($thetipo == "Nutriologo") {
+                                                $tipo_precio = 'nutriologo';
+                                            }
+                                        }
+
+
+                                        //Para los precios.
+                                        if (strpos($producto->precio, '.') !== false) {
+                                            $precio = $producto->precio;
+                                        } else {
+                                            $precio = $producto->precio . ".00";
+                                        }
+
+                                        if ($tipo_precio == 'mayorista') {
+
+                                            if (strpos($producto->precio_mayorista, '.') !== false) {
+                                                $precio = $producto->precio_mayorista;
+                                            } else {
+                                                $precio = $producto->precio_mayorista . ".00";
+                                            }
+
+                                        }
+
+                                        if ($tipo_precio == 'nutriologo') {
+                                            if (strpos($producto->precio_nutriologo, '.') !== false) {
+                                                $precio = $producto->precio_nutriologo;
+                                            } else {
+                                                $precio = $producto->precio_nutriologo . ".00";
+                                            }
+
+                                        }
+                                        // fin de comparacion de precios
+
+
                                         if ( $fotografia == "" ) {
                                             $source = asset("assets/productos/goldenmilk.png");
                                         }
@@ -120,11 +170,11 @@
                                                 <h5><?php echo $producto->nombre; ?></h5>
                                             </td>
                                             <td class="phone-hide"><span class="text-muted"><?php echo $producto->descripcion;  ?></span></td>
-                                            <td id="<?php echo $producto->id ?>"><?php echo '$' . number_format($producto->precio, 2, '.', ',')  ?></td>
+                                            <td id="<?php echo $producto->id ?>"><?php echo '$' . number_format($precio, 2, '.', ',')  ?></td>
                                             <td><?php echo $key['cantidad'] ?></td>
                                             <td>
-                                                <?php  $totalPagar = $key['cantidad'] * $producto->precio + $totalPagar;
-                                                echo '$' . number_format($key['cantidad'] * $producto->precio, 2, '.', ',');  ?>
+                                                <?php  $totalPagar = $key['cantidad'] * $precio + $totalPagar;
+                                                echo '$' . number_format($key['cantidad'] * $precio, 2, '.', ',');  ?>
                                             </td>
                                             <td>
                                                 <a onclick="remove('{{$producto->id}}')" class="btn btn-danger waves-effect waves-float btn-sm waves-red">
@@ -192,6 +242,12 @@
 <script type="text/javascript">
 
     $("input[type=checkbox]").prop("checked", true);
+
+    const $miCheckbox = document.querySelector("#toggle_i");
+    $miCheckbox.checked = false;
+
+    const $miCheckbox_2 = document.querySelector("#toggle");
+    $miCheckbox_2.checked = false;
 
     function cambio(idmodulo, costo, tdtotalcostocurso) {
 

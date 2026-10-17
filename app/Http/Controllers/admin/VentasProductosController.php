@@ -18,61 +18,68 @@ class VentasProductosController extends Controller
     public function index()
     {
         $datosdirection = DB::table('datos_envios')
-                ->select('datos_envios.*')
-                ->get();
+            ->select('datos_envios.*')
+            ->get();
 
         $compra = DB::table('compra')
-                ->join('users','compra.id_user','=','users.id')
-                ->join('tiposuario','users.tipo','=','tiposuario.id')
-                ->select('compra.*','users.name','tiposuario.tipo','compra.id as idventa')
-
-                ->distinct('compra.id')
-                ->get();
+            ->join('users', 'compra.id_user', '=', 'users.id')
+            ->join('tiposuario', 'users.tipo', '=', 'tiposuario.id')
+            ->select('compra.*', 'users.name', 'tiposuario.tipo', 'compra.id as idventa')
+            ->distinct('compra.id')
+            ->get();
 
         $compra_item = DB::table('compra_item')
-                ->join('compra','compra_item.compra_id','=','compra.id')
-                ->join('productos','compra_item.id_producto','=','productos.id')
-                ->select('compra_item.*','productos.*')
-                ->distinct('compra_item.id')
-                ->get();
+            ->join('compra', 'compra_item.compra_id', '=', 'compra.id')
+            ->join('productos', 'compra_item.id_producto', '=', 'productos.id')
+            ->select('compra_item.*', 'productos.*')
+            ->distinct('compra_item.id')
+            ->get();
 
-        return view('admin.ventas.index',compact(['compra', 'compra_item', 'datosdirection']));
+        return view('admin.ventas.index', compact(['compra', 'compra_item', 'datosdirection']));
     }
 
-    public function getDireccionCustomer( Request $request )
+    public function getDireccionCustomer(Request $request)
     {
         $datos_envio = DatosEnvio::where('id_user', '=', $request->idcustomer)->latest('created_at')->first();
+
         return response()->json([
-            'datos_envio' => $datos_envio
+            'datos_envio' => $datos_envio,
         ]);
     }
 
-    public function saveOrderManually( Request $request )
+    public function saveOrderManually(Request $request)
     {
         session_start();
 
-        if ( !isset($_SESSION['carrito']) || empty($_SESSION['carrito']) ) {
+        if (! isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
             return response()->json(['ok' => false, 'message' => 'El carrito esta vacío']);
         }
 
         // Variables
-        $carrito  = $_SESSION['carrito'];
-        $id_user  = $request->id_user;
+        $carrito = $_SESSION['carrito'];
+        $id_user = $request->id_user;
         $id_envio = $request->id_envio;
 
+        if (empty($_SESSION['gastoEnvio'])) {
+            $gasto_envio = 0;
+        } else {
+            $gasto_envio = $_SESSION['gastoEnvio'];
+        }
+
         // Save order
-        $compra = new Compra();
-        $compra->id_user     = $id_user;
-        $compra->costo_envio = $_SESSION['gastoEnvio'];
-        $compra->subtotal    = $_SESSION['subtotal'];
+        $compra = new Compra;
+        $compra->id_user = $id_user;
+        $compra->costo_envio = $gasto_envio;
+        $compra->subtotal = $_SESSION['subtotal'];
         $compra->preciototal = $_SESSION['totalpagar'];
-        $compra->status      = 'Pagado';
-        $compra->method      = 'Manualmente';
+        $compra->status = 'Pagado';
+        $compra->method = 'Manualmente';
         $compra->id_datosenvio = $id_envio;
+        $compra->comentarios_observaciones = $request->comentarios_observaciones;
         $compra->save();
 
         /* Insertar Items */
-        for ($i = 0; $i < sizeof($carrito); $i++) {
+        for ($i = 0; $i < count($carrito); $i++) {
 
             $producto = Productos::find($carrito[$i]['producto_id']);
             $total = $producto->precio * $carrito[$i]['cantidad'];
@@ -84,12 +91,12 @@ class VentasProductosController extends Controller
             $producto->stock = $stock - $dismiss_quantity;
             $producto->save();
 
-            $compra_item = new CompraItem();
-            $compra_item->compra_id   = $compra->id;
+            $compra_item = new CompraItem;
+            $compra_item->compra_id = $compra->id;
             $compra_item->id_producto = $carrito[$i]['producto_id'];
-            $compra_item->cantidad    = $carrito[$i]['cantidad'];
-            $compra_item->precio      = $producto->precio;
-            $compra_item->total       = $total;
+            $compra_item->cantidad = $carrito[$i]['cantidad'];
+            $compra_item->precio = $producto->precio;
+            $compra_item->total = $total;
             $compra_item->save();
         }
 
@@ -101,27 +108,27 @@ class VentasProductosController extends Controller
         return response()->json(['ok' => true, 'message' => 'success']);
     }
 
-    public function saveUserManually( Request $request )
+    public function saveUserManually(Request $request)
     {
         $user = User::where('email', $request->email)->first();
         if ($user) {
             return response()->json([
                 'ok' => false,
-                'message' => 'Ya existe un usuario registrado con este E-mail de nombre: ' . $user->name
+                'message' => 'Ya existe un usuario registrado con este E-mail de nombre: '.$user->name,
             ]);
         }
 
-        $user = new User();
-        $user->name  = $request->name;
+        $user = new User;
+        $user->name = $request->name;
         $user->email = $request->email;
-        $user->tipo  = $request->tipo;
+        $user->tipo = $request->tipo;
         $user->password = Hash::make('12345678');
         $user->save();
 
         return response()->json([
             'ok' => true,
             'user_id' => $user->id,
-            'name' => $user->name
+            'name' => $user->name,
         ]);
     }
 
@@ -130,6 +137,7 @@ class VentasProductosController extends Controller
         $users = User::select('id', 'name', 'email')->get();
         $products = Productos::select('id', 'nombre', 'gramos', 'precio', 'fotografia')->get();
         $tipos = TipoUsuario::get();
+
         return view('admin.ventas.create', compact('users', 'products', 'tipos'));
     }
 
@@ -145,7 +153,7 @@ class VentasProductosController extends Controller
 
     public function edit($id)
     {
-        return "Hola Edit" . $id;
+        return 'Hola Edit'.$id;
     }
 
     public function update(Request $request, $id)
@@ -157,18 +165,19 @@ class VentasProductosController extends Controller
     {
         CompraItem::where('compra_id', $id)->delete();
         Compra::destroy($id);
+
         return redirect('admin/pedidos/')->with('status', 'La orden se ha eliminado con éxito');
     }
 
     public function cambiarEstadoEntrega(Request $request)
     {
-        $cambio_venta=DB::table('compra')
-        ->where('id','=',$request->id_venta)
-        ->update([
-            'estado_entrega'=>$request->estado_entrega,
-        ]);
+        $cambio_venta = DB::table('compra')
+            ->where('id', '=', $request->id_venta)
+            ->update([
+                'estado_entrega' => $request->estado_entrega,
+            ]);
 
-        if( $cambio_venta ){
+        if ($cambio_venta) {
             return redirect('admin/pedidos/')->with('status', 'El estado de entrega del pedido se ha actualizado');
         } else {
             return redirect('admin/pedidos/')->with('wrong', 'El estado de entrega no se pudo actualizar');

@@ -32,10 +32,22 @@
             <li><a href="{{route('reportes.index')}}"><i class="zmdi zmdi-chart"></i><span>Reportes</span></a></li>
             <li>
                 <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="zmdi zmdi-assignment"></i><span>Venta por zona</span>
+                </a>
+                <ul class="ml-menu">
+                    <li><a href="{{route('venta_zonas')}}">Zonas</a></li>
+                    {{-- <li><a href="{{route('productos.create')}}">Añadir nuevo producto</a></li>
+                    <li><a href="{{route('categorias')}}">Categorías</a></li> --}}
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle">
                     <i class="zmdi zmdi-assignment"></i><span>Productos</span>
                 </a>
                 <ul class="ml-menu">
-                    <li><a href="{{route('productos.index')}}">Ver productos</a></li>
+                    <li><a href="{{route('productos.index')}}">Productos en español</a></li>
+                    <li><a href="{{route('productos_ingles')}}">Productos en ingles</a></li>
+                    
                     <li><a href="{{route('productos.create')}}">Añadir nuevo producto</a></li>
                     <li><a href="{{route('categorias')}}">Categorías</a></li>
                 </ul>
@@ -65,7 +77,7 @@
                 </a>
                 <ul class="ml-menu">
                     <li><a href="{{route('blogs.index')}}">Listado</a></li>
-                    <li><a href="">Añadir nueva entrada</a></li>
+                    <li><a href="{{route('blogs.create')}}">Añadir nueva entrada</a></li>
                 </ul>
             </li>
             <li>

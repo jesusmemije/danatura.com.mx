@@ -1,0 +1,716 @@
+@extends('front.layout_en.app')
+
+@php
+$host = "http:";
+$url = $host."//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+@endphp
+
+@section('title')
+Product detail
+@endsection
+
+@section('headers')
+<meta property="og:url" content="{{$url}}" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Danatura" />
+<meta property="og:description" content="Products Detail" />
+<meta property="og:image" content="assets/productos/1625084725Sello_DANATURA.png" />
+@endsection
+
+@section('styles')
+<link type="text/css" rel="stylesheet" href="{{asset('assets/css/lightslider.css')}}" />
+<style>
+  .pluginCountButton {
+    color: #000;
+    font-size: 16px;
+  }
+
+  li {
+    list-style-type: none;
+  }
+
+  .checked {
+    color: #F79860;
+  }
+
+  .nuevo-circle {
+    display: flex;
+    justify-content: center;
+    border-radius: 100%;
+    width: calc(5vw);
+    height: calc(5vw);
+    background: #FFE4BB;
+    font-family: "AmasisMTStd-Bold";
+    font-size: calc(1.2vw);
+    position: relative;
+    top: calc(5vw);
+    left: calc(1.5vw);
+    padding-top: calc(1.5vw);
+  }
+
+  .img-detail img {
+    width: 99%;
+  }
+
+  .img-thumbnail {
+    border: 0px !important;
+
+    margin-left: calc(3vw + .2cm) !important;
+  }
+
+  .title {
+    font-family: "AmasisMTStd-Bold";
+    color: #73472b;
+  }
+
+  .subtitle {
+    color: #73472b;
+    font-weight: 500;
+
+  }
+
+  .price {
+    color: #73472b;
+    font-weight: 600;
+  }
+
+  .price-n {
+    margin-top: 50px;
+    color: #73472b;
+    font-size: 1.5em;
+    font-weight: bold;
+
+  }
+
+  .add {
+    color: white;
+    background: #F79860;
+    border: 0px !important;
+    border-radius: 0px !important;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  #lightSlider {
+
+    height: calc(50vw) !important;
+  }
+
+  .corazon {
+    cursor: pointer;
+    color: #aaa;
+    position: relative;
+    top: calc(4vw);
+    left: calc(25.5vw);
+  }
+
+  .corazon:hover {
+    color: #666;
+  }
+
+  .press {
+    animation: size .4s;
+    color: #fb985f !important;
+  }
+
+  @media (max-width: 900px) {
+    .nuevo-circle {
+      border-radius: 100%;
+      width: calc(6vw) !important;
+      height: calc(6vw) !important;
+      font-size: calc(1.5vw) !important;
+      position: relative;
+      top: 15px !important;
+      left: 5px !important;
+      padding-top: 8%;
+
+    }
+
+    #lightSlider {
+
+      height: calc(60vw) !important;
+    }
+  }
+
+  @media (max-width:550px) {
+
+    .corazon {
+      cursor: pointer;
+      color: #aaa;
+      position: relative;
+      top: calc(4vw);
+      left: calc(24vw);
+    }
+  }
+
+  @media (max-width:400px) {
+
+    .corazon {
+      cursor: pointer;
+      color: #aaa;
+      position: relative;
+      top: calc(4vw);
+      left: calc(20vw);
+    }
+  }
+
+  @media (max-width:555px) {
+    #lightSlider {
+
+      height: calc(100vw) !important;
+    }
+  }
+
+  @media (max-width:389px) {
+    #lightSlider {
+
+      height: calc(130vw) !important;
+    }
+  }
+
+  @media (max-width:379px) {
+    #lightSlider {
+
+      height: calc(130vw) !important;
+    }
+  }
+
+  @media (max-width:301px) {
+    #lightSlider {
+
+      height: calc(141vw) !important;
+    }
+
+    .nuevo-circle {
+      border-radius: 100%;
+      width: calc(14vw) !important;
+      height: calc(14vw) !important;
+      font-size: calc(3.6vw) !important;
+      position: relative;
+      top: 15px !important;
+      left: 5px !important;
+      padding-top: 11%;
+    }
+  }
+
+  @media (max-width:280px) {
+    #lightSlider {
+
+      height: calc(171vw) !important;
+    }
+
+    .nuevo-circle {
+
+      padding-top: 6%;
+    }
+  }
+
+  .corazon {
+    top: 66px;
+    left: 88%;
+  }
+</style>
+@endsection
+
+@section('content')
+@include('front.layout_en.partials.menu')
+<div class="container-fluid">
+  <div class="card mb-12" style="padding-top: 8%; padding-bottom:8%;">
+    <div class="row g-0">
+      <div id="principal-img" class="col-md-6 img-detail" style="padding-left: 6%;">
+        @if ($producto->nuevo==0)
+              
+        @elseif ($producto->nuevo==1)
+            <span class="nuevo-circle" style="margin-bottom: 30px;position: absolute;top: -20px;left: 50px;">New</span>
+        @endif
+        @php
+
+
+            $tipo_precio = 'normal';
+            $precio_usd = '';
+
+            if (auth()->user() != null) {
+
+                $tipo = auth()->user()->tipo;
+                $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
+
+                $thetipo = $tipos->tipo;
+
+                if ($thetipo == "Mayorista") {
+                    $tipo_precio = 'mayorista';
+                }
+                if ($thetipo == "Nutriologo") {
+                    $tipo_precio = 'nutriologo';
+                }
+            }
+            //Para los precios.
+            if (strpos($producto->precio, '.') !== false) {
+                $precio_usd = $producto->precio;
+            } else {
+                $precio_usd = $producto->precio . ".00";
+            }
+
+            if ($tipo_precio == 'mayorista') {
+
+                if (strpos($producto->precio_mayorista, '.') !== false) {
+                    $precio_usd = $producto->precio_mayorista;
+                } else {
+                    $precio_usd = $producto->precio_mayorista . ".00";
+                }
+
+            }
+
+            if ($tipo_precio == 'nutriologo') {
+                if (strpos($producto->precio_nutriologo, '.') !== false) {
+                    $precio_usd = $producto->precio_nutriologo;
+                } else {
+                    $precio_usd = $producto->precio_nutriologo . ".00";
+                }
+
+            }
+
+            // Aqui es el final de precios
+
+
+        $fotografia = $producto->fotografia;
+        $source = "assets/productos/" . $fotografia;
+        $source = $source = $fotografia;
+
+        if ($fotografia=="") {
+
+        $source=asset("assets/productos/goldenmilk.png");
+        }
+
+        if (strpos($source, 'https') !== false) {
+        $source=$source;
+        }else{
+        $source=asset("assets/productos")."/".$fotografia;
+        }
+
+        // if (strpos($producto->precio_usd, '.') !== false) {
+
+        // $precio=$producto->precio_usd;
+
+        // }else{
+        // $precio=$producto->precio_usd.".00";
+        // }
+
+        @endphp
+
+        @php
+        $array_galeria=explode('|',$producto->galeria);
+        $foto_principal=$array_galeria[0];
+        @endphp
+
+        @php
+          $descripcion=$producto->descripcion;
+        @endphp
+
+        <i id="fav{{ $producto->id }}" onclick="fav(this,{{ $producto->id }})" class="fas fa-heart fa-lg corazon"
+          aria-hidden="true"></i>
+        <img id="img-principal" src="{{$foto_principal}}" alt="...">
+      </div>
+
+      <div class="col-md-6">
+        <div class="card-body">
+          <h1 class="card-title title">{{$producto->nombre}}</h1>
+          <h2 class="subtitle">{{$producto->sabor}}</h2>
+          <h4 class="price">${{$precio_usd}} USD</h4>
+          <div style="margin-top: 10%;">
+            <div>
+              <div class="form-row">
+                <div class="col-md-5 col-xl-3 col-lg-4">
+                  <span class="price-n">Quantity</span>
+                </div>
+                <div class="col-md-2 ">
+                  <input id="cantidad" class="form-control" type="number" min="1" value="1">
+                </div>
+              </div>
+            </div>
+            <br><br>
+            @if($producto->stock==0)
+            <a class="btn btn-danger agotado">EXHAUSTED</a>
+            @else
+            <a class="btn btn-warning add" onclick="add('{{$producto->id}}')">Add to cart</a>
+            @endif
+          </div>
+          <br><br>
+          <div>
+            <span style="font-size:20px; color:#73482C">Share</span><br>
+            <ul class="nav">
+              <div id="fb-root" style="margin-top:8%"></div>
+
+              <script>
+                (function(d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0];
+                  if (d.getElementById(id)) return;
+                  js = d.createElement(s); js.id = id;
+
+                  js.src = "https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v3.0";
+                  fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+              </script>
+
+              <!-- Your share button code -->
+              <div class="fb-share-button" data-href="{{$url}}" data-layout="button_count">
+              </div>
+              <li class="nav-item" style="margin-top:-1%; margin-left: 2%;">
+                <a href="mailto:contacto@danatura.com.mx?subject=Danatura%20-%20Productos" target="_blank"
+                  class="icon-instagram">
+                  <i style="font-size:20px;" class="far fa-envelope fa-sm ri-face"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <hr>
+           
+            <p class="card-text" style="color: #73482C;white-space: pre-wrap;" >{{ $producto->descripcion }}</p>
+            
+            <p class="card-text" style="color:#73482C; font-weight:bold">Contents:{{$producto->gramos}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <ul class="lightSlider">
+          @for ($i = 1; $i < sizeof($array_galeria); $i++) @if ($array_galeria[$i]!="" ) <li>
+            <div style="padding:4%;">
+              <img onclick="changeimg(this);" style="cursor:pointer" class="img-thumbnail" src="{{$array_galeria[$i]}}"
+                alt="">
+            </div>
+            </li>
+            @endif
+            @endfor
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row pt-5" style="">
+    <div class="col-md-12 ">
+      <div class="text-center">
+        <div style="color:#73472b; font-size:4em; font-family: COSMOPOLITAN SCRIPT MEDIUM; line-height:1;">Products
+        </div>
+        <div style="color:#fb985f; font-size:2.8em; font-family:AmasisMTStd-Bold; line-height:1;">BEST SELLERS</div>
+      </div>
+    </div>
+    <style>
+      .cls2 {
+        color: #73472b;
+        font-weight: 500;
+      }
+    </style>
+    <div class="col-md-12" style="padding-left:5%; padding-right:5%;">
+
+      <ul id="lightSlider">
+
+        @foreach($masvendidos as $vendido)
+
+        <li>
+          <div style="padding:4%;">
+            @if ($vendido->nuevo==0)
+              <div style="height: 100px">
+
+              </div>
+            @elseif ($vendido->nuevo==1)
+              <span class="nuevo-circle" style="margin-bottom: 30px">New</span>
+            @endif
+            {{-- <span class="nuevo-circle">New</span> --}}
+            <i id="fav{{$vendido->id}}" onclick="fav(this,'{{$vendido->id}}')" class="fas fa-heart corazon"></i>
+
+            @php
+
+
+            $tipo_precio = 'normal';
+            $precio_usd = '';
+
+            if (auth()->user() != null) {
+
+                $tipo = auth()->user()->tipo;
+                $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
+
+                $thetipo = $tipos->tipo;
+
+                if ($thetipo == "Mayorista") {
+                    $tipo_precio = 'mayorista';
+                }
+                if ($thetipo == "Nutriologo") {
+                    $tipo_precio = 'nutriologo';
+                }
+            }
+            //Para los precios.
+            if (strpos($vendido->precio_usd, '.') !== false) {
+                $precio_usd = $vendido->precio;
+            } else {
+                $precio_usd = $vendido->precio . ".00";
+            }
+
+            if ($tipo_precio == 'mayorista') {
+
+                if (strpos($vendido->precio_mayorista, '.') !== false) {
+                    $precio_usd = $vendido->precio_mayorista;
+                } else {
+                    $precio_usd = $vendido->precio_mayorista . ".00";
+                }
+
+            }
+
+            if ($tipo_precio == 'nutriologo') {
+                if (strpos($vendido->precio_nutriologo, '.') !== false) {
+                    $precio_usd = $vendido->precio_nutriologo;
+                } else {
+                    $precio_usd = $vendido->precio_nutriologo . ".00";
+                }
+
+            }
+
+            // Aqui es el final de precios
+
+
+
+            $fotografia=$vendido->fotografia;
+            $source="assets/productos/".$fotografia;
+            $source=$fotografia;
+
+            if ($fotografia=="") {
+
+            $source=asset("assets/productos/goldenmilk.png");
+            }
+
+            if (strpos($source, 'https') !== false) {
+            $source=$source;
+            }else{
+            $source=asset("assets/productos")."/".$fotografia;
+            }
+
+            // if (strpos($vendido->precio_usd, '.') !== false) {
+
+            // $precio=$vendido->precio_usd;
+
+            // }else{
+            // $precio=$vendido->precio_usd.".00";
+            // }
+            $array_galeria=explode('|',$vendido->galeria);
+
+            $foto_principal=$array_galeria[0];
+
+            @endphp
+            <a href="products-detail?product={{$vendido->nombre}}">
+              <img class="img-thumbnail" src="{{$foto_principal}}" alt="">
+            </a>
+            <br>
+            <div style="padding:4%;">
+              <a href="products-detail?product={{$vendido->nombre}}">
+                <span style="color:#73472b; font-family:AmasisMTStd-Bold;">{{$vendido->nombre}}</span>
+              </a>
+              <br>
+              <span class="cls2">{{$vendido->sabor}}</span><br>
+              <span style="color:#73472b; font-weight: bold;">${{$precio_usd}} USD</span>
+            </div>
+          </div>
+        </li>
+
+        @endforeach
+
+      </ul>
+    </div>
+  </div>
+
+</div>
+@endsection
+
+@section("scripts")
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="{{asset('assets/js/lightslider.js')}}"></script>
+<script>
+//script para el el scroll de las imagenes.
+window.smoothScroll = function(target) {
+  var scrollContainer = target;
+  do { //find scroll container
+      scrollContainer = scrollContainer.parentNode;
+      if (!scrollContainer) return;
+      scrollContainer.scrollTop += 1;
+  } while (scrollContainer.scrollTop == 0);
+
+  var targetY = 0;
+  do {
+      //find the top of target relatively to the container
+      if (target == scrollContainer) break;
+      targetY += target.offsetTop;
+  } while (target = target.offsetParent);
+
+  scroll = function(c, a, b, i) {
+      i++; if (i > 30) return;
+      c.scrollTop = a + (b - a) / 30 * i;
+      setTimeout(function(){ scroll(c, a, b, i); },100);
+  }
+  // start scrolling
+  scroll(scrollContainer, scrollContainer.scrollTop, targetY, 0);
+}
+
+//script para almacenar productos favoritos: se repite en, home, productos y detalle producto.
+var misfav = [];
+
+var cookieValor = document.cookie.replace(/(?:(?:^|.*;\s*)thecookie\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+if(cookieValor!=null || cookieValor!=""){
+  ckie= cookieValor.split(',');
+  misfav=ckie;
+}
+
+function getallcookies(){
+
+  var cookieValor = document.cookie.replace(/(?:(?:^|.*;\s*)thecookie\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+  if(cookieValor!=null || cookieValor!=""){
+    ckie= cookieValor.split(',');
+    ckie.forEach(element => {
+     $('#fav'+element).addClass("press");
+    });
+
+  }
+}
+
+//script favoritos.
+function fav(dato, id){
+
+  $(dato).toggleClass( "press", 1000 );
+
+  if($(dato).hasClass('press')){
+    misfav.push(id);
+    document.cookie="thecookie="+misfav;
+  } else {
+
+   for (let index = 0; index < misfav.length; index++) {
+      if(misfav[index]==id){
+        misfav.splice(index,1);
+      }
+   }
+   document.cookie="thecookie="+misfav;
+  }
+
+}
+
+//script para añadir un producto al carrito, se utiliza en : detalle producto.
+ function add( id ){
+
+  cantidad = $("#cantidad").val();
+
+  $.ajax({
+    data: {
+      "_token": "{{ csrf_token() }}",
+      "id":id,
+      "cantidad":cantidad
+    },
+    url: 'procesa',
+    type: 'post',
+    success:  function (response) {
+
+      response = JSON.parse(response);
+      if(response['operacion'] == "excede"){
+
+        msg_warning('The quantity of products exceeds the stock!')
+
+        if(response['cantidad'] <= 0){
+          $("#cantidad").val(0);
+        } else {
+          $("#cantidad").val(response["cantidad"]);
+        }
+      }
+
+      if(response['operacion'] == "zero"){
+        msg_warning('The amount of product added cannot be equal to or less than zero')
+      }
+
+      if(response['operacion'] == "doble"){
+        msg_warning('The product is already added to the cart')
+      }
+
+      if(response['operacion'] == "bien"){
+
+        Swal.fire({
+          title: 'Good!',
+          text: "The product has been successfully added to the cart",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#B5C7A1',
+          cancelButtonColor: '#F79860',
+          confirmButtonText: 'Keep buying',
+          cancelButtonText: 'Go to cart'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location="{{route('productos_en')}}";
+          } else {
+            window.location="{{route('carrito_en')}}";
+          }
+        })
+
+      }
+
+    },
+    error:  function (response) {
+      window.open(JSON.stringify(response));
+    }
+  });
+
+}
+
+function msg_warning(mensaje) {
+  Swal.fire({
+    icon: 'warning',
+    title:'¡Advertencia!',
+    text: mensaje
+  })
+}
+
+ //script para cambiar de imagen "principal" a las demás que utiliza el producto.
+function changeimg(ruta){
+  smoothScroll(document.getElementById('principal-img'));
+  principal = document.getElementById('img-principal');
+  aux_principal = principal.src;
+  principal.src = ruta.src;
+  ruta.src = aux_principal;
+}
+
+//scritp que inicializa el carrusel de productos más vendidos.
+$(document).ready(function() {
+
+  let fb = document.getElementsByClassName('inlineBlock')
+  getallcookies();
+
+  $(".lightSlider").lightSlider({
+    item:2,
+    controls: true,
+    pager: false,
+    addClass: 'heightsldier',
+    enableDrag:false,
+    loop:false
+  });
+
+  $("#lightSlider").lightSlider({
+    item:3,
+    controls: true,
+    pager: false,
+    addClass: 'heightsldier',
+    loop:false,
+    responsive : [
+      {
+        breakpoint:501,
+        settings: {
+          item:2,
+          slideMove:1
+        }
+      },
+      {
+        breakpoint:301,
+        settings: {
+          item:1,
+          slideMove:1
+        }
+      }
+    ]
+  });
+});
+
+</script>
+@endsection

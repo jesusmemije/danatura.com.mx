@@ -218,8 +218,60 @@ Detalle producto
   <div class="card mb-12" style="padding-top: 8%; padding-bottom:8%;">
     <div class="row g-0">
       <div id="principal-img" class="col-md-6 img-detail" style="padding-left: 6%;">
-
+        @if ($producto->nuevo==0)
+            
+          @elseif ($producto->nuevo==1)
+            <span class="nuevo-circle" style="margin-bottom: 30px;position: absolute;top: -20px;left: 50px;">Nuevo</span>
+          @endif
         @php
+
+            $tipo_precio = 'normal';
+            $precio = '';
+
+            if (auth()->user() != null) {
+
+                $tipo = auth()->user()->tipo;
+                $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
+
+                $thetipo = $tipos->tipo;
+
+                if ($thetipo == "Mayorista") {
+                    $tipo_precio = 'mayorista';
+                }
+                if ($thetipo == "Nutriologo") {
+                    $tipo_precio = 'nutriologo';
+                }
+            }
+
+
+            //Para los precios.
+            if (strpos($producto->precio, '.') !== false) {
+                $precio = $producto->precio;
+            } else {
+                $precio = $producto->precio . ".00";
+            }
+
+            if ($tipo_precio == 'mayorista') {
+
+                if (strpos($producto->precio_mayorista, '.') !== false) {
+                    $precio = $producto->precio_mayorista;
+                } else {
+                    $precio = $producto->precio_mayorista . ".00";
+                }
+
+            }
+
+            if ($tipo_precio == 'nutriologo') {
+                if (strpos($producto->precio_nutriologo, '.') !== false) {
+                    $precio = $producto->precio_nutriologo;
+                } else {
+                    $precio = $producto->precio_nutriologo . ".00";
+                }
+
+            }
+
+
+
         $fotografia = $producto->fotografia;
         $source = "assets/productos/" . $fotografia;
         $source = $source = $fotografia;
@@ -235,19 +287,23 @@ Detalle producto
         $source=asset("assets/productos")."/".$fotografia;
         }
 
-        if (strpos($producto->precio, '.') !== false) {
+        // if (strpos($producto->precio, '.') !== false) {
 
-        $precio=$producto->precio;
+        // $precio=$producto->precio;
 
-        }else{
-        $precio=$producto->precio.".00";
-        }
+        // }else{
+        // $precio=$producto->precio.".00";
+        // }
 
         @endphp
 
         @php
         $array_galeria=explode('|',$producto->galeria);
         $foto_principal=$array_galeria[0];
+        @endphp
+
+        @php
+          $descripcion=$producto->descripcion;
         @endphp
 
         <i id="fav{{ $producto->id }}" onclick="fav(this,{{ $producto->id }})" class="fas fa-heart fa-lg corazon"
@@ -308,7 +364,9 @@ Detalle producto
           </div>
           <div>
             <hr>
-            <p class="card-text" style="color: #73482C;">{{$producto->descripcion}}</p>
+           
+            <p class="card-text" style="color: #73482C;white-space: pre-wrap;" >{{ $producto->descripcion }}</p>
+            
             <p class="card-text" style="color:#73482C; font-weight:bold">Contenido:{{$producto->gramos}}</p>
           </div>
         </div>
@@ -350,11 +408,65 @@ Detalle producto
 
         <li>
           <div style="padding:4%;">
+            @if ($vendido->nuevo==0)
+              <div style="height: 100px">
 
-            <span class="nuevo-circle">Nuevo</span>
+              </div>
+            @elseif ($vendido->nuevo==1)
+              <span class="nuevo-circle" style="margin-bottom: 30px">Nuevo</span>
+            @endif
+            {{-- <span class="nuevo-circle">Nuevo</span> --}}
             <i id="fav{{$vendido->id}}" onclick="fav(this,'{{$vendido->id}}')" class="fas fa-heart corazon"></i>
 
             @php
+
+
+            $tipo_precio = 'normal';
+            $precio = '';
+
+            if (auth()->user() != null) {
+
+                $tipo = auth()->user()->tipo;
+                $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
+
+                $thetipo = $tipos->tipo;
+
+                if ($thetipo == "Mayorista") {
+                    $tipo_precio = 'mayorista';
+                }
+                if ($thetipo == "Nutriologo") {
+                    $tipo_precio = 'nutriologo';
+                }
+            }
+
+
+            //Para los precios.
+            if (strpos($vendido->precio, '.') !== false) {
+                $precio = $vendido->precio;
+            } else {
+                $precio = $vendido->precio . ".00";
+            }
+
+            if ($tipo_precio == 'mayorista') {
+
+                if (strpos($vendido->precio_mayorista, '.') !== false) {
+                    $precio = $vendido->precio_mayorista;
+                } else {
+                    $precio = $vendido->precio_mayorista . ".00";
+                }
+
+            }
+
+            if ($tipo_precio == 'nutriologo') {
+                if (strpos($vendido->precio_nutriologo, '.') !== false) {
+                    $precio = $vendido->precio_nutriologo;
+                } else {
+                    $precio = $vendido->precio_nutriologo . ".00";
+                }
+
+            }
+
+
             $fotografia=$vendido->fotografia;
             $source="assets/productos/".$fotografia;
             $source=$fotografia;
@@ -370,13 +482,13 @@ Detalle producto
             $source=asset("assets/productos")."/".$fotografia;
             }
 
-            if (strpos($vendido->precio, '.') !== false) {
+            // if (strpos($vendido->precio, '.') !== false) {
 
-            $precio=$vendido->precio;
+            // $precio=$vendido->precio;
 
-            }else{
-            $precio=$vendido->precio.".00";
-            }
+            // }else{
+            // $precio=$vendido->precio.".00";
+            // }
             $array_galeria=explode('|',$vendido->galeria);
 
             $foto_principal=$array_galeria[0];

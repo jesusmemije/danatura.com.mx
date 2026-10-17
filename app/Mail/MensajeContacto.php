@@ -2,11 +2,10 @@
 
 namespace App\Mail;
 
+use App\Models\Contacto;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Contacto;
 
 class MensajeContacto extends Mailable
 {
@@ -19,7 +18,7 @@ class MensajeContacto extends Mailable
      *
      * @return void
      */
-    public function __construct( Contacto $contacto )
+    public function __construct(Contacto $contacto)
     {
         $this->contacto = $contacto;
     }

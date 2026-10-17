@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Rule;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
 class DiscountController extends Controller
@@ -22,14 +23,15 @@ class DiscountController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
         $coupons = Coupon::all();
-        $rule = Rule::find(1);
+        $rule_1 = Rule::find(1);
+        $rule_2 = Rule::find(2);
 
-        return view('admin.discounts.index', compact('coupons', 'rule'));
+        return view('admin.discounts.index', compact('coupons', 'rule_1', 'rule_2'));
     }
 
     public function createCoupon()
@@ -42,10 +44,10 @@ class DiscountController extends Controller
         $request->validate([
             'codigo' => 'required|unique:coupons|max:20',
         ],
-        [
-            'codigo.unique' => 'Este código ya ha sido utilizado, intenta con otro por favor.',
-            'codigo.max' => 'El código no debe tener más de 20 caracteres.',
-        ]);
+            [
+                'codigo.unique' => 'Este código ya ha sido utilizado, intenta con otro por favor.',
+                'codigo.max' => 'El código no debe tener más de 20 caracteres.',
+            ]);
 
         Coupon::create($request->all());
 
@@ -55,6 +57,7 @@ class DiscountController extends Controller
     public function edit($id)
     {
         $coupon = Coupon::find($id);
+
         return view('admin.discounts.edit', compact('coupon'));
     }
 
@@ -72,6 +75,7 @@ class DiscountController extends Controller
     public function destroyCoupon($id)
     {
         Coupon::destroy($id);
+
         return redirect()->route('discounts.index')->with('status', 'El cupón se ha eliminado con éxito');
     }
 
@@ -82,5 +86,4 @@ class DiscountController extends Controller
 
         return redirect()->route('discounts.index')->with('status_rule', 'La regla de envío se ha editado con éxito');
     }
-
 }

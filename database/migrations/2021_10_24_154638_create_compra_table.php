@@ -20,9 +20,9 @@ class CreateCompraTable extends Migration
             $table->float('costo_envio', 8, 2);
             $table->decimal('subtotal', $precision = 10, $scale = 2);
             $table->decimal('preciototal', $precision = 10, $scale = 2);
-            $table->string('status',100);
-            $table->string('chargeid',255);
-            $table->string('method',100);
+            $table->string('status', 100);
+            $table->string('chargeid', 255);
+            $table->string('method', 100);
             $table->bigInteger('id_datosenvio');
             $table->foreign('id_datosenvio')->references('id_datosenvio')->on('datos-envios');
             $table->timestamps();

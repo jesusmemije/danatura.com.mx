@@ -62,8 +62,14 @@ svg{
     
     <li style="">
           <div  style="padding:2%;">
-         
-          <span class="nuevo-circle">Nuevo</span>
+          @if ($favorito->nuevo==0)
+            <div style="height: 100px">
+
+            </div>
+          @elseif ($favorito->nuevo==1)
+            {{-- <span class="nuevo-circle">NUEVO</span> --}}
+            <span class="nuevo-circle" style="margin-bottom: 30px">Nuevo</span>
+          @endif
 
           @php
                    $fotografia=$favorito->fotografia;

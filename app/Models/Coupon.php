@@ -11,7 +11,7 @@ class Coupon extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titulo', 'codigo', 'tipo', 'cantidad', 'status'
+        'titulo', 'codigo', 'tipo', 'cantidad', 'status',
     ];
 
     protected $appends = ['creation'];

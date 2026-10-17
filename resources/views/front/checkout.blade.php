@@ -94,7 +94,7 @@ Checkout
     <div class="row clearfix">
         <div class="col-md-6 col-12 text-center-items">
             <?php
-                $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','fotografia')->get();
+                $productos = DB::table('productos')->select('id', 'nombre', 'sabor','descripcion', 'gramos','precio','precio_mayorista','precio_nutriologo','fotografia')->get();
 
                 $carrito = $_SESSION['carrito'];
                 $cantidad_carrito=0;
@@ -154,33 +154,82 @@ Checkout
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($productos as $producto) {
+                        foreach ($productos as $producto) {
 
-                        foreach ($carrito as $key) {
-                            if ($producto->id == $key['producto_id']) {
-                                $totalPagar = $producto->precio + $totalPagar;
-                                ?>
-                    <tr>
-                        <td>
-                            <h6>
-                                <?php echo $producto->nombre; ?>
-                            </h6>
-                        </td>
-                        <td class="phone-hide"><span class="text-muted">
-                                <?php echo $producto->descripcion;  ?>
-                            </span></td>
-                        <td>
-                            <?php echo $key['cantidad'];  ?>
-                        </td>
-                        <td id="<?php echo $producto->id ?>">$
-                            <?php echo number_format($producto->precio, 2, '.', ',') ?>
-                        </td>
-                    </tr>
-                    <?php
-                                $i++;
+                            foreach ($carrito as $key) {
+                                if ($producto->id == $key['producto_id']) {
+
+                                    $tipo_precio = 'normal';
+                                    $precio = '';
+
+                                    if (auth()->user() != null) {
+
+                                        $tipo = auth()->user()->tipo;
+                                        $tipos = DB::table('tiposuario')->where('id', '=', $tipo)->first();
+
+                                        $thetipo = $tipos->tipo;
+
+                                        if ($thetipo == "Mayorista") {
+                                            $tipo_precio = 'mayorista';
+                                        }
+                                        if ($thetipo == "Nutriologo") {
+                                            $tipo_precio = 'nutriologo';
+                                        }
+                                    }
+
+
+                                    //Para los precios.
+                                    if (strpos($producto->precio, '.') !== false) {
+                                        $precio = $producto->precio;
+                                    } else {
+                                        $precio = $producto->precio . ".00";
+                                    }
+
+                                    if ($tipo_precio == 'mayorista') {
+
+                                        if (strpos($producto->precio_mayorista, '.') !== false) {
+                                            $precio = $producto->precio_mayorista;
+                                        } else {
+                                            $precio = $producto->precio_mayorista . ".00";
+                                        }
+
+                                    }
+
+                                    if ($tipo_precio == 'nutriologo') {
+                                        if (strpos($producto->precio_nutriologo, '.') !== false) {
+                                            $precio = $producto->precio_nutriologo;
+                                        } else {
+                                            $precio = $producto->precio_nutriologo . ".00";
+                                        }
+
+                                    }
+
+
+
+                                    $totalPagar = $precio + $totalPagar;
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <h6>
+                                                <?php echo $producto->nombre; ?>
+                                            </h6>
+                                        </td>
+                                        <td class="phone-hide"><span class="text-muted">
+                                                <?php echo $producto->descripcion;  ?>
+                                            </span></td>
+                                        <td>
+                                            <?php echo $key['cantidad'];  ?>
+                                        </td>
+                                        <td id="<?php echo $producto->id ?>">$
+                                            <?php echo number_format($precio, 2, '.', ',') ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                        $i++;
+                                }
                             }
-                        }
-                    } ?>
+                        } 
+                        ?>
                 </tbody>
             </table>
             <div class="col-md-6 ">
@@ -404,7 +453,7 @@ Checkout
                             <form id="form-envios" method="post">
                                 <input hidden type="text" id="dato_id" name="dato_id">
                                 <label for="">Nombre (Requerido)<sup class="supred">*</sup></label>
-                                <input required id="nombreenvio" name="nombre" type="text" class="form-control"
+                                <input required id="nombreenvio" name="nombre" type="text" value="{{$nombre_envio}}" class="form-control"
                                     placeholder="">
                         </div>
                         <div class="col">
@@ -439,7 +488,7 @@ Checkout
                     <input id="telefonoenvio" type="text" class="form-control" name="telefono">
 
                     <label for="">Correo electrónico (Requerido)<sup>*</sup></label>
-                    <input id="emailenvio" type="text" class="form-control" name="email" placeholder="">
+                    <input id="emailenvio" type="text" class="form-control" value="{{$correo_envio}}" name="email" placeholder="">
 
                     <label for="">RFC (Opcional)</label>
                     <input id="rfcenvio" type="text" class="form-control" name="rfc"
