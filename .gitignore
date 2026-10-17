@@ -1,19 +1,68 @@
-/node_modules
-# /public/aero
-# /public/assets/fotosreales
-# /public/assets/productos
-# /public/admin_assets
-# /public/admin_assets/vendor
-# /public/hot
-# /public/storage
-/public/assets/blogs
-/storage/*.key
-/vendor
+# =====================================================================
+# CARPETAS DE DEPENDENCIAS (OBLIGATORIO)
+# =====================================================================
+/node_modules/
+/vendor/
+
+# =====================================================================
+# CONFIGURACIÓN LOCAL Y PRIVACIDAD (¡NUNCA SUBIR!)
+# =====================================================================
 .env
 .env.backup
+.env.production
+auth.json
+
+# =====================================================================
+# ARCHIVOS TEMPORALES Y CACHÉ DE LARAVEL
+# =====================================================================
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
 .phpunit.result.cache
+
+# =====================================================================
+# CARPETA STORAGE (IGNORAR LOGS GIGANTES Y CACHÉ)
+# =====================================================================
+/storage/*.key
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Excepciones para que Git mantenga la estructura de carpetas en Storage
+!/storage/app/.gitignore
+!/storage/framework/.gitignore
+!/storage/framework/cache/.gitignore
+!/storage/framework/cache/data/.gitignore
+!/storage/framework/sessions/.gitignore
+!/storage/framework/views/.gitignore
+!/storage/logs/.gitignore
+
+# =====================================================================
+# PUBLIC ASSETS (PROPIOS DE DANATURA)
+# =====================================================================
+# Forzar a Git a ignorar carpetas compiladas o temporales del frontend
+/public/build
+/public/hot
+/public/storage
+
+# IGNORAR CARPETAS DE IMÁGENES DINÁMICAS (Se suben desde el panel, no por código)
+/public/assets/blogs/
+/public/assets/productos/
+/public/assets/fotosreales/
+
+# MANTENER EN GIT (Descomentados para que sí se suban las plantillas del panel de administración)
+!/public/admin_assets/
+!/public/aero/
+
+# =====================================================================
+# ENTORNOS VIRTUALES Y LOGS DE CONSOLA
+# =====================================================================
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
+.env.homestead
 npm-debug.log
 yarn-error.log
+.DS_Store
+Thumbs.db
